@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 70">
+  <rect width="220" height="70" fill="#CC1111" rx="6"/>
+  <rect x="0" y="52" width="220" height="18" fill="#AA0E0E" rx="0"/>
+  <text x="110" y="38" font-family="Arial Black, Impact, sans-serif" font-size="26" font-weight="900" fill="white" text-anchor="middle" letter-spacing="1">build it</text>
+  <text x="110" y="63" font-family="Arial, sans-serif" font-size="10" font-weight="600" fill="#FFD700" text-anchor="middle" letter-spacing="3">BUILDING SUPPLIES</text>
+</svg>

@@ -1,0 +1,77 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-background: #bfe3f5;
+  --color-foreground: #0a0a0a;
+  --color-muted-foreground: #1f2d3a;
+  --color-border: #8fc7e7;
+  --color-primary: #1c6cb8;
+  --color-primary-foreground: #ffffff;
+  --color-secondary: #a9d6ef;
+  --color-secondary-foreground: #0a0a0a;
+  --color-accent: #ef8a4c;
+  --color-accent-foreground: #ffffff;
+  --color-danger: #d6473a;
+  --color-danger-foreground: #ffffff;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+body {
+  color: var(--color-foreground);
+  background-color: #87ceeb;
+  background-image: linear-gradient(#aee0f6 0%, #87ceeb 60%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+main {
+  animation: page-fade-in 0.25s ease-out;
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Apply to list/grid cards for a consistent, smooth hover lift across pages. */
+.card-lift {
+  transition:
+    transform 0.2s ease-out,
+    box-shadow 0.2s ease-out,
+    border-color 0.2s ease-out;
+}
+
+.card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -8px rgb(0 0 0 / 0.18);
+}
+
+.card-lift:active {
+  transform: translateY(0);
+}

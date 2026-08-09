@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 70">
+  <rect width="220" height="70" fill="#1A1A1A" rx="6"/>
+  <line x1="20" y1="24" x2="200" y2="24" stroke="#C9A84C" stroke-width="0.8"/>
+  <line x1="20" y1="46" x2="200" y2="46" stroke="#C9A84C" stroke-width="0.8"/>
+  <text x="110" y="18" font-family="Georgia, 'Times New Roman', serif" font-size="8" fill="#C9A84C" text-anchor="middle" letter-spacing="5">THE</text>
+  <text x="110" y="40" font-family="Georgia, 'Times New Roman', serif" font-size="15" fill="white" text-anchor="middle" letter-spacing="2">PLETTENBERG</text>
+  <text x="110" y="58" font-family="Georgia, serif" font-size="7.5" fill="#C9A84C" text-anchor="middle" letter-spacing="3">BOUTIQUE HOTEL</text>
+</svg>

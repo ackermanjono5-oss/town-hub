@@ -1,0 +1,20 @@
+{
+  "name": "sea-express-expo",
+  "version": "1.0.0",
+  "main": "index.js",
+  "dependencies": {
+    "react": "19.2.3",
+    "react-native": "0.85.3",
+    "react-native-webview": "13.16.1"
+  },
+  "scripts": {
+    "start": "react-native start",
+    "android": "react-native run-android"
+  },
+  "private": true,
+  "devDependencies": {
+    "@react-native-community/cli": "^20.2.0",
+    "@react-native/babel-preset": "^0.85.3",
+    "@react-native/metro-config": "^0.85.3"
+  }
+}
