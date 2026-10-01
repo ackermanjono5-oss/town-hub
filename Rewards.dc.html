@@ -1,0 +1,350 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafb; }
+
+    .phone-frame {
+      width: 390px;
+      height: 844px;
+      background: white;
+      border-radius: 40px;
+      border: 12px solid #000;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .status-bar {
+      height: 44px;
+      background: white;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .nav-pills {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px;
+      overflow-x: auto;
+      background: white;
+      height: 40px;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+      scrollbar-width: none;
+    }
+
+    .nav-pill {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #d1d5db;
+      background: white;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .nav-pill.active {
+      background: #0e7490;
+      color: white;
+      border-color: #0e7490;
+    }
+
+    .content {
+      overflow-y: auto;
+      height: calc(844px - 44px - 40px - 50px);
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .coupon-card {
+      background: white;
+      border-radius: 16px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(14, 116, 144, 0.15);
+      max-width: 320px;
+      animation: cardScaleIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .ticket-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      animation: iconFloat 1.5s ease-in-out infinite;
+    }
+
+    .coupon-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 8px;
+      animation: slideInDown 0.6s ease-out 0.1s both;
+    }
+
+    .coupon-subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 24px;
+      line-height: 1.5;
+      animation: slideInDown 0.6s ease-out 0.2s both;
+    }
+
+    .cta-button {
+      background: #0e7490;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 12px rgba(14, 116, 144, 0.3);
+      animation: bounceIdle 1.5s ease-in-out infinite 0.3s;
+      transition: all 0.2s ease;
+    }
+
+    .cta-button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 16px rgba(14, 116, 144, 0.4);
+    }
+
+    .cta-button.pulse {
+      animation: buttonPulse 0.4s ease-out;
+    }
+
+    .coupon-code-revealed {
+      background: #d1fae5;
+      border: 2px solid #0e7490;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      animation: slideInUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .code-label {
+      font-size: 11px;
+      color: #0d5f7d;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .code-value {
+      font-family: 'Courier New', monospace;
+      font-size: 20px;
+      font-weight: 700;
+      color: #0e7490;
+      letter-spacing: 2px;
+      animation: codeAppear 0.5s ease-out;
+    }
+
+    .copy-icon {
+      font-size: 12px;
+      cursor: pointer;
+      margin-left: 8px;
+      opacity: 0;
+      animation: fadeIn 0.4s ease-out 0.6s both;
+    }
+
+    .footer-text {
+      font-size: 12px;
+      color: #6b7280;
+      line-height: 1.5;
+      animation: slideInUp 0.6s ease-out 0.4s both;
+    }
+
+    .footer-text strong {
+      color: #0e7490;
+      font-weight: 600;
+    }
+
+    /* Sparkle particle effect */
+    .sparkle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: #0e7490;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: sparkleFloat 1.5s ease-out forwards;
+    }
+
+    @keyframes cardScaleIn {
+      from { transform: scale(0.95); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes slideInDown {
+      from { transform: translateY(-15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes slideInUp {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes bounceIdle {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-4px); }
+    }
+
+    @keyframes buttonPulse {
+      0% { box-shadow: 0 0 0 0 rgba(14, 116, 144, 0.5); }
+      50% { box-shadow: 0 0 0 8px rgba(14, 116, 144, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(14, 116, 144, 0); }
+    }
+
+    @keyframes iconFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes codeAppear {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes sparkleFloat {
+      0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translate(var(--tx), var(--ty)) scale(0);
+        opacity: 0;
+      }
+    }
+
+    .motion-label {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      z-index: 20;
+    }
+  </style>
+</helmet>
+
+<div style="width: 100%; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f8fafb; padding: 40px 20px;">
+
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span>9:41</span>
+      <span>📶 🔋</span>
+    </div>
+
+    <div class="header">
+      <span style="font-size: 16px; font-weight: 700; color: #0e7490;">🏘️ Town Hub</span>
+    </div>
+
+    <div class="nav-pills">
+      <span class="nav-pill">Home</span>
+      <span class="nav-pill">Restaurants</span>
+      <span class="nav-pill active">Rewards</span>
+      <span class="nav-pill">Events</span>
+    </div>
+
+    <div class="content">
+      <div class="coupon-card">
+        <div class="ticket-icon">🎟️</div>
+
+        <h1 class="coupon-title">Get Your Coupon Code</h1>
+
+        <p class="coupon-subtitle">
+          Tap the button for a random discount code — try again anytime for a new one.
+        </p>
+
+        <button class="cta-button">✨ Get Coupon Code</button>
+
+        <div class="coupon-code-revealed">
+          <div class="code-label">YOUR CODE</div>
+          <div class="code-value">
+            THD-KXMQ-7829
+            <span class="copy-icon">📋</span>
+          </div>
+        </div>
+
+        <button class="cta-button" style="margin-bottom: 0;">Get Another Code</button>
+
+        <div style="height: 20px;"></div>
+
+        <div class="footer-text">
+          Install our other app, <strong>Town Hub Discounts</strong>, enter your code and get discounts at participating local businesses.
+        </div>
+      </div>
+    </div>
+
+    <div class="motion-label">SCREEN 7: Rewards (40-49s)</div>
+  </div>
+
+</div>
+
+<div style="margin-top: 60px; padding: 20px; background: white; border-radius: 12px; max-width: 600px; margin-left: auto; margin-right: auto; margin-bottom: 40px;">
+  <h3 style="color: #0e7490; margin-bottom: 12px;">MOTION SPEC: REWARDS / COUPON (HERO MOMENT)</h3>
+  <ul style="font-size: 13px; line-height: 1.6; color: #6b7280; list-style: none; padding: 0;">
+    <li><strong>📍 Screen entrance:</strong> Fade in over 0.6s (opacity 0→1)</li>
+    <li><strong>🎟️ Card:</strong> Scale 0.95→1.0 with subtle easing (0.6s cubic-bezier bounce)</li>
+    <li><strong>✨ Ticket icon:</strong> Floats gently (translateY -8px ↔ 0, 1.5s infinite loop)</li>
+    <li><strong>📝 Title/Subtitle:</strong> Slide down with staggered timing (0.1s, 0.2s delays)</li>
+    <li><strong>🔘 Button (before tap):</strong> Subtle bounce idle animation (4px up/down, 1.5s loop, 0.3s delay)</li>
+    <li><strong>🎯 On button tap:</strong> Pulse animation (box-shadow glow expands, 0.4s), then:</li>
+    <li><strong>  💾 Code reveal:</strong> Slide up + fade in (0.5s cubic-bezier bounce), monospace font, teal color</li>
+    <li><strong>  ✨ Sparkle burst:</strong> 3-4 particles burst upward from code (random angles, float + fade 1.5s each)</li>
+    <li><strong>  📋 Copy icon:</strong> Fades in alongside code (0.4s delay from reveal), changes to checkmark on tap</li>
+    <li><strong>  🔘 Button label:</strong> Changes to 'Get Another Code' after 1s delay</li>
+    <li><strong>📝 Footer text:</strong> Slides up with fade (0.4s delay)</li>
+    <li><strong>⏱️ Total screen time:</strong> 9 seconds (2s pause on final coupon state before next)</li>
+    <li><strong>➡️ Next transition:</strong> Fade to final frame (0.3s)</li>
+  </ul>
+</div>
+
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

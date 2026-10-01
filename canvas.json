@@ -1,0 +1,16 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 390, "h": 844, "title": "1. Splash Screen (0-2s)" },
+    { "file": "Home.dc.html", "x": 440, "y": 0, "w": 390, "h": 844, "title": "2. Home Dashboard (2-10s)" },
+    { "file": "Directory.dc.html", "x": 880, "y": 0, "w": 390, "h": 844, "title": "3. Restaurant Directory (10-16s)" },
+    { "file": "Medical.dc.html", "x": 1320, "y": 0, "w": 390, "h": 844, "title": "4. Medical Directory (16-22s)" },
+    { "file": "Rewards.dc.html", "x": 1760, "y": 0, "w": 390, "h": 844, "title": "7. Rewards / Coupon - Hero (40-49s)" },
+    { "file": "Final.dc.html", "x": 2200, "y": 0, "w": 390, "h": 844, "title": "8. Closing Frame (49-52s)" }
+  ],
+  "annotations": [
+    { "id": "timing-note-1", "x": 0, "y": 900, "w": 400, "text": "Total demo video: 60-75 seconds. Recommended pacing: 2s per screen (avg) with smooth transitions throughout." },
+    { "id": "motion-guide", "x": 440, "y": 900, "w": 800, "text": "MOTION GUIDE: All screen transitions are slide-in from right (0.5s ease-out). Hover on any screen's motion-label badge to see detailed specs for that frame's animations." },
+    { "id": "key-moments", "x": 1320, "y": 900, "w": 600, "text": "KEY CINEMATIC MOMENTS: (1) Splash logo bounce-in + spinner rotation loop. (2) Home CTA buttons cascade in with staggered pop effect. (3) Red emergency banner bounces down with authority. (4) Coupon reveal with sparkle burst particles and celebratory feedback." }
+  ],
+  "launch": { "view": "canvas" }
+}

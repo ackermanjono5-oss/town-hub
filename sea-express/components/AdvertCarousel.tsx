@@ -1,101 +1,88 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { ADVERTS, type Advert } from '@/lib/garden-route/adverts';
+import { ADVERTS, advertHref, type Advert } from '@/lib/garden-route/adverts';
 
-const PAGE_SIZE = 4;
-const ROTATE_MS = 5000;
-const FADE_MS = 300;
+/**
+ * "Local partners" strip on the home screen, following the Town Hub
+ * prototype: a horizontally scrolling row of fixed-width cards rather than
+ * the rotating four-up grid this used to be.
+ *
+ * The prototype shows monogram tiles for every partner. Real logos exist
+ * for most of these, so the tile prefers the artwork and falls back to
+ * initials — a partner without a logo still gets a filled tile rather than
+ * a gap, which was the point of the monogram in the first place.
+ */
 
-// Splits into fixed-size pages, wrapping around the list to pad out the
-// final page so every rotation always fills a full 4-column grid.
-function paginate(items: Advert[], pageSize: number): Advert[][] {
-  if (items.length <= pageSize) return [items];
-  const pages: Advert[][] = [];
-  for (let i = 0; i < items.length; i += pageSize) {
-    const page: Advert[] = [];
-    for (let j = 0; j < pageSize; j += 1) {
-      page.push(items[(i + j) % items.length]);
-    }
-    pages.push(page);
-  }
-  return pages;
+function initialsOf(name: string) {
+  return name
+    .split(/\s+/)
+    .filter((w) => /[a-z0-9]/i.test(w))
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase();
 }
 
-const PAGES = paginate(ADVERTS, PAGE_SIZE);
+function PartnerTile({ advert }: { advert: Advert }) {
+  if (!advert.logo) {
+    return (
+      <div className="w-[38px] h-[38px] rounded-[10px] bg-[#f0fbfd] text-[#0e7490] flex items-center justify-center text-sm font-extrabold">
+        {initialsOf(advert.name)}
+      </div>
+    );
+  }
+  return (
+    <div
+      className="relative w-[38px] h-[38px] rounded-[10px] overflow-hidden p-1"
+      style={{ backgroundColor: advert.logoBg ?? '#f0fbfd' }}
+    >
+      <Image
+        src={advert.logo}
+        alt=""
+        fill
+        sizes="38px"
+        className="object-contain p-0.5"
+      />
+    </div>
+  );
+}
 
 export default function AdvertCarousel() {
-  const [pageIndex, setPageIndex] = useState(0);
-  const [visible, setVisible] = useState(true);
-
-  useEffect(() => {
-    if (PAGES.length <= 1) return;
-    let fadeTimeout: ReturnType<typeof setTimeout>;
-    const interval = setInterval(() => {
-      setVisible(false);
-      fadeTimeout = setTimeout(() => {
-        setPageIndex((i) => (i + 1) % PAGES.length);
-        setVisible(true);
-      }, FADE_MS);
-    }, ROTATE_MS);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(fadeTimeout);
-    };
-  }, []);
-
-  const page = PAGES[pageIndex];
-
   return (
-    <div className="mt-12">
-      <p className="text-sm font-medium text-muted-foreground mb-4 uppercase tracking-wider">
-        Our Adverts
-      </p>
-      <div
-        className="grid grid-cols-2 sm:grid-cols-4 gap-3 transition-opacity ease-in-out"
-        style={{ transitionDuration: `${FADE_MS}ms`, opacity: visible ? 1 : 0 }}
-      >
-        {page.map((advert, i) => (
+    <section className="pt-4">
+      <div className="flex items-baseline justify-between px-5 pb-2.5">
+        <h2 className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#6b7280]">
+          Local partners
+        </h2>
+        <a
+          href="/contact"
+          className="text-xs font-semibold text-[#b45309] hover:underline"
+        >
+          Advertise here
+        </a>
+      </div>
+
+      <div className="flex gap-[11px] overflow-x-auto px-5 pt-1 pb-4 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {ADVERTS.map((advert) => (
           <a
-            key={`${advert.id}-${i}`}
-            href={advert.website}
+            key={advert.id}
+            href={advertHref(advert)}
             target="_blank"
             rel="noopener noreferrer"
             title={advert.name}
-            className="group flex flex-col items-center rounded-xl border border-border overflow-hidden hover:border-primary hover:shadow-lg card-lift"
+            className="flex-none w-[138px] p-3.5 rounded-[14px] bg-white border border-[#e5e7eb] text-left transition-all duration-150 hover:border-[#0e7490] hover:shadow-md active:scale-[0.98]"
           >
-            <div
-              className="relative w-full h-20 p-3"
-              style={{ backgroundColor: advert.logoBg ?? '#ffffff' }}
-            >
-              <Image
-                src={advert.logo}
-                alt={advert.name}
-                fill
-                sizes="140px"
-                className="object-contain"
-              />
-            </div>
-            <div className="w-full px-2 py-2 bg-background text-center">
-              <p className="text-xs font-semibold text-foreground leading-tight">{advert.name}</p>
-              <p className="text-[10px] text-muted-foreground leading-tight mt-0.5">{advert.tagline}</p>
-            </div>
+            <PartnerTile advert={advert} />
+            <p className="mt-2.5 text-[13.5px] font-bold text-[#1f2937] leading-snug">
+              {advert.name}
+            </p>
+            <p className="mt-0.5 text-[11.5px] text-[#6b7280] leading-snug">
+              {advert.tagline}
+            </p>
           </a>
         ))}
       </div>
-      {PAGES.length > 1 && (
-        <div className="flex justify-center gap-1.5 mt-3">
-          {PAGES.map((_, i) => (
-            <span
-              key={i}
-              className={`w-1.5 h-1.5 rounded-full transition-colors ${
-                i === pageIndex ? 'bg-primary' : 'bg-border'
-              }`}
-            />
-          ))}
-        </div>
-      )}
-    </div>
+    </section>
   );
 }

@@ -16,25 +16,18 @@
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { TOWNS, boundingBox, nearestTown } from './lib/towns.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT_FILE = join(__dirname, '..', 'lib', 'garden-route', 'accommodation.ts');
 
-// Garden Route bounding box: south, west, north, east.
-const BBOX = [-34.45, 21.9, -33.7, 24.1];
+// Bounding box is derived from the town gazetteer, so adding a town in
+// scripts/geocode-towns.mjs widens this automatically.
+const BBOX = boundingBox();
 
 // Only keep places within this distance of one of our towns (km).
 const RADIUS_KM = 12;
 
-// Towns (kept in sync with lib/garden-route/towns.ts), with id prefixes.
-const TOWNS = [
-  { slug: 'mossel-bay', prefix: 'mb', lat: -34.1814, lng: 22.146 },
-  { slug: 'george', prefix: 'geo', lat: -33.963, lng: 22.4617 },
-  { slug: 'wilderness', prefix: 'wild', lat: -33.9989, lng: 22.58 },
-  { slug: 'sedgefield', prefix: 'sedge', lat: -34.0146, lng: 22.7939 },
-  { slug: 'knysna', prefix: 'kny', lat: -34.0363, lng: 23.0471 },
-  { slug: 'plett', prefix: 'plett', lat: -34.0527, lng: 23.3716 },
-];
 
 const OVERPASS_URLS = [
   'https://overpass-api.de/api/interpreter',
@@ -45,38 +38,22 @@ const OVERPASS_URLS = [
 const USER_AGENT =
   'sea-express-garden-route/1.0 (one-time accommodation import; OSM ODbL)';
 
+// Self-catering and camping were missing here, which left whole towns empty:
+// Jongensfontein and Herolds Bay have caravan parks and chalets in OSM and
+// nothing else, so querying only the five "building with rooms" types found
+// nothing for them. On this coast camping and self-catering are a large part
+// of where people actually stay.
 const CATEGORY_LABELS = {
   hotel: 'Hotel',
   guest_house: 'Guest House',
   bed_and_breakfast: 'Bed & Breakfast',
   motel: 'Motel',
   hostel: 'Hostel',
+  chalet: 'Self-catering',
+  apartment: 'Self-catering',
+  caravan_site: 'Caravan Park',
+  camp_site: 'Campsite',
 };
-
-function haversineKm(aLat, aLng, bLat, bLng) {
-  const R = 6371;
-  const dLat = ((bLat - aLat) * Math.PI) / 180;
-  const dLng = ((bLng - aLng) * Math.PI) / 180;
-  const lat1 = (aLat * Math.PI) / 180;
-  const lat2 = (bLat * Math.PI) / 180;
-  const h =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(h));
-}
-
-function nearestTown(lat, lng) {
-  let best = null;
-  let bestDist = Infinity;
-  for (const town of TOWNS) {
-    const d = haversineKm(lat, lng, town.lat, town.lng);
-    if (d < bestDist) {
-      bestDist = d;
-      best = town;
-    }
-  }
-  return { town: best, dist: bestDist };
-}
 
 function normalizeUrl(url) {
   if (!url) return undefined;
@@ -153,6 +130,12 @@ function renderFile(stays) {
   phone?: string;
   lat: number;
   lng: number;
+  /**
+   * Optional premises photo, relative to /public, rendered by
+   * components/DirectoryPhoto.tsx. Declared here (not just in the app) so a
+   * re-import regenerates the field instead of dropping it.
+   */
+  image?: string;
 }
 
 // Generated from OpenStreetMap via scripts/import-accommodation.mjs.

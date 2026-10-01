@@ -1,0 +1,15 @@
+<resources>
+  <!-- Must descend from Theme.AppCompat: React Native's ReactActivity is an
+       AppCompatActivity, and AppCompatDelegate throws
+       "You need to use a Theme.AppCompat theme (or descendant)" from
+       setContentView when it isn't. The framework theme
+       android:Theme.Material.Light.NoActionBar crashed the app at launch. -->
+  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:statusBarColor">@color/app_background</item>
+    <item name="android:windowBackground">@color/app_background</item>
+  </style>
+
+  <style name="Theme.App.SplashScreen" parent="AppTheme">
+    <item name="android:windowBackground">@drawable/splashscreen</item>
+  </style>
+</resources>

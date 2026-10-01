@@ -1,0 +1,369 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafb; }
+
+    .phone-frame {
+      width: 390px;
+      height: 844px;
+      background: white;
+      border-radius: 40px;
+      border: 12px solid #000;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .status-bar {
+      height: 44px;
+      background: white;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .logo-small {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0e7490;
+    }
+
+    .nav-pills {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px;
+      overflow-x: auto;
+      background: white;
+      height: 40px;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+      scrollbar-width: none;
+    }
+
+    .nav-pill {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #d1d5db;
+      background: white;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .nav-pill.active {
+      background: #0e7490;
+      color: white;
+      border-color: #0e7490;
+    }
+
+    .content {
+      overflow-y: auto;
+      height: calc(844px - 44px - 40px - 50px);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 4px;
+      animation: slideInDown 0.5s ease-out;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 16px;
+      animation: slideInDown 0.5s ease-out 0.1s both;
+    }
+
+    .filter-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      animation: slideInDown 0.5s ease-out 0.2s both;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+    }
+
+    .filter-input {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
+      width: 100%;
+      background: white;
+    }
+
+    .results-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 12px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card {
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: cardPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .card:nth-child(1) { animation-delay: 0s; }
+    .card:nth-child(2) { animation-delay: 0.05s; }
+    .card:nth-child(3) { animation-delay: 0.1s; }
+    .card:nth-child(4) { animation-delay: 0.15s; }
+
+    .card:hover {
+      border-color: #0e7490;
+      box-shadow: 0 8px 16px rgba(14, 116, 144, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .card-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .card-category {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .card-phone {
+      font-size: 12px;
+      color: #0e7490;
+      font-weight: 500;
+      margin-bottom: 8px;
+      text-decoration: none;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 4px 8px;
+      border: 1px solid #d1d5db;
+      background: white;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn:hover {
+      background: #f3f4f6;
+    }
+
+    .action-btn.maps {
+      color: #b45309;
+      border-color: #b45309;
+    }
+
+    .action-btn.review {
+      color: #ca8a04;
+      border-color: #ca8a04;
+    }
+
+    .action-btn.web {
+      color: #0e7490;
+      border-color: #0e7490;
+    }
+
+    @keyframes slideInDown {
+      from { transform: translateY(-10px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes cardPop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .motion-label {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      z-index: 20;
+    }
+  </style>
+</helmet>
+
+<div style="width: 100%; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f8fafb; padding: 40px 20px;">
+
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span>9:41</span>
+      <span>📶 🔋</span>
+    </div>
+
+    <div class="header">
+      <span class="logo-small">🏘️ Town Hub</span>
+    </div>
+
+    <div class="nav-pills">
+      <span class="nav-pill">Home</span>
+      <span class="nav-pill active">Restaurants</span>
+      <span class="nav-pill">News</span>
+      <span class="nav-pill">Events</span>
+    </div>
+
+    <div class="content">
+      <h1 class="page-title">Restaurant Directory</h1>
+      <p class="page-subtitle">Discover dining options across the Garden Route</p>
+
+      <div class="filter-group">
+        <label class="filter-label">Select Town:</label>
+        <select class="filter-input">
+          <option>Knysna</option>
+          <option>Sedgefield</option>
+          <option>Mossel Bay</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Category:</label>
+        <select class="filter-input">
+          <option>All categories</option>
+          <option>Restaurant</option>
+          <option>Cafe</option>
+          <option>Bar</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Search:</label>
+        <input type="text" class="filter-input" placeholder="Search restaurants...">
+      </div>
+
+      <div class="results-header">Restaurants in Knysna (12)</div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-name">Moby's Seafood Grill</div>
+          <div class="card-category">Restaurant</div>
+          <div class="card-phone">📞 +27 44 382 5963</div>
+          <div class="card-actions">
+            <button class="action-btn maps">📍 Maps</button>
+            <button class="action-btn review">⭐ Reviews</button>
+            <button class="action-btn web">🌐 Web</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-name">The Turbine Kitchen</div>
+          <div class="card-category">Cafe</div>
+          <div class="card-phone">📞 +27 44 382 5678</div>
+          <div class="card-actions">
+            <button class="action-btn maps">📍 Maps</button>
+            <button class="action-btn review">⭐ Reviews</button>
+            <button class="action-btn web">🌐 Web</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-name">Knysna Oyster Company</div>
+          <div class="card-category">Restaurant</div>
+          <div class="card-phone">📞 +27 44 382 6810</div>
+          <div class="card-actions">
+            <button class="action-btn maps">📍 Maps</button>
+            <button class="action-btn review">⭐ Reviews</button>
+            <button class="action-btn web">🌐 Web</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-name">Rossi's Pizza Bar</div>
+          <div class="card-category">Restaurant</div>
+          <div class="card-phone">📞 +27 44 382 5432</div>
+          <div class="card-actions">
+            <button class="action-btn maps">📍 Maps</button>
+            <button class="action-btn review">⭐ Reviews</button>
+            <button class="action-btn web">🌐 Web</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="motion-label">SCREEN 3: Directory (10-16s)</div>
+  </div>
+
+</div>
+
+<div style="margin-top: 60px; padding: 20px; background: white; border-radius: 12px; max-width: 600px; margin-left: auto; margin-right: auto; margin-bottom: 40px;">
+  <h3 style="color: #0e7490; margin-bottom: 12px;">MOTION SPEC: RESTAURANT DIRECTORY</h3>
+  <ul style="font-size: 13px; line-height: 1.6; color: #6b7280; list-style: none; padding: 0;">
+    <li><strong>📍 Screen entrance:</strong> Slide in from right over 0.5s (x: 100% → 0)</li>
+    <li><strong>📝 Title/Subtitle:</strong> Slide down with fade (0.5s total)</li>
+    <li><strong>🎯 Filter dropdowns:</strong> Fade in staggered (0.1s between each), 0.2s start delay</li>
+    <li><strong>📊 Result heading:</strong> Fade in at 0.4s delay</li>
+    <li><strong>🃏 Card grid:</strong> Cards cascade in row-by-row (90% → 100% scale, fade 0→1), 0.15s per card, 0.05s stagger</li>
+    <li><strong>🖱️ Card hover:</strong> Border → teal, shadow raises 8px, y-offset -4px (0.3s ease-in-out)</li>
+    <li><strong>⏱️ Total screen time:</strong> 6 seconds (1s hold before next)</li>
+    <li><strong>➡️ Next transition:</strong> Slide right exit, new screen enters right (0.5s)</li>
+  </ul>
+</div>
+
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

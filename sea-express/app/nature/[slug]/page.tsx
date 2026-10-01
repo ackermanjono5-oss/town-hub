@@ -6,6 +6,12 @@ export function generateStaticParams() {
   return NATURE_ARTICLES.map((a) => ({ slug: a.slug }));
 }
 
+// NATURE_ARTICLES is currently empty, so generateStaticParams yields no
+// paths. Without this, output: 'export' fails because Next assumes unknown
+// slugs would be rendered on demand by a server that doesn't exist in a
+// static export; with it, anything not pre-generated simply 404s.
+export const dynamicParams = false;
+
 export default async function NatureArticlePage({
   params,
 }: {

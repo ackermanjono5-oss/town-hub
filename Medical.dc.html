@@ -1,0 +1,385 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f8fafb; }
+
+    .phone-frame {
+      width: 390px;
+      height: 844px;
+      background: white;
+      border-radius: 40px;
+      border: 12px solid #000;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .status-bar {
+      height: 44px;
+      background: white;
+      padding: 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      font-weight: 600;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .nav-pills {
+      display: flex;
+      gap: 8px;
+      padding: 0 16px;
+      overflow-x: auto;
+      background: white;
+      height: 40px;
+      align-items: center;
+      border-bottom: 1px solid #e5e7eb;
+      scrollbar-width: none;
+    }
+
+    .nav-pill {
+      padding: 6px 12px;
+      border-radius: 20px;
+      border: 1px solid #d1d5db;
+      background: white;
+      color: #6b7280;
+      font-size: 12px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+
+    .nav-pill.active {
+      background: #0e7490;
+      color: white;
+      border-color: #0e7490;
+    }
+
+    .content {
+      overflow-y: auto;
+      height: calc(844px - 44px - 40px - 50px);
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 12px;
+    }
+
+    .emergency-banner {
+      background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+      color: white;
+      padding: 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      gap: 12px;
+      animation: slideInDown 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+
+    .emergency-banner:hover {
+      transform: translateY(-2px);
+    }
+
+    .emergency-icon {
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .emergency-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .emergency-title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .emergency-desc {
+      font-size: 12px;
+      opacity: 0.9;
+    }
+
+    .filter-group {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .filter-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+    }
+
+    .filter-input {
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 13px;
+      width: 100%;
+      background: white;
+    }
+
+    .results-header {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 12px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card {
+      padding: 12px;
+      border: 1px solid #e5e7eb;
+      border-radius: 8px;
+      background: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      animation: cardPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .card:nth-child(1) { animation-delay: 0s; }
+    .card:nth-child(2) { animation-delay: 0.05s; }
+    .card:nth-child(3) { animation-delay: 0.1s; }
+    .card:nth-child(4) { animation-delay: 0.15s; }
+
+    .card:hover {
+      border-color: #0e7490;
+      box-shadow: 0 8px 16px rgba(14, 116, 144, 0.15);
+      transform: translateY(-4px);
+    }
+
+    .card-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: #1f2937;
+      margin-bottom: 4px;
+    }
+
+    .card-category {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 8px;
+    }
+
+    .card-phone {
+      font-size: 12px;
+      color: #0e7490;
+      font-weight: 500;
+      margin-bottom: 8px;
+      text-decoration: none;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 4px 8px;
+      border: 1px solid #d1d5db;
+      background: white;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .action-btn.maps {
+      color: #b45309;
+      border-color: #b45309;
+    }
+
+    .action-btn.web {
+      color: #0e7490;
+      border-color: #0e7490;
+    }
+
+    @keyframes slideInDown {
+      from { transform: translateY(-20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes cardPop {
+      from { transform: scale(0.9); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .motion-label {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      z-index: 20;
+    }
+  </style>
+</helmet>
+
+<div style="width: 100%; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f8fafb; padding: 40px 20px;">
+
+  <div class="phone-frame">
+    <div class="status-bar">
+      <span>9:41</span>
+      <span>📶 🔋</span>
+    </div>
+
+    <div class="header">
+      <span style="font-size: 16px; font-weight: 700; color: #0e7490;">🏘️ Town Hub</span>
+    </div>
+
+    <div class="nav-pills">
+      <span class="nav-pill">Home</span>
+      <span class="nav-pill">Restaurants</span>
+      <span class="nav-pill active">Medical</span>
+      <span class="nav-pill">Events</span>
+    </div>
+
+    <div class="content">
+      <h1 class="page-title">Medical Directory</h1>
+      <p class="page-subtitle">Find doctors, hospitals, chemists across the Garden Route</p>
+
+      <div class="emergency-banner">
+        <div class="emergency-icon">🚨</div>
+        <div class="emergency-text">
+          <div class="emergency-title">Medical Emergency?</div>
+          <div class="emergency-desc">Tap here for Emergency SOS — quick access to ambulance, hospitals and emergency contacts.</div>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Select Town:</label>
+        <select class="filter-input">
+          <option>Knysna</option>
+          <option>Sedgefield</option>
+          <option>Mossel Bay</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-label">Category:</label>
+        <select class="filter-input">
+          <option>All categories</option>
+          <option>Hospital</option>
+          <option>Doctor</option>
+          <option>Chemist</option>
+        </select>
+      </div>
+
+      <div class="results-header">Medical facilities in Knysna (8)</div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-name">Knysna Provincial Hospital</div>
+          <div class="card-category">Hospital</div>
+          <div class="card-phone">📞 +27 44 384 9000</div>
+          <div class="card-actions">
+            <button class="action-btn maps">📍 Maps</button>
+            <button class="action-btn web">🌐 Web</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-name">Dr. M. van der Merwe</div>
+          <div class="card-category">Doctor</div>
+          <div class="card-phone">📞 +27 44 382 4567</div>
+          <div class="card-actions">
+            <button class="action-btn maps">📍 Maps</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-name">Clicks Pharmacy - Knysna</div>
+          <div class="card-category">Chemist</div>
+          <div class="card-phone">📞 +27 44 382 3456</div>
+          <div class="card-actions">
+            <button class="action-btn maps">📍 Maps</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-name">Knysna Dental Clinic</div>
+          <div class="card-category">Dentist</div>
+          <div class="card-phone">📞 +27 44 382 1234</div>
+          <div class="card-actions">
+            <button class="action-btn maps">📍 Maps</button>
+            <button class="action-btn web">🌐 Web</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="motion-label">SCREEN 4: Medical (16-22s)</div>
+  </div>
+
+</div>
+
+<div style="margin-top: 60px; padding: 20px; background: white; border-radius: 12px; max-width: 600px; margin-left: auto; margin-right: auto; margin-bottom: 40px;">
+  <h3 style="color: #0e7490; margin-bottom: 12px;">MOTION SPEC: MEDICAL DIRECTORY</h3>
+  <ul style="font-size: 13px; line-height: 1.6; color: #6b7280; list-style: none; padding: 0;">
+    <li><strong>📍 Screen entrance:</strong> Slide in from right (0.5s)</li>
+    <li><strong>🚨 Red emergency banner:</strong> Slides down from top with bounce (0.4s cubic-bezier bounce), overshoot effect, subtle glow</li>
+    <li><strong>🎯 Filter controls:</strong> Fade in staggered after banner (0.2s+ delay)</li>
+    <li><strong>🃏 Cards:</strong> Cascade in 90%→100% scale + fade (0.15s per card, 0.05s stagger)</li>
+    <li><strong>🖱️ Card hover:</strong> Same as Directory screen (border teal, shadow, -4px y-offset)</li>
+    <li><strong>⏱️ Total screen time:</strong> 6 seconds</li>
+    <li><strong>➡️ Next transition:</strong> Slide right exit (0.5s)</li>
+  </ul>
+</div>
+
+</x-dc>
+<script data-dc-script data-props='{}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

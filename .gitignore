@@ -1,5 +1,54 @@
+# Dependencies
 node_modules/
+
+# Next.js build output
 .next/
+out/
+
+# Expo / React Native
 .expo/
 dist/
+
+# Android build output.
+# android/app/build alone reaches ~3.4GB and .cxx ~108MB; both are produced
+# entirely by Gradle and must never enter history.
+*/android/build/
+*/android/app/build/
+*/android/app/.cxx/
+*/android/.gradle/
+*/android/local.properties
+
+# Signing material. The upload keystore is the one artifact that cannot be
+# regenerated — losing it means losing the ability to update the Play
+# listing — and it must not be in a repo with a public remote either.
+# Keep it backed up somewhere private instead.
+*.keystore
+*.jks
+*.p12
+*.pepk
+
+# Keystore passwords live here. Matched for every Android project in this
+# repo, not just one — a path-specific rule missed town-hub-rewards-expo's
+# copy, which has its own signing passwords. See gradle.properties.example.
+*/android/gradle.properties
+
+# Built apps
+*.apk
+*.aab
+*.aab.idsig
+*.apks
+
+# Environment
+.env
+.env*.local
+
+# The bundled site is generated: `npm run build` in sea-express, then
+# scripts/relativize-export.mjs, then copy out/ over it. Committing it would
+# churn ~2,000 generated files on every rebuild.
+*/android/app/src/main/assets/webroot/
+
+# Logs and OS cruft
 *.log
+npm-debug.log*
+.DS_Store
+Thumbs.db

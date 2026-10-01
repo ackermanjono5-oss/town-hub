@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import {
@@ -19,6 +20,9 @@ import {
   LogIn,
   type LucideIcon,
 } from 'lucide-react';
+import { getCurrentUser, getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
+import Avatar from '@/components/Avatar';
+import { getMyProfile } from '@/lib/rewards/queries';
 
 interface NavItem {
   href: string;
@@ -46,32 +50,77 @@ const NAV_ITEMS: NavItem[] = [
 export default function SiteHeader() {
   const pathname = usePathname();
 
+  // Starts false so the prerendered header and the first client render
+  // agree; the session is only knowable after mount.
+  const [signedIn, setSignedIn] = useState(false);
+  // Avatar + name for the header button, so a signed-in member sees
+  // themselves rather than a generic icon.
+  const [me, setMe] = useState<{ avatar: string | null; name: string | null } | null>(null);
+  useEffect(() => {
+    if (!isSupabaseConfigured) return;
+    const supabase = getSupabaseClient();
+    let cancelled = false;
+
+    getCurrentUser().then(async (user) => {
+      if (cancelled) return;
+      setSignedIn(Boolean(user));
+      if (!user) return;
+      const profile = await getMyProfile(user.id);
+      if (!cancelled) {
+        setMe({ avatar: profile?.avatar ?? null, name: profile?.full_name ?? null });
+      }
+    });
+
+    // Keeps the button in step with signing in or out on another tab or page.
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (cancelled) return;
+      setSignedIn(Boolean(session?.user));
+      if (!session?.user) setMe(null);
+    });
+
+    return () => {
+      cancelled = true;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 border-b bg-background/90 backdrop-blur-md supports-[backdrop-filter]:bg-background/70 shadow-sm">
-      <div className="max-w-7xl mx-auto px-4 py-3">
-        <div className="flex items-center justify-between mb-3">
+    <header className="sticky top-0 z-50 bg-white border-b border-[#e5e7eb] font-[family-name:var(--font-jakarta)]">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex items-center justify-between px-[18px] pt-1 pb-2.5 border-b border-[#e5e7eb]">
           <a
             href="/"
-            className="flex items-center gap-2.5 font-bold text-lg transition-transform duration-200 hover:scale-[1.02] active:scale-95"
+            className="flex items-center gap-2.5 transition-transform duration-200 active:scale-95"
           >
             <Image
               src="/icon.png"
               alt="Town Hub logo"
               width={36}
               height={36}
-              className="w-9 h-9 rounded-xl shadow-sm ring-1 ring-black/5"
+              className="w-9 h-9 rounded-[11px] shadow-sm ring-1 ring-black/5"
             />
-            <span className="text-foreground tracking-tight">Town Hub</span>
+            <span className="text-[19px] font-extrabold tracking-[-0.02em] text-[#1f2937]">
+              Town Hub
+            </span>
           </a>
           <a
-            href="/login"
-            className="flex items-center gap-2 px-4 py-2 rounded-full bg-primary text-primary-foreground text-sm font-medium shadow-sm transition-all duration-200 hover:shadow-md hover:brightness-110 active:scale-95"
+            href={signedIn ? '/profile' : '/login'}
+            className="flex items-center gap-1.5 px-[15px] py-[7px] rounded-full border border-[#e5e7eb] bg-white text-[12.5px] font-semibold text-[#1f2937] transition-all duration-150 hover:bg-[#f9fafb] active:scale-95"
           >
-            <LogIn className="w-4 h-4" aria-hidden="true" />
-            <span className="hidden sm:inline">Sign in</span>
+            {signedIn ? (
+              <Avatar
+                avatarId={me?.avatar}
+                name={me?.name}
+                size={20}
+                className="rounded-md -ml-1"
+              />
+            ) : (
+              <LogIn className="w-4 h-4" aria-hidden="true" />
+            )}
+            <span>{signedIn ? 'Profile' : 'Sign in'}</span>
           </a>
         </div>
-        <nav className="flex gap-1.5 overflow-x-auto pb-1 -mx-1 px-1 [scrollbar-width:thin]">
+        <nav className="flex gap-[7px] overflow-x-auto px-[18px] py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
             const isActive = href === '/' ? pathname === '/' : pathname?.startsWith(href);
             return (
@@ -80,15 +129,16 @@ export default function SiteHeader() {
                 href={href}
                 aria-current={isActive ? 'page' : undefined}
                 className={[
-                  'flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium whitespace-nowrap',
-                  'transition-all duration-200 ease-out active:scale-95',
+                  'flex flex-none items-center gap-1.5 px-3.5 py-2 rounded-full',
+                  'text-[12.5px] font-bold whitespace-nowrap border',
+                  'transition-all duration-150 ease-out active:scale-95',
                   isActive
-                    ? 'bg-primary text-primary-foreground shadow-sm'
-                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground',
+                    ? 'bg-[#0e7490] text-white border-[#0e7490] shadow-[0_6px_14px_-8px_rgba(14,116,144,0.9)]'
+                    : 'bg-white text-[#1f2937] border-[#e5e7eb] hover:bg-[#f9fafb]',
                 ].join(' ')}
               >
-                <Icon className="w-4 h-4" aria-hidden="true" />
-                <span className="hidden sm:inline">{label}</span>
+                <Icon className="w-3.5 h-3.5" aria-hidden="true" />
+                <span>{label}</span>
               </a>
             );
           })}

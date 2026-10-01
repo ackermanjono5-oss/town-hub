@@ -16,25 +16,18 @@
 import { writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import { TOWNS, boundingBox, nearestTown } from './lib/towns.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT_FILE = join(__dirname, '..', 'lib', 'garden-route', 'businesses.ts');
 
-// Garden Route bounding box: south, west, north, east.
-const BBOX = [-34.45, 21.9, -33.7, 24.1];
+// Bounding box is derived from the town gazetteer, so adding a town in
+// scripts/geocode-towns.mjs widens this automatically.
+const BBOX = boundingBox();
 
 // Only keep businesses within this distance of one of our towns (km).
 const RADIUS_KM = 12;
 
-// Towns (kept in sync with lib/garden-route/towns.ts), with id prefixes.
-const TOWNS = [
-  { slug: 'mossel-bay', prefix: 'mb', lat: -34.1814, lng: 22.146 },
-  { slug: 'george', prefix: 'geo', lat: -33.963, lng: 22.4617 },
-  { slug: 'wilderness', prefix: 'wild', lat: -33.9989, lng: 22.58 },
-  { slug: 'sedgefield', prefix: 'sedge', lat: -34.0146, lng: 22.7939 },
-  { slug: 'knysna', prefix: 'kny', lat: -34.0363, lng: 23.0471 },
-  { slug: 'plett', prefix: 'plett', lat: -34.0527, lng: 23.3716 },
-];
 
 const OVERPASS_URLS = [
   'https://overpass-api.de/api/interpreter',
@@ -47,6 +40,48 @@ const USER_AGENT =
 
 // Tags already covered by other directories in this app — excluded here to
 // avoid duplicate listings across Restaurants / Medical / Real Estate.
+// Businesses that carry only an amenity/leisure tag, never shop/craft/office.
+// Without these the directory had no petrol station, bank, post office, ATM,
+// vet or gym anywhere in the Garden Route — the query asked only for shops,
+// so a town whose high street is a filling station and a co-op looked empty.
+// Eating and healthcare amenities stay out: they have their own directories.
+const AMENITY_CATEGORY = {
+  fuel: 'Petrol Station',
+  bank: 'Bank',
+  atm: 'ATM',
+  post_office: 'Post Office',
+  car_wash: 'Car Wash',
+  car_rental: 'Car Hire',
+  car_sharing: 'Car Hire',
+  driving_school: 'Driving School',
+  veterinary: 'Veterinary',
+  bureau_de_change: 'Bureau de Change',
+  funeral_directors: 'Funeral Directors',
+  childcare: 'Childcare',
+  kindergarten: 'Childcare',
+  internet_cafe: 'Internet Cafe',
+  library: 'Library',
+  townhall: 'Municipal Office',
+  police: 'Police Station',
+  fire_station: 'Fire Station',
+  post_depot: 'Post Office',
+  charging_station: 'EV Charging',
+};
+
+const LEISURE_CATEGORY = {
+  fitness_centre: 'Gym',
+  sports_centre: 'Sports Centre',
+  golf_course: 'Golf Course',
+  swimming_pool: 'Swimming Pool',
+  horse_riding: 'Horse Riding',
+  marina: 'Marina',
+  bowling_alley: 'Bowling',
+  sauna: 'Spa',
+};
+
+const AMENITY_PATTERN = `^(${Object.keys(AMENITY_CATEGORY).join('|')})$`;
+const LEISURE_PATTERN = `^(${Object.keys(LEISURE_CATEGORY).join('|')})$`;
+
 const EXCLUDED_SHOP = new Set(['estate_agent']);
 const EXCLUDED_AMENITY = new Set([
   'restaurant',
@@ -60,31 +95,6 @@ const EXCLUDED_AMENITY = new Set([
   'dentist',
   'clinic',
 ]);
-
-function haversineKm(aLat, aLng, bLat, bLng) {
-  const R = 6371;
-  const dLat = ((bLat - aLat) * Math.PI) / 180;
-  const dLng = ((bLng - aLng) * Math.PI) / 180;
-  const lat1 = (aLat * Math.PI) / 180;
-  const lat2 = (bLat * Math.PI) / 180;
-  const h =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(h));
-}
-
-function nearestTown(lat, lng) {
-  let best = null;
-  let bestDist = Infinity;
-  for (const town of TOWNS) {
-    const d = haversineKm(lat, lng, town.lat, town.lng);
-    if (d < bestDist) {
-      bestDist = d;
-      best = town;
-    }
-  }
-  return { town: best, dist: bestDist };
-}
 
 function normalizeUrl(url) {
   if (!url) return undefined;
@@ -113,6 +123,10 @@ async function fetchOverpass() {
       way["craft"](${bbox});
       node["office"](${bbox});
       way["office"](${bbox});
+      node["amenity"~"${AMENITY_PATTERN}"](${bbox});
+      way["amenity"~"${AMENITY_PATTERN}"](${bbox});
+      node["leisure"~"${LEISURE_PATTERN}"](${bbox});
+      way["leisure"~"${LEISURE_PATTERN}"](${bbox});
     );
     out center tags;
   `;
@@ -169,6 +183,12 @@ function renderFile(businesses) {
   phone?: string;
   lat: number;
   lng: number;
+  /**
+   * Optional premises photo, relative to /public, rendered by
+   * components/DirectoryPhoto.tsx. Declared here (not just in the app) so a
+   * re-import regenerates the field instead of dropping it.
+   */
+  image?: string;
 }
 
 // Generated from OpenStreetMap via scripts/import-businesses.mjs.
@@ -213,7 +233,7 @@ async function main() {
     if (office && EXCLUDED_SHOP.has(office)) continue;
     if (tags.amenity && EXCLUDED_AMENITY.has(tags.amenity)) continue;
 
-    const rawCategory = shop || craft || office;
+    const rawCategory = shop || craft || office || AMENITY_CATEGORY[tags.amenity] || LEISURE_CATEGORY[tags.leisure];
     if (!rawCategory) continue;
     if (rawCategory === 'yes' || rawCategory === 'no') continue;
 

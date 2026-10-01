@@ -7,6 +7,8 @@ export interface Sponsor {
   logoBg?: string;
 }
 
+// Kept in step with lib/garden-route/adverts.ts: the DTM Nissan sponsor was
+// removed along with its advert, and its logo asset deleted with it.
 export const SPONSORS: Sponsor[] = [
   {
     id: 'buco',
@@ -55,14 +57,6 @@ export const SPONSORS: Sponsor[] = [
     logo: '/logos/hoopers-vw.svg',
     website: 'https://www.hoopersvw.co.za',
     logoBg: '#001E50',
-  },
-  {
-    id: 'nissan-preowned',
-    name: 'DTM Nissan George',
-    tagline: 'Quality Pre-Owned Nissan Vehicles',
-    logo: '/logos/nissan-preowned.svg',
-    website: 'https://dtmgeorge.co.za',
-    logoBg: '#C3002F',
   },
 ];
 
