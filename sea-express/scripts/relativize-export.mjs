@@ -3,8 +3,8 @@
 // "/_next/...") become correctly-relative ones based on each file's depth.
 // Needed because Next's static export always emits root-relative paths,
 // which only resolve correctly when served from an HTTP origin.
-import { readdirSync, readFileSync, writeFileSync, statSync } from 'node:fs';
-import { join, relative, dirname, basename } from 'node:path';
+import { readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join, relative, dirname } from 'node:path';
 
 const OUT_DIR = join(import.meta.dirname, '..', 'out');
 

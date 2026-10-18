@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Phone, ShieldAlert, Siren } from 'lucide-react';
+import { Phone, Siren } from 'lucide-react';
 import { TOWNS, getTownLabel } from '@/lib/garden-route/towns';
 import {
   NATIONAL_CONTACTS,

@@ -20,7 +20,6 @@ import { TOWNS, getTownLabel } from '@/lib/garden-route/towns';
 import DirectoryPhoto from '@/components/DirectoryPhoto';
 import BrandMark from '@/components/BrandMark';
 import {
-  RESTAURANTS,
   getRestaurantMapsUrl,
   type Restaurant,
 } from '@/lib/garden-route/restaurants';

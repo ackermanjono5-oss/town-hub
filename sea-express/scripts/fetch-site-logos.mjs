@@ -43,12 +43,8 @@ const OUT_DIR = join(ROOT, 'public', 'logos', 'sites');
 const OUT_FILE = join(ROOT, 'lib', 'garden-route', 'site-logos.ts');
 
 const CONCURRENCY = 8;
-const TIMEOUT_MS = 8000;
 const MIN_PX = 48;
 const OUT_PX = 128;
-
-const USER_AGENT =
-  'sea-express-garden-route/1.0 (business directory logo fetch; contact via app listing)';
 
 // Hosts that would return a social network's logo rather than the business's.
 const SKIP_HOST =

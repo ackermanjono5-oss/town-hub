@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { getSupabaseClient, getCurrentUser } from '@/lib/supabase/client';
+import { getCurrentUser } from '@/lib/supabase/client';
 import { getMyProfile } from '@/lib/rewards/queries';
 import { registerBusiness } from '@/lib/business/queries';
 
@@ -19,7 +19,6 @@ export default function BusinessRegisterPage() {
 
   useEffect(() => {
     let cancelled = false;
-    const supabase = getSupabaseClient();
 
     async function check() {
       // getCurrentUser reads the stored session. getUser() revalidates

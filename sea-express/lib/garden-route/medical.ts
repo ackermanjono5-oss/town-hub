@@ -1,7 +1,6 @@
 import { OSM_MEDICAL } from './medical-osm';
 import { CHAIN_PHARMACIES } from './pharmacies';
 import { PUBLIC_HEALTH } from './public-health';
-import { logoFirst } from './display';
 
 export type MedicalCategory = string;
 

@@ -1,4 +1,4 @@
-import type { Business, Offer, OfferType } from '@/lib/rewards/types';
+import type { Business, OfferType } from '@/lib/rewards/types';
 
 export interface BusinessWithOwner extends Business {
   owner: { full_name: string | null } | null;
