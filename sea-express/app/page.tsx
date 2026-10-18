@@ -5,6 +5,8 @@ import {
   Siren,
   ShoppingBasket,
   Ticket,
+  ScrollText,
+  Users,
   type LucideIcon,
 } from 'lucide-react';
 import AdvertCarousel from '@/components/AdvertCarousel';
@@ -24,6 +26,7 @@ const DIRECTORIES = [
   { href: '/directory', label: 'Restaurant Directory' },
   { href: '/medical', label: 'Medical Directory' },
   { href: '/businesses', label: 'Business Directory' },
+  { href: '/attorneys', label: 'Attorneys Directory' },
 ];
 
 const QUICK_LINKS: { href: string; label: string; icon: LucideIcon }[] = [
@@ -31,6 +34,8 @@ const QUICK_LINKS: { href: string; label: string; icon: LucideIcon }[] = [
   { href: '/weather', label: 'Weather & Tides', icon: CloudSun },
   { href: '/rewards', label: 'Rewards', icon: Ticket },
   { href: '/markets', label: 'Markets', icon: ShoppingBasket },
+  { href: '/legal-notices', label: 'Legal Notices', icon: ScrollText },
+  { href: '/community', label: 'Community Wall', icon: Users },
 ];
 
 export default function HomePage() {

@@ -1,13 +1,14 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Store, Gift, Receipt, ArrowLeft } from 'lucide-react';
+import { LayoutDashboard, Store, Gift, Receipt, Scale, ArrowLeft } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/businesses', label: 'Businesses', icon: Store },
   { href: '/admin/offers', label: 'Offers', icon: Gift },
   { href: '/admin/redemptions', label: 'Redemptions', icon: Receipt },
+  { href: '/admin/notices', label: 'Legal Notices', icon: Scale },
 ];
 
 export default function AdminHeader() {

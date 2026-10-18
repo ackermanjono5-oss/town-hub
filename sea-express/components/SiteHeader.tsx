@@ -18,6 +18,8 @@ import {
   Users,
   Share2,
   LogIn,
+  Scale,
+  ScrollText,
   type LucideIcon,
 } from 'lucide-react';
 import { getCurrentUser, getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
@@ -37,6 +39,8 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/weather', label: 'Weather', icon: CloudSun },
   { href: '/events', label: 'Events', icon: Calendar },
   { href: '/medical', label: 'Medical', icon: Stethoscope },
+  { href: '/attorneys', label: 'Attorneys', icon: Scale },
+  { href: '/legal-notices', label: 'Legal Notices', icon: ScrollText },
   { href: '/businesses', label: 'Businesses', icon: Store },
   { href: '/accommodation', label: 'Hotels & B&Bs', icon: BedDouble },
   { href: '/property', label: 'Property', icon: ShoppingBag },

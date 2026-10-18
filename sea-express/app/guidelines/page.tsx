@@ -1,317 +1,365 @@
 const SECTIONS: { title: string; body: React.ReactNode }[] = [
   {
-    title: '1. Our Community Values',
+    title: '1. Respect, Kindness & Zero Tolerance for Hate Speech',
     body: (
-      <>
-        <p>Town Hub Coast Connect is built on the principles of:</p>
-        <ul className="list-disc pl-5 space-y-1">
-          <li>Respect</li>
-          <li>Honesty</li>
-          <li>Community Support</li>
-          <li>Safety</li>
-          <li>Integrity</li>
-          <li>Kindness</li>
-          <li>Responsibility</li>
-        </ul>
-        <p>Every user is expected to contribute positively to the community.</p>
-      </>
+      <ul className="list-disc pl-5 space-y-1">
+        <li>Treat every member of the community with respect, dignity and courtesy.</li>
+        <li>
+          Hate speech, racism, discrimination, threats, bullying, harassment,
+          intimidation and personal attacks are strictly prohibited.
+        </li>
+        <li>No abusive, degrading, insulting or deliberately offensive content.</li>
+        <li>No targeting individuals or groups based on personal characteristics.</li>
+        <li>
+          Disagreements must remain civil. The Community Wall is not a platform for
+          arguments or public fights.
+        </li>
+      </ul>
     ),
   },
   {
-    title: '2. Purpose of the Platform',
+    title: '2. Strictly No Misuse of the App',
     body: (
       <>
-        <p>Town Hub Coast Connect is intended to:</p>
+        <p>TownHub must be used responsibly and for legitimate community purposes.</p>
+        <p>The following are prohibited:</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Share local news and community information.</li>
-          <li>Promote local businesses and tourism.</li>
+          <li>False, misleading, fabricated or deliberately malicious posts.</li>
+          <li>Spam, repetitive posts, chain messages and irrelevant content.</li>
           <li>
-            Help residents and visitors locate restaurants, hotels, guest houses, bed
-            and breakfasts, medical services, emergency contacts, attractions, and
-            other local services.
+            Scams, fraudulent requests for money, impersonation and deceptive
+            fundraising.
           </li>
-          <li>Share local events and activities.</li>
-          <li>Provide emergency communication during times of crisis.</li>
-          <li>Encourage community support and public safety.</li>
+          <li>Unauthorised advertising, promotions or commercial spam.</li>
+          <li>Posting obscene, threatening, violent or otherwise inappropriate content.</li>
+          <li>
+            Using the app to threaten, stalk, intimidate, defraud or harm another
+            person.
+          </li>
+          <li>Attempting to disrupt, exploit or misuse any app feature.</li>
         </ul>
+        <p>
+          Repeated or serious violations may result in content removal, suspension or
+          permanent removal from the platform, subject to applicable law and the
+          app&apos;s moderation procedures.
+        </p>
       </>
     ),
   },
   {
-    title: '3. Community Wall',
+    title: '3. The Community Wall — What It Is For',
     body: (
       <>
         <p>
-          The Community Wall exists to provide helpful, factual, and
-          community-focused information.
+          The Community Wall exists to help people and share responsible local
+          information.
         </p>
-        <p>Appropriate posts include:</p>
+        <p className="font-semibold text-foreground">Permitted community posts include:</p>
+        <p className="font-semibold text-foreground">Lost and found pets</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Emergency situations.</li>
-          <li>Fires.</li>
-          <li>Floods.</li>
-          <li>Severe weather.</li>
-          <li>Road closures.</li>
-          <li>Missing persons.</li>
-          <li>Missing pets.</li>
-          <li>Community alerts.</li>
-          <li>Requests for assistance.</li>
-          <li>Local information.</li>
-          <li>Public safety notices.</li>
-          <li>Community event information.</li>
+          <li>Report missing dogs, cats and other pets.</li>
+          <li>
+            Share photographs, descriptions, the area last seen and a contact method.
+          </li>
+          <li>
+            Report found or rescued animals and help reunite them with their owners.
+          </li>
+          <li>Share requests for assistance with animal rescue, where appropriate.</li>
         </ul>
-        <p>
-          The Community Wall is not a social media platform for arguments, personal
-          opinions intended to harm others, or offensive behaviour.
-        </p>
-      </>
-    ),
-  },
-  {
-    title: '4. Zero Tolerance for Abuse',
-    body: (
-      <>
-        <p>Town Hub Coast Connect has a zero-tolerance policy towards abuse.</p>
-        <p>Users may not:</p>
+        <p className="font-semibold text-foreground">Community assistance</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Harass another person.</li>
-          <li>Bully another person.</li>
-          <li>Threaten another person.</li>
-          <li>Intimidate another person.</li>
-          <li>Defame any individual or business.</li>
-          <li>Post false accusations.</li>
-          <li>Spread rumours.</li>
-          <li>Share misleading information.</li>
-          <li>Post offensive language.</li>
-          <li>Use discriminatory or hateful language.</li>
-          <li>Encourage violence.</li>
-          <li>Incite panic.</li>
-          <li>Publish inappropriate images or videos.</li>
-          <li>Damage the reputation of another individual or business.</li>
+          <li>Help residents who are stranded or need practical assistance.</li>
+          <li>Share legitimate requests for help during difficult circumstances.</li>
+          <li>Offer assistance to vulnerable residents, where safe and appropriate.</li>
         </ul>
-        <p>
-          Any content that is considered abusive, offensive, harmful, defamatory, or
-          disruptive may be removed immediately.
+        <p className="font-semibold text-foreground">
+          Stranded vehicles and roadside assistance
         </p>
-        <p>
-          Users responsible for such conduct may have their accounts permanently
-          suspended without warning.
-        </p>
-      </>
-    ),
-  },
-  {
-    title: '5. False Information',
-    body: (
-      <>
-        <p>Only factual and truthful information may be shared.</p>
-        <p>Users must never knowingly publish:</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>False emergencies.</li>
-          <li>Fake news.</li>
-          <li>Hoaxes.</li>
-          <li>Edited or misleading content.</li>
-          <li>Information intended to create fear or panic.</li>
+          <li>Report a broken-down vehicle or a motorist who needs assistance.</li>
+          <li>
+            Include the general location, vehicle description and type of assistance
+            needed.
+          </li>
+          <li>Never put yourself or other road users at risk while helping.</li>
         </ul>
-        <p>False information can place lives at risk and will not be tolerated.</p>
-      </>
-    ),
-  },
-  {
-    title: '6. SOS Emergency Services',
-    body: (
-      <>
-        <p>The SOS feature has been created solely for genuine emergencies.</p>
-        <p>It is intended for:</p>
+        <p className="font-semibold text-foreground">
+          Community safety and crime awareness
+        </p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Medical emergencies.</li>
-          <li>Fires.</li>
-          <li>Floods.</li>
-          <li>Rescue situations.</li>
-          <li>Road accidents.</li>
-          <li>Public safety emergencies.</li>
-          <li>Natural disasters.</li>
-          <li>Situations where immediate assistance is required.</li>
+          <li>
+            Share responsible reports of suspected theft, break-ins, vandalism or other
+            safety concerns.
+          </li>
+          <li>
+            Report observed riots, unrest, road closures or potentially dangerous
+            public disturbances.
+          </li>
+          <li>Share verified public safety information and useful warnings.</li>
         </ul>
-        <p>The SOS feature is not to be used for:</p>
+        <p className="font-semibold text-foreground">Other appropriate local information</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Testing.</li>
-          <li>Jokes.</li>
-          <li>Prank calls.</li>
-          <li>False emergency reports.</li>
-          <li>Non-emergency situations.</li>
+          <li>Missing property and found items.</li>
+          <li>Road hazards, storm damage and local disruptions.</li>
+          <li>
+            Community notices and useful information relevant to residents and
+            visitors.
+          </li>
         </ul>
       </>
     ),
   },
   {
-    title: '7. Prank Calls and Misuse of SOS',
+    title: '4. Crime Reporting, Riots & Public Safety',
     body: (
       <>
-        <p>Any misuse of the SOS feature is regarded as extremely serious.</p>
-        <p>Users are strictly prohibited from:</p>
+        <p>
+          Community reports can help alert neighbours, but the Community Wall is not a
+          replacement for the police or emergency services.
+        </p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Making prank emergency calls.</li>
-          <li>Submitting false emergency alerts.</li>
-          <li>Deliberately wasting emergency resources.</li>
-          <li>Interfering with emergency response.</li>
+          <li>
+            In an active crime, riot, violent incident or immediate threat to life,
+            contact the appropriate emergency service directly.
+          </li>
+          <li>
+            Do not confront suspected criminals or attempt to intervene in violent
+            incidents.
+          </li>
+          <li>Do not encourage vigilantism, retaliation, mob action or violence.</li>
+          <li>Do not publish unverified accusations naming people as criminals.</li>
+          <li>
+            Do not circulate rumours, inflammatory claims or information likely to
+            incite panic or violence.
+          </li>
+          <li>Do not post instructions that could assist criminal activity.</li>
+          <li>
+            Avoid sharing sensitive operational details, such as police movements or
+            the precise location of vulnerable people, where disclosure could place
+            someone at risk.
+          </li>
         </ul>
         <p>
-          All emergency interactions, account activity, and available identifying
-          information may be recorded.
-        </p>
-        <p>
-          Where permitted by law, Town Hub Coast Connect reserves the right to
-          provide relevant information to law enforcement agencies or emergency
-          service providers for the investigation of false reports, prank calls,
-          fraud, or criminal activity.
-        </p>
-        <p>
-          Users found abusing emergency services will have their accounts
-          permanently removed and may face legal action where applicable.
+          Where possible, report the incident to the relevant authorities and use the
+          Community Wall only for responsible public awareness.
         </p>
       </>
     ),
   },
   {
-    title: '8. Respect for Businesses',
+    title: '5. Emergency Numbers — No False Calls or Misuse',
     body: (
       <>
-        <p>Town Hub Coast Connect exists to support local businesses.</p>
-        <p>Users may not:</p>
+        <p className="font-semibold text-foreground">
+          Emergency numbers are for genuine emergencies only.
+        </p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Publish false reviews.</li>
-          <li>Defame businesses.</li>
-          <li>Damage business reputations.</li>
-          <li>Harass business owners.</li>
-          <li>Use the platform to unfairly attack businesses.</li>
+          <li>Never make prank calls, false reports or malicious emergency requests.</li>
+          <li>
+            Never use emergency features to harass, threaten or inconvenience another
+            person.
+          </li>
+          <li>
+            Never submit a false SOS alert or deliberately provide an incorrect
+            location.
+          </li>
+          <li>
+            Do not use emergency numbers for general enquiries, arguments or
+            non-urgent complaints.
+          </li>
+          <li>
+            Do not assume that posting on the Community Wall or sending a message
+            through TownHub will dispatch emergency services.
+          </li>
         </ul>
-        <p>Constructive feedback should always be respectful and truthful.</p>
+        <p>False emergency reports can delay help for someone whose life is in danger.</p>
+        <p>
+          In South Africa, dial{' '}
+          <a href="tel:112" className="font-semibold text-foreground underline">
+            112 from a mobile phone
+          </a>{' '}
+          for emergency assistance, or{' '}
+          <a href="tel:10111" className="font-semibold text-foreground underline">
+            10111 for a police emergency
+          </a>
+          . Use the appropriate verified local emergency contact for the situation.
+          See the{' '}
+          <a
+            href="https://www.saps.gov.za/services/cc_10111.php"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary underline"
+          >
+            official SAPS guidance
+          </a>
+          .
+        </p>
       </>
     ),
   },
   {
-    title: '9. Business Advertising',
+    title: '6. Privacy & Protection of Personal Information',
     body: (
       <>
-        <p>
-          Businesses advertising on Town Hub Coast Connect must maintain an active
-          advertising subscription.
-        </p>
-        <p>
-          Businesses that fail to maintain their advertising subscription may have
-          their listings, advertisements, promotional material, and featured
-          placements removed.
-        </p>
-      </>
-    ),
-  },
-  {
-    title: '10. Subscription Access',
-    body: (
-      <>
-        <p>Certain services are available only to active subscribers.</p>
-        <p>These include:</p>
+        <p>Protect yourself and other members of the community.</p>
+        <p>Do not post another person&apos;s:</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Community Wall participation.</li>
-          <li>Community messaging.</li>
-          <li>SOS activation.</li>
-          <li>Premium communication features.</li>
-          <li>Other subscriber-only services.</li>
+          <li>
+            Home address, identity number, banking details or private documents
+            without proper authority.
+          </li>
+          <li>Private phone number or personal information without permission.</li>
+          <li>
+            Private conversations, photographs or videos without appropriate consent.
+          </li>
+          <li>Live location or sensitive information that could expose them to danger.</li>
         </ul>
         <p>
-          Failure to maintain an active subscription may result in restricted access
-          to these features.
+          For lost pets, stranded vehicles and community assistance, share only the
+          information reasonably necessary to obtain help. Consider using a private
+          contact method rather than publishing sensitive details.
         </p>
       </>
     ),
   },
   {
-    title: '11. Location Services',
+    title: '7. Photographs, Videos & Evidence',
+    body: (
+      <ul className="list-disc pl-5 space-y-1">
+        <li>Share only material you are entitled to share.</li>
+        <li>
+          Do not post graphic images of injuries, deceased persons or disturbing
+          scenes.
+        </li>
+        <li>Do not alter photographs or videos to mislead the community.</li>
+        <li>Do not present rumours or unverified footage as confirmed fact.</li>
+        <li>
+          If you have evidence of a crime, preserve it safely and provide it to the
+          relevant authorities.
+        </li>
+      </ul>
+    ),
+  },
+  {
+    title: '8. No Public Shaming or Defamation',
     body: (
       <>
+        <p>The Community Wall is not a court of law.</p>
         <p>
-          When an SOS alert is activated, Town Hub Coast Connect may use GPS
-          technology to determine your location.
+          Do not use the platform to settle personal disputes, damage reputations,
+          expose private matters or accuse identifiable people of wrongdoing without a
+          responsible and lawful basis.
         </p>
         <p>
-          Location information may be shared with authorised emergency contacts or
-          participating emergency service providers for emergency purposes only.
+          Concerns about a person, business or organisation should be raised through
+          appropriate official channels. TownHub may remove content that creates an
+          unreasonable risk of harm or violates these guidelines.
         </p>
       </>
     ),
   },
   {
-    title: '12. Respectful Communication',
+    title: '9. Advertising, Fundraising & Commercial Posts',
+    body: (
+      <ul className="list-disc pl-5 space-y-1">
+        <li>
+          Business advertising must comply with TownHub&apos;s advertising and
+          subscription arrangements.
+        </li>
+        <li>
+          No fraudulent fundraising, misleading charity appeals or requests designed
+          to exploit vulnerable people.
+        </li>
+        <li>
+          No unauthorised promotions, spam or repeated commercial posts on the
+          Community Wall.
+        </li>
+        <li>
+          Fundraising requests should be transparent about their purpose and the
+          intended recipient.
+        </li>
+      </ul>
+    ),
+  },
+  {
+    title: '10. Reporting Misuse & Contacting TownHub',
     body: (
       <>
-        <p>Users must communicate respectfully at all times.</p>
-        <p>Treat others with dignity regardless of:</p>
+        <p>
+          If you encounter hate speech, harassment, a scam, false information, misuse
+          of emergency features or any other violation, please report it responsibly.
+        </p>
+        <p>
+          <span className="font-semibold text-foreground">Email: </span>
+          <a href="mailto:info@seaexpress.co.za" className="text-primary underline">
+            info@seaexpress.co.za
+          </a>
+        </p>
+        <p>Please include:</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Race.</li>
-          <li>Gender.</li>
-          <li>Nationality.</li>
-          <li>Religion.</li>
-          <li>Disability.</li>
-          <li>Occupation.</li>
-          <li>Age.</li>
+          <li>A description of the concern.</li>
+          <li>The relevant post or content, if available.</li>
+          <li>The date and time of the incident.</li>
+          <li>Supporting information that can be shared lawfully.</li>
         </ul>
         <p>
-          Town Hub Coast Connect is committed to creating an inclusive and welcoming
-          environment for everyone.
+          Do not use this email address to report an immediate emergency. Contact the
+          relevant emergency service directly.
         </p>
       </>
     ),
   },
   {
-    title: '13. Reporting Abuse',
+    title: '11. Moderation & Consequences',
     body: (
       <>
-        <p>Users are encouraged to report:</p>
-        <ul className="list-disc pl-5 space-y-1">
-          <li>False information.</li>
-          <li>Harassment.</li>
-          <li>Offensive content.</li>
-          <li>Fake emergencies.</li>
-          <li>Abuse of emergency services.</li>
-          <li>Dangerous behaviour.</li>
-          <li>Spam.</li>
-        </ul>
+        <p>
+          TownHub Coast Connect reserves the right, subject to applicable law and its
+          moderation procedures, to review reported content and take appropriate
+          action.
+        </p>
+        <p>
+          Depending on the seriousness and frequency of a violation, actions may
+          include:
+        </p>
+        <ol className="list-decimal pl-5 space-y-1">
+          <li>A warning to the member.</li>
+          <li>Removal or restriction of the offending content.</li>
+          <li>Temporary suspension of posting privileges.</li>
+          <li>Suspension or permanent removal of the account.</li>
+          <li>
+            Referral to the appropriate authorities where warranted or legally
+            required.
+          </li>
+        </ol>
+        <p>
+          Serious threats, fraudulent activity, malicious emergency misuse and conduct
+          that endangers others may warrant immediate action.
+        </p>
+        <p>
+          TownHub cannot guarantee that every post is accurate, that every report will
+          be verified or that assistance will be available. Members must use their
+          judgement and contact the appropriate authorities when necessary.
+        </p>
       </>
     ),
   },
   {
-    title: '14. Account Suspension',
+    title: '12. Our Community Promise',
     body: (
       <>
         <p>
-          Town Hub Coast Connect reserves the right to remove content, suspend
-          accounts, or permanently ban users who violate these Community Guidelines.
+          TownHub Coast Connect is built on the belief that connected communities are
+          safer, stronger and more supportive.
         </p>
         <p>
-          Repeated or serious violations may result in permanent removal without
-          prior notice.
+          Use the Community Wall to help find lost pets, assist stranded motorists,
+          share responsible safety alerts, report local disruptions and support people
+          who genuinely need help.
         </p>
-      </>
-    ),
-  },
-  {
-    title: '15. Our Commitment',
-    body: (
-      <>
-        <p>
-          Town Hub Coast Connect has been developed to strengthen our communities,
-          improve public safety, support local businesses, assist tourists, and make
-          it easier for everyone to access the information and services they need
-          with the touch of a button.
-        </p>
-        <p>
-          We ask every member of our community to use this platform responsibly,
-          respectfully, and honestly.
-        </p>
-        <p>
-          Together, we can build a safer, stronger, more connected community for
-          residents, visitors, businesses, and future generations.
+        <p className="font-semibold text-foreground">
+          Be responsible. Be respectful. Verify before sharing. Help where you safely
+          can. Never misuse emergency services.
         </p>
       </>
     ),
@@ -322,30 +370,25 @@ export default function GuidelinesPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Town Hub Coast Connect</h1>
+        <h1 className="text-4xl font-bold mb-2">TownHub Coast Connect</h1>
         <h2 className="text-lg font-semibold text-muted-foreground mb-1">
-          Community Guidelines
+          Official Community Wall Guidelines &amp; Rules
         </h2>
-        <p className="text-sm text-muted-foreground">Effective Date: [Insert Date]</p>
+        <p className="text-sm text-muted-foreground">
+          Connecting Communities from all small towns on the Garden Route and more!
+        </p>
       </div>
 
       <div className="space-y-4 text-sm text-foreground mb-8">
-        <p>Welcome to Town Hub Coast Connect.</p>
         <p>
-          Town Hub Coast Connect has been created to unite our communities by
-          providing a safe, reliable, and informative platform for residents,
-          businesses, visitors, tourists, and emergency services throughout the
-          Garden Route and surrounding communities.
+          Welcome to TownHub Coast Connect — a community platform created to connect
+          residents, visitors, families and local businesses, promote safety, share
+          useful information and help one another.
         </p>
         <p>
-          Our mission is to create a trusted digital community where people can stay
-          informed, support local businesses, promote tourism, access emergency
-          information, and assist one another during times of need.
-        </p>
-        <p>
-          Every user plays an important role in maintaining the integrity of this
-          platform. By using Town Hub Coast Connect, you agree to comply with these
-          Community Guidelines.
+          The Community Wall is intended for genuine community assistance, local
+          awareness and responsible information sharing. By using TownHub, all members
+          agree to follow these guidelines.
         </p>
       </div>
 
@@ -362,11 +405,12 @@ export default function GuidelinesPage() {
 
       <div className="border-t pt-6 mt-8 text-sm text-muted-foreground space-y-3">
         <p>
-          By creating an account and using Town Hub Coast Connect, you acknowledge
-          that you have read, understood, and agreed to comply with these Community
-          Guidelines. Failure to comply may result in the suspension or permanent
-          termination of your account and, where appropriate, referral to the
-          relevant law enforcement authorities.
+          By participating in TownHub Coast Connect, you agree to respect these
+          Community Guidelines.
+        </p>
+        <p className="font-semibold text-foreground">
+          TownHub Coast Connect — Connecting Communities from all small towns on the
+          Garden Route and more!
         </p>
       </div>
     </div>
