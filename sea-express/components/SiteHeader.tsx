@@ -19,6 +19,7 @@ import {
   Share2,
   LogIn,
   Scale,
+  BadgeCheck,
   ScrollText,
   type LucideIcon,
 } from 'lucide-react';
@@ -41,6 +42,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/medical', label: 'Medical', icon: Stethoscope },
   { href: '/attorneys', label: 'Attorneys', icon: Scale },
   { href: '/legal-notices', label: 'Legal Notices', icon: ScrollText },
+  { href: '/business', label: 'Business Rewards Portal', icon: BadgeCheck },
   { href: '/businesses', label: 'Businesses', icon: Store },
   { href: '/accommodation', label: 'Hotels & B&Bs', icon: BedDouble },
   { href: '/property', label: 'Property', icon: ShoppingBag },
@@ -126,7 +128,12 @@ export default function SiteHeader() {
         </div>
         <nav className="flex gap-[7px] overflow-x-auto px-[18px] py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
-            const isActive = href === '/' ? pathname === '/' : pathname?.startsWith(href);
+            // A whole path segment must match, so /businesses doesn't also
+            // light up /business. The Android build serves pages from
+            // file:// with a .html suffix, so that's stripped first.
+            const path = (pathname ?? '').replace(/\.html$/, '');
+            const isActive =
+              href === '/' ? path === '/' || path.endsWith('/index') : path.endsWith(href) || path.includes(`${href}/`);
             return (
               <a
                 key={href}

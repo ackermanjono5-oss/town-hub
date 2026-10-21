@@ -1,5 +1,5 @@
-import { getSupabaseClient } from '@/lib/supabase/client';
-import type { Business, Offer } from '@/lib/rewards/types';
+import { getCurrentUser, getSupabaseClient } from '@/lib/supabase/client';
+import type { AdvertiserStatus, ApprovalStatus, Business, Offer } from '@/lib/rewards/types';
 import type {
   AdminRedemptionRow,
   BusinessWithOwner,
@@ -23,9 +23,16 @@ export async function listBusinesses(): Promise<BusinessWithOwner[]> {
 
 export async function createBusiness(input: CreateBusinessInput): Promise<Business> {
   const supabase = getSupabaseClient();
+  // Created by Town Hub itself, so approved from the start; the advertiser
+  // status still has to be confirmed before it can run rewards.
   const { data, error } = await supabase
     .from('businesses')
-    .insert({ name: input.name, description: input.description, category: input.category })
+    .insert({
+      name: input.name,
+      description: input.description,
+      category: input.category,
+      approval_status: 'approved',
+    })
     .select('*')
     .single();
 
@@ -33,9 +40,58 @@ export async function createBusiness(input: CreateBusinessInput): Promise<Busine
   return data;
 }
 
-export async function approveBusiness(businessId: string): Promise<void> {
+async function currentAdminId(): Promise<string | null> {
+  return (await getCurrentUser())?.id ?? null;
+}
+
+/** Accept, deny, suspend or reinstate a business's rewards access. */
+export async function setBusinessApproval(
+  businessId: string,
+  status: ApprovalStatus,
+  note?: string | null
+): Promise<void> {
   const supabase = getSupabaseClient();
-  const { error } = await supabase.from('businesses').update({ is_active: true }).eq('id', businessId);
+  const { error } = await supabase
+    .from('businesses')
+    .update({
+      approval_status: status,
+      approval_note: note?.trim() || null,
+      reviewed_at: new Date().toISOString(),
+      reviewed_by: await currentAdminId(),
+    })
+    .eq('id', businessId);
+  if (error) throw new Error(error.message);
+}
+
+/** Records the business's Town Hub advertising subscription standing. */
+export async function setAdvertiserStatus(
+  businessId: string,
+  status: AdvertiserStatus,
+  paidUntil: string | null
+): Promise<void> {
+  const supabase = getSupabaseClient();
+  const { error } = await supabase
+    .from('businesses')
+    .update({ advertiser_status: status, advertising_paid_until: paidUntil || null })
+    .eq('id', businessId);
+  if (error) throw new Error(error.message);
+}
+
+/** Approves or rejects a submitted offer, optionally adjusting its limit. */
+export async function reviewOffer(
+  offerId: string,
+  decision: 'approved' | 'rejected',
+  options: { note?: string | null; monthlyLimit?: number } = {}
+): Promise<void> {
+  const supabase = getSupabaseClient();
+  const update: Record<string, unknown> = {
+    status: decision,
+    review_note: options.note?.trim() || null,
+    reviewed_at: new Date().toISOString(),
+    reviewed_by: await currentAdminId(),
+  };
+  if (options.monthlyLimit) update.monthly_limit = options.monthlyLimit;
+  const { error } = await supabase.from('offers').update(update).eq('id', offerId);
   if (error) throw new Error(error.message);
 }
 
@@ -69,7 +125,12 @@ export async function listOffersAdmin(businessId?: string): Promise<(Offer & { b
 
 export async function createOfferAdmin(input: CreateOfferInput): Promise<Offer> {
   const supabase = getSupabaseClient();
-  const { data, error } = await supabase.from('offers').insert(input).select('*').single();
+  // Town Hub creating an offer itself is the approval.
+  const { data, error } = await supabase
+    .from('offers')
+    .insert({ ...input, status: 'approved', reviewed_at: new Date().toISOString(), reviewed_by: await currentAdminId() })
+    .select('*')
+    .single();
 
   if (error || !data) throw new Error(error?.message ?? 'Failed to create offer.');
   return data;
@@ -83,7 +144,7 @@ export async function toggleOfferActive(offerId: string, isActive: boolean): Pro
 
 export async function updateOfferAdmin(
   offerId: string,
-  updates: Partial<Pick<Offer, 'title' | 'description' | 'discount_value'>>
+  updates: Partial<Pick<Offer, 'title' | 'description' | 'discount_value' | 'monthly_limit'>>
 ): Promise<void> {
   const supabase = getSupabaseClient();
   const { error } = await supabase.from('offers').update(updates).eq('id', offerId);

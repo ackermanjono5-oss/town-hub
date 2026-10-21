@@ -19,9 +19,11 @@ import { RedeemOfferError, type OfferWithBusiness, type RedeemOfferResponse } fr
 function redeemErrorMessage(error: RedeemOfferError): string {
   switch (error.code) {
     case 'ALREADY_REDEEMED':
-      return "You've already redeemed this offer this month. Check back next month!";
+      return "You've used this reward the maximum number of times this month. Check back next month!";
     case 'NOT_SUBSCRIBED':
       return 'Become a Town Hub member to redeem rewards.';
+    case 'PROFILE_INCOMPLETE':
+      return 'Add your name and phone number to your profile to redeem rewards.';
     case 'OFFER_UNAVAILABLE':
       return 'This offer is no longer available.';
     case 'UNAUTHENTICATED':
@@ -41,6 +43,7 @@ function OfferDetail() {
   const [redemption, setRedemption] = useState<RedeemOfferResponse | null>(null);
   const [redeeming, setRedeeming] = useState(false);
   const [redeemError, setRedeemError] = useState<string | null>(null);
+  const [needsProfile, setNeedsProfile] = useState(false);
 
   useEffect(() => {
     if (!offerId) {
@@ -66,6 +69,8 @@ function OfferDetail() {
       const now = Date.now();
       setRedemption({
         tokenId: `demo-${demoOffer.coupon_code}`,
+        // Demo vouchers show their printed coupon code via couponCode instead.
+        code: '',
         qrToken: demoQrPayload(demoOffer),
         status: 'available',
         period: `${new Date().toISOString().slice(0, 7)}-01`,
@@ -81,6 +86,7 @@ function OfferDetail() {
       setRedemption(result);
     } catch (err) {
       setRedeemError(err instanceof RedeemOfferError ? redeemErrorMessage(err) : 'Something went wrong. Please try again.');
+      setNeedsProfile(err instanceof RedeemOfferError && err.code === 'PROFILE_INCOMPLETE');
     } finally {
       setRedeeming(false);
     }
@@ -116,7 +122,15 @@ function OfferDetail() {
       </div>
 
       {offer.description && <p className="text-muted-foreground">{offer.description}</p>}
+      {offer.purchase_conditions && <p className="text-sm">Conditions: {offer.purchase_conditions}</p>}
       {offer.terms && <p className="text-xs text-muted-foreground">{offer.terms}</p>}
+      {!DEMO_MODE && offer.monthly_limit > 0 && (
+        <p className="text-xs text-muted-foreground">
+          {offer.monthly_limit === 1
+            ? 'You can redeem this reward once each calendar month.'
+            : `You can redeem this reward up to ${offer.monthly_limit} times each calendar month.`}
+        </p>
+      )}
 
       {demoDetails && (
         <dl className="text-xs text-muted-foreground space-y-1 rounded-lg border border-border p-3">
@@ -141,6 +155,7 @@ function OfferDetail() {
           qrToken={redemption.qrToken}
           status={redemption.status}
           expiresAt={redemption.expiresAt}
+          code={redemption.code || undefined}
           couponCode={demoDetails?.coupon_code}
         />
       ) : (
@@ -154,6 +169,11 @@ function OfferDetail() {
             {redeeming ? 'Generating your code…' : 'Redeem Now'}
           </button>
           {redeemError && <p className="text-sm text-danger text-center">{redeemError}</p>}
+          {needsProfile && (
+            <a href="/profile" className="block text-center text-sm text-primary underline">
+              Complete your profile
+            </a>
+          )}
         </div>
       )}
     </div>

@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import RewardsGate from '@/components/rewards/RewardsGate';
 import OfferCard from '@/components/rewards/OfferCard';
+import MyVouchers from '@/components/rewards/MyVouchers';
 import { listActiveOffers } from '@/lib/rewards/queries';
 import { DEMO_MODE, DEMO_OFFERS } from '@/lib/rewards/demo';
 import type { OfferWithBusiness } from '@/lib/rewards/types';
@@ -42,12 +43,14 @@ export default function RewardsPage() {
       <div className="mb-8">
         <h1 className="text-4xl font-bold mb-2">Rewards</h1>
         <p className="text-muted-foreground">
-          Exclusive local offers for Town Hub members. Redeem once per business each month.
+          Exclusive monthly offers from Town Hub&rsquo;s participating businesses, for registered
+          members. Generate a voucher, then show its code at the till.
         </p>
       </div>
 
       <RewardsGate>
         <OfferGrid />
+        {!DEMO_MODE && <MyVouchers />}
       </RewardsGate>
     </div>
   );

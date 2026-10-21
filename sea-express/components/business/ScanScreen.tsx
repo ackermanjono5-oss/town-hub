@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { CheckCircle2, XCircle, Camera, Keyboard } from 'lucide-react';
 import { approveRedemption } from '@/lib/business/queries';
 import { ApproveRedemptionError, type ApproveRedemptionResponse } from '@/lib/business/types';
+import { formatDateTime, formatVoucherCode } from '@/lib/rewards/voucher';
 
 type ScreenState = 'scanning' | 'checking' | 'preview' | 'confirming' | 'success' | 'error';
 
@@ -142,9 +143,16 @@ export default function ScanScreen() {
   if (state === 'preview' && preview) {
     return (
       <div className="flex flex-col items-center gap-4 p-6 rounded-xl border border-border bg-background text-center">
-        <p className="text-sm text-muted-foreground">Confirm redemption</p>
+        <CheckCircle2 className="w-10 h-10 text-primary" aria-hidden="true" />
+        <p className="text-sm font-semibold text-primary">Valid voucher</p>
         <p className="text-xl font-bold">{preview.offerTitle}</p>
-        {preview.customerName && <p className="text-muted-foreground">{preview.customerName}</p>}
+        {preview.customerName && <p className="text-muted-foreground">Customer: {preview.customerName}</p>}
+        {preview.code && (
+          <p className="font-mono text-sm tracking-widest text-muted-foreground">{formatVoucherCode(preview.code)}</p>
+        )}
+        <p className="text-xs text-muted-foreground">
+          Hand over the reward, then confirm. Confirming marks the voucher as redeemed.
+        </p>
         <div className="flex gap-3 w-full mt-2">
           <button
             onClick={reset}
@@ -156,7 +164,7 @@ export default function ScanScreen() {
             onClick={handleConfirm}
             className="flex-1 px-4 py-3 rounded-md bg-primary text-primary-foreground hover:opacity-90 transition"
           >
-            Approve
+            Confirm Redemption
           </button>
         </div>
       </div>
@@ -164,7 +172,7 @@ export default function ScanScreen() {
   }
 
   if (state === 'confirming') {
-    return <p className="text-sm text-muted-foreground text-center py-12">Approving…</p>;
+    return <p className="text-sm text-muted-foreground text-center py-12">Confirming with Town Hub…</p>;
   }
 
   if (state === 'success' && preview) {
@@ -176,11 +184,17 @@ export default function ScanScreen() {
           {preview.offerTitle}
           {preview.customerName ? ` — ${preview.customerName}` : ''}
         </p>
+        {preview.code && (
+          <p className="font-mono text-sm tracking-widest text-muted-foreground">{formatVoucherCode(preview.code)}</p>
+        )}
+        {preview.redeemedAt && (
+          <p className="text-xs text-muted-foreground">{formatDateTime(preview.redeemedAt)}</p>
+        )}
         <button
           onClick={reset}
           className="mt-2 px-5 py-2.5 rounded-full bg-primary text-primary-foreground hover:opacity-90 transition"
         >
-          Scan Next
+          Verify next voucher
         </button>
       </div>
     );
@@ -202,46 +216,57 @@ export default function ScanScreen() {
   }
 
   if (state === 'checking') {
-    return <p className="text-sm text-muted-foreground text-center py-12">Checking code…</p>;
+    return <p className="text-sm text-muted-foreground text-center py-12">Checking voucher with Town Hub…</p>;
   }
 
   return (
-    <div className="space-y-4">
-      <h1 className="text-2xl font-bold">Scan a Reward</h1>
-
-      {cameraSupported ? (
-        <div className="relative rounded-xl overflow-hidden border border-border bg-black aspect-square">
-          <video ref={videoRef} muted playsInline className="w-full h-full object-cover" />
-        </div>
-      ) : (
-        <p className="text-sm text-muted-foreground flex items-center gap-2">
-          <Camera className="w-4 h-4" aria-hidden="true" />
-          Camera scanning isn&rsquo;t supported on this browser — enter the code below.
-        </p>
-      )}
-      {cameraError && <p className="text-sm text-danger">{cameraError}</p>}
+    <div className="space-y-5">
+      <h1 className="text-2xl font-bold">Verify a voucher</h1>
 
       <form onSubmit={handleManualSubmit} className="space-y-2">
         <label htmlFor="manual-code" className="flex items-center gap-2 text-sm font-medium">
           <Keyboard className="w-4 h-4" aria-hidden="true" />
-          Enter code manually
+          Voucher code
         </label>
         <div className="flex gap-2">
           <input
             id="manual-code"
             value={manualCode}
-            onChange={(e) => setManualCode(e.target.value)}
-            placeholder="Paste or type the code"
-            className="flex-1 px-3 py-2 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+            onChange={(e) => setManualCode(e.target.value.toUpperCase())}
+            placeholder="e.g. K7PM-3QXH"
+            autoCapitalize="characters"
+            autoComplete="off"
+            spellCheck={false}
+            className="flex-1 min-w-0 px-3 py-3 rounded-md border border-border bg-background font-mono text-lg tracking-widest focus:outline-none focus:ring-2 focus:ring-primary"
           />
           <button
             type="submit"
-            className="px-4 py-2 rounded-md bg-primary text-primary-foreground hover:opacity-90 transition"
+            className="px-5 py-3 rounded-md bg-primary text-primary-foreground hover:opacity-90 transition"
           >
             Check
           </button>
         </div>
+        <p className="text-xs text-muted-foreground">
+          Type the 8-character code shown on the customer&rsquo;s phone.
+        </p>
       </form>
+
+      <div className="space-y-2">
+        <p className="flex items-center gap-2 text-sm font-medium">
+          <Camera className="w-4 h-4" aria-hidden="true" />
+          Or scan the QR code
+        </p>
+        {cameraSupported ? (
+          <div className="relative rounded-xl overflow-hidden border border-border bg-black aspect-square">
+            <video ref={videoRef} muted playsInline className="w-full h-full object-cover" />
+          </div>
+        ) : (
+          <p className="text-sm text-muted-foreground">
+            Camera scanning isn&rsquo;t supported on this device — type the code above.
+          </p>
+        )}
+        {cameraError && <p className="text-sm text-danger">{cameraError}</p>}
+      </div>
     </div>
   );
 }

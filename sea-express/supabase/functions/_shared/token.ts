@@ -14,9 +14,9 @@ export interface QrTokenPayload {
   exp: number; // expiry, unix seconds
 }
 
-// 8 minutes: short enough to blunt screenshot/replay reuse, long enough
-// that a customer queued at the till doesn't watch it expire mid-wait.
-export const TOKEN_TTL_SECONDS = 480;
+// A voucher's lifetime is set by public.issue_voucher() (to the end of the
+// reward month); the token's `exp` mirrors it, and the row's status is what
+// enforces single use.
 
 function base64url(bytes: Uint8Array): string {
   let binary = '';

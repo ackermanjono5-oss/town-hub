@@ -1,15 +1,43 @@
+// Issues a customer's voucher for an offer.
+//
+// All the rules — membership, a complete profile, the offer being approved
+// and live, the business being an eligible paying advertiser, and the
+// offer's monthly limit — are enforced inside public.issue_voucher()
+// (migration 0011), in one transaction under a per-customer/offer lock.
+// Asking again while a voucher is live returns the same voucher, so
+// repeated taps never mint extra redemptions.
+//
+// The response carries both the short code staff can type and a signed QR
+// token for camera scanning; either is accepted by approve-redemption.
+
 import { corsHeaders } from '../_shared/cors.ts';
 import { getAdminClient, getUserClient } from '../_shared/supabaseAdmin.ts';
-import { signQrToken, TOKEN_TTL_SECONDS, type QrTokenPayload } from '../_shared/token.ts';
-import { currentPeriod } from '../_shared/period.ts';
+import { signQrToken, type QrTokenPayload } from '../_shared/token.ts';
 
 type RedeemErrorCode =
   | 'UNAUTHENTICATED'
   | 'INVALID_REQUEST'
   | 'NOT_SUBSCRIBED'
+  | 'PROFILE_INCOMPLETE'
   | 'OFFER_UNAVAILABLE'
   | 'ALREADY_REDEEMED'
   | 'SERVER_ERROR';
+
+// Exceptions raised by issue_voucher(), mapped to client responses.
+const ISSUE_ERRORS: Record<string, { status: number; code: RedeemErrorCode; error: string }> = {
+  NOT_SUBSCRIBED: { status: 403, code: 'NOT_SUBSCRIBED', error: 'Become a Town Hub member to redeem rewards.' },
+  PROFILE_INCOMPLETE: {
+    status: 403,
+    code: 'PROFILE_INCOMPLETE',
+    error: 'Complete your profile (name and phone number) to redeem rewards.',
+  },
+  OFFER_UNAVAILABLE: { status: 404, code: 'OFFER_UNAVAILABLE', error: 'This offer is no longer available.' },
+  ALREADY_REDEEMED: {
+    status: 409,
+    code: 'ALREADY_REDEEMED',
+    error: "You've used this reward the maximum number of times this month. Check back next month!",
+  },
+};
 
 function errorResponse(status: number, code: RedeemErrorCode, error: string) {
   return new Response(JSON.stringify({ error, code }), {
@@ -48,112 +76,63 @@ Deno.serve(async (req) => {
     return errorResponse(400, 'INVALID_REQUEST', 'offerId is required.');
   }
 
+  const secret = Deno.env.get('QR_TOKEN_SECRET');
+  if (!secret) {
+    console.error('QR_TOKEN_SECRET is not set');
+    return errorResponse(500, 'SERVER_ERROR', 'Something went wrong. Please try again.');
+  }
+
   const admin = getAdminClient();
 
   try {
-    const { data: profile } = await admin
-      .from('profiles')
-      .select('is_subscribed')
-      .eq('id', user.id)
-      .maybeSingle();
+    const { data: tokenRow, error: issueError } = await admin
+      .rpc('issue_voucher', { p_customer: user.id, p_offer: offerId })
+      .single();
 
-    if (!profile?.is_subscribed) {
-      return errorResponse(403, 'NOT_SUBSCRIBED', 'Become a Town Hub member to redeem rewards.');
-    }
-
-    const nowIso = new Date().toISOString();
-    const { data: offer } = await admin
-      .from('offers')
-      .select('id, business_id, is_active, starts_at, ends_at, businesses!inner(is_active)')
-      .eq('id', offerId)
-      .eq('is_active', true)
-      .eq('businesses.is_active', true)
-      .or(`starts_at.is.null,starts_at.lte.${nowIso}`)
-      .or(`ends_at.is.null,ends_at.gte.${nowIso}`)
-      .maybeSingle();
-
-    if (!offer) {
-      return errorResponse(404, 'OFFER_UNAVAILABLE', 'This offer is no longer available.');
-    }
-
-    const period = currentPeriod();
-
-    const { data: existingRedemption } = await admin
-      .from('redemptions')
-      .select('id')
-      .eq('customer_id', user.id)
-      .eq('offer_id', offerId)
-      .eq('period', period)
-      .maybeSingle();
-
-    if (existingRedemption) {
-      return errorResponse(
-        409,
-        'ALREADY_REDEEMED',
-        "You've already redeemed this offer this month. Check back next month!"
-      );
-    }
-
-    // Idempotent reuse: repeated "Redeem Now" taps within the TTL window
-    // return the same token instead of minting a fresh row each time.
-    const { data: liveToken } = await admin
-      .from('redemption_tokens')
-      .select('*')
-      .eq('customer_id', user.id)
-      .eq('offer_id', offerId)
-      .eq('period', period)
-      .eq('status', 'available')
-      .gt('expires_at', nowIso)
-      .maybeSingle();
-
-    const secret = Deno.env.get('QR_TOKEN_SECRET');
-    if (!secret) {
-      console.error('QR_TOKEN_SECRET is not set');
+    if (issueError || !tokenRow) {
+      const known = Object.keys(ISSUE_ERRORS).find((k) => issueError?.message?.includes(k));
+      if (known) {
+        const { status, code, error } = ISSUE_ERRORS[known];
+        return errorResponse(status, code, error);
+      }
+      console.error('issue_voucher failed', issueError);
       return errorResponse(500, 'SERVER_ERROR', 'Something went wrong. Please try again.');
     }
 
-    let tokenRow = liveToken;
-    if (!tokenRow) {
-      const expiresAt = new Date(Date.now() + TOKEN_TTL_SECONDS * 1000).toISOString();
-      const { data: inserted, error: insertError } = await admin
-        .from('redemption_tokens')
-        .insert({
-          customer_id: user.id,
-          business_id: offer.business_id,
-          offer_id: offerId,
-          period,
-          status: 'available',
-          expires_at: expiresAt,
-        })
-        .select('*')
-        .single();
-
-      if (insertError || !inserted) {
-        console.error('Failed to insert redemption token', insertError);
-        return errorResponse(500, 'SERVER_ERROR', 'Something went wrong. Please try again.');
-      }
-      tokenRow = inserted;
-    }
+    const token = tokenRow as {
+      id: string;
+      customer_id: string;
+      business_id: string;
+      offer_id: string;
+      period: string;
+      status: 'available' | 'used' | 'expired';
+      issued_at: string;
+      expires_at: string;
+      code: string;
+      offer_title: string | null;
+    };
 
     const payload: QrTokenPayload = {
-      tid: tokenRow.id,
-      cid: tokenRow.customer_id,
-      bid: tokenRow.business_id,
-      oid: tokenRow.offer_id,
-      per: tokenRow.period,
-      iat: Math.floor(new Date(tokenRow.issued_at).getTime() / 1000),
-      exp: Math.floor(new Date(tokenRow.expires_at).getTime() / 1000),
+      tid: token.id,
+      cid: token.customer_id,
+      bid: token.business_id,
+      oid: token.offer_id,
+      per: token.period,
+      iat: Math.floor(new Date(token.issued_at).getTime() / 1000),
+      exp: Math.floor(new Date(token.expires_at).getTime() / 1000),
     };
     const qrToken = await signQrToken(payload, secret);
 
     return new Response(
       JSON.stringify({
-        tokenId: tokenRow.id,
+        tokenId: token.id,
+        code: token.code,
         qrToken,
-        status: tokenRow.status,
-        period: tokenRow.period,
-        issuedAt: tokenRow.issued_at,
-        expiresAt: tokenRow.expires_at,
+        status: token.status,
+        period: token.period,
+        issuedAt: token.issued_at,
+        expiresAt: token.expires_at,
+        offerTitle: token.offer_title,
       }),
       { status: 200, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     );

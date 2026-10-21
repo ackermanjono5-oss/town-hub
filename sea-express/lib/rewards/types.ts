@@ -15,6 +15,9 @@ export interface Profile {
   created_at: string | null;
 }
 
+export type ApprovalStatus = 'pending' | 'approved' | 'denied' | 'suspended';
+export type AdvertiserStatus = 'active' | 'expired' | 'not_advertiser' | 'needs_verification';
+
 export interface Business {
   id: string;
   name: string;
@@ -22,6 +25,26 @@ export interface Business {
   logo_url: string | null;
   category: string | null;
   is_active: boolean;
+  // Registration details and eligibility (migration 0011). Optional because
+  // customer-facing queries don't select them.
+  owner_id?: string | null;
+  registered_name?: string | null;
+  trading_name?: string | null;
+  registration_number?: string | null;
+  directory_listing_id?: string | null;
+  contact_name?: string | null;
+  phone?: string | null;
+  email?: string | null;
+  address?: string | null;
+  town?: string | null;
+  advertising_reference?: string | null;
+  terms_accepted_at?: string | null;
+  approval_status?: ApprovalStatus;
+  approval_note?: string | null;
+  advertiser_status?: AdvertiserStatus;
+  advertising_paid_until?: string | null;
+  reviewed_at?: string | null;
+  created_at?: string;
 }
 
 export interface Branch {
@@ -46,7 +69,17 @@ export interface Offer {
   starts_at: string | null;
   ends_at: string | null;
   is_active: boolean;
+  status: OfferStatus;
+  /** Redemptions allowed per customer per calendar month. */
+  monthly_limit: number;
+  purchase_conditions: string | null;
+  review_note: string | null;
+  submitted_at: string | null;
+  reviewed_at: string | null;
+  created_at?: string;
 }
+
+export type OfferStatus = 'draft' | 'submitted' | 'approved' | 'rejected';
 
 export interface OfferWithBusiness extends Offer {
   business: Business;
@@ -64,13 +97,20 @@ export interface RedemptionToken {
   issued_at: string;
   expires_at: string;
   used_at: string | null;
+  /** Short code staff type in, e.g. K7PM3QXH (shown as K7PM-3QXH). */
+  code: string | null;
+  /** The offer's title and terms as they were when the voucher was issued. */
+  offer_title: string | null;
+  offer_terms: string | null;
 }
 
 // Mirrors supabase/functions/redeem-offer/index.ts's response shape —
 // kept in sync manually since Deno and Next.js are separate runtimes.
 export interface RedeemOfferResponse {
   tokenId: string;
+  code: string;
   qrToken: string;
+  offerTitle?: string | null;
   status: TokenStatus;
   period: string;
   issuedAt: string;
@@ -81,6 +121,7 @@ export type RedeemErrorCode =
   | 'UNAUTHENTICATED'
   | 'INVALID_REQUEST'
   | 'NOT_SUBSCRIBED'
+  | 'PROFILE_INCOMPLETE'
   | 'OFFER_UNAVAILABLE'
   | 'ALREADY_REDEEMED'
   | 'SERVER_ERROR';

@@ -12,12 +12,10 @@ export default function BusinessScanPage() {
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition mb-6"
       >
         <ArrowLeft className="w-4 h-4" aria-hidden="true" />
-        Back to Dashboard
+        Back to Business Rewards Portal
       </a>
 
-      <RequireBusiness>
-        <ScanScreen />
-      </RequireBusiness>
+      <RequireBusiness>{() => <ScanScreen />}</RequireBusiness>
     </div>
   );
 }

@@ -10,6 +10,8 @@ import {
 } from '@/lib/admin/queries';
 import type { BusinessWithOwner } from '@/lib/admin/types';
 import type { Offer, OfferType } from '@/lib/rewards/types';
+import { offerDisplayState } from '@/lib/rewards/offer-status';
+import OfferReviewQueue from '@/components/admin/OfferReviewQueue';
 
 const OFFER_TYPES: { value: OfferType; label: string }[] = [
   { value: 'percentage_discount', label: 'Percentage discount' },
@@ -97,7 +99,7 @@ function EditableOfferRow({ offer, onSaved }: { offer: OfferRow; onSaved: () => 
       <div>
         <p className="font-semibold">{offer.title}</p>
         <p className="text-sm text-muted-foreground">
-          {offer.business.name} · {offer.offer_type}
+          {offerDisplayState(offer)} · {offer.business.name} · {offer.offer_type} · {offer.monthly_limit}/month
           {offer.discount_value != null ? ` · ${offer.discount_value}` : ''}
         </p>
       </div>
@@ -174,8 +176,12 @@ export default function AdminOffersPage() {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-bold mb-1">Offers</h1>
-        <p className="text-muted-foreground">Create and manage offers for a business.</p>
+        <p className="text-muted-foreground">
+          Approve offers businesses submit, and create or manage offers for a business.
+        </p>
       </div>
+
+      <OfferReviewQueue onReviewed={() => selectedBusiness && refresh()} />
 
       <select
         value={selectedBusiness}

@@ -6,6 +6,7 @@ import {
   type Profile,
   type RedeemErrorCode,
   type RedeemOfferResponse,
+  type RedemptionToken,
 } from './types';
 
 export async function getMyProfile(userId: string): Promise<Profile | null> {
@@ -25,10 +26,17 @@ export async function getMyProfile(userId: string): Promise<Profile | null> {
 
 export async function listActiveOffers(): Promise<OfferWithBusiness[]> {
   const supabase = getSupabaseClient();
+  // RLS already limits this to approved offers from eligible businesses;
+  // the date window is applied here so scheduled and finished offers stay
+  // hidden.
+  const nowIso = new Date().toISOString();
   const { data, error } = await supabase
     .from('offers')
     .select('*, business:businesses(*)')
     .eq('is_active', true)
+    .eq('status', 'approved')
+    .or(`starts_at.is.null,starts_at.lte.${nowIso}`)
+    .or(`ends_at.is.null,ends_at.gte.${nowIso}`)
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -36,6 +44,25 @@ export async function listActiveOffers(): Promise<OfferWithBusiness[]> {
     return [];
   }
   return (data ?? []) as OfferWithBusiness[];
+}
+
+/** The signed-in customer's vouchers, newest first. */
+export async function listMyVouchers(): Promise<RedemptionToken[]> {
+  const supabase = getSupabaseClient();
+  const user = await getCurrentUser();
+  if (!user) return [];
+  const { data, error } = await supabase
+    .from('redemption_tokens')
+    .select('*')
+    .eq('customer_id', user.id)
+    .order('issued_at', { ascending: false })
+    .limit(100);
+
+  if (error) {
+    console.error('listMyVouchers failed', error);
+    return [];
+  }
+  return (data ?? []) as RedemptionToken[];
 }
 
 export async function getOfferById(offerId: string): Promise<OfferWithBusiness | null> {

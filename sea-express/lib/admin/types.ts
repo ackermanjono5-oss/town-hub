@@ -36,4 +36,5 @@ export interface CreateOfferInput {
   starts_at?: string;
   ends_at?: string;
   is_active?: boolean;
+  monthly_limit?: number;
 }

@@ -27,6 +27,7 @@ const DIRECTORIES = [
   { href: '/medical', label: 'Medical Directory' },
   { href: '/businesses', label: 'Business Directory' },
   { href: '/attorneys', label: 'Attorneys Directory' },
+  { href: '/business', label: 'Business Rewards Portal' },
 ];
 
 const QUICK_LINKS: { href: string; label: string; icon: LucideIcon }[] = [

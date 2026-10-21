@@ -6,12 +6,15 @@ import { CheckCircle2, Clock, XCircle } from 'lucide-react';
 import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import { DEMO_MODE } from '@/lib/rewards/demo';
 import type { TokenStatus } from '@/lib/rewards/types';
+import { formatDateTime, formatVoucherCode } from '@/lib/rewards/voucher';
 
 interface QRDisplayProps {
   tokenId: string;
   qrToken: string;
   status: TokenStatus;
   expiresAt: string;
+  /** The voucher code staff type in (real vouchers). */
+  code?: string;
   /** Demo builds show the printed coupon code alongside the QR. */
   couponCode?: string;
 }
@@ -34,6 +37,7 @@ export default function QRDisplay({
   qrToken,
   status: initialStatus,
   expiresAt,
+  code,
   couponCode,
 }: QRDisplayProps) {
   const [status, setStatus] = useState<TokenStatus>(initialStatus);
@@ -91,15 +95,23 @@ export default function QRDisplay({
 
       {status === 'available' ? (
         <>
+          {code && (
+            <div className="text-center">
+              <p className="text-xs text-muted-foreground">Show this code at the till</p>
+              <p className="font-mono text-3xl font-bold tracking-[0.2em]">{formatVoucherCode(code)}</p>
+            </div>
+          )}
           <div className="p-4 bg-white rounded-lg">
-            <QRCodeSVG value={qrToken} size={220} />
+            <QRCodeSVG value={qrToken} size={code ? 180 : 220} />
           </div>
           {couponCode && (
             <p className="font-mono text-sm font-semibold tracking-widest">{couponCode}</p>
           )}
           <p className="flex items-center gap-1.5 text-sm text-muted-foreground">
             <Clock className="w-4 h-4" aria-hidden="true" />
-            Expires in {formatCountdown(msRemaining)}
+            {msRemaining > 60 * 60 * 1000
+              ? `Valid until ${formatDateTime(expiresAt)}`
+              : `Expires in ${formatCountdown(msRemaining)}`}
           </p>
         </>
       ) : status === 'used' ? (
@@ -111,7 +123,7 @@ export default function QRDisplay({
         <div className="flex flex-col items-center gap-2 py-6 text-center">
           <XCircle className="w-10 h-10 text-danger" aria-hidden="true" />
           <p className="text-sm text-muted-foreground">
-            This code has expired. Tap &ldquo;Redeem Now&rdquo; again for a new one.
+            This voucher has expired. Tap &ldquo;Redeem Now&rdquo; again for a new one.
           </p>
         </div>
       )}

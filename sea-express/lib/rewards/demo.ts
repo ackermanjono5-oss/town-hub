@@ -27,7 +27,11 @@ function business(
   return { id, name, description, logo_url: null, category, is_active: true };
 }
 
-export const DEMO_OFFERS: DemoOffer[] = [
+// The approval-workflow fields are the same on every demo offer — each is a
+// live, approved, once-a-month reward — so they're filled in below.
+type DemoWorkflowFields = 'status' | 'monthly_limit' | 'purchase_conditions' | 'review_note' | 'submitted_at' | 'reviewed_at';
+
+const DEMO_OFFER_DATA: Omit<DemoOffer, DemoWorkflowFields>[] = [
   {
     id: 'demo-restaurant',
     business_id: 'demo-biz-restaurant',
@@ -124,6 +128,16 @@ export const DEMO_OFFERS: DemoOffer[] = [
     phone: PHONE,
   },
 ];
+
+export const DEMO_OFFERS: DemoOffer[] = DEMO_OFFER_DATA.map((offer) => ({
+  ...offer,
+  status: 'approved',
+  monthly_limit: 1,
+  purchase_conditions: null,
+  review_note: null,
+  submitted_at: null,
+  reviewed_at: null,
+}));
 
 export function getDemoOffer(offerId: string): DemoOffer | null {
   return DEMO_OFFERS.find((offer) => offer.id === offerId) ?? null;

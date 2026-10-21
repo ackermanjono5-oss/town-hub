@@ -1,8 +1,8 @@
 import { Store, Gift, Receipt } from 'lucide-react';
 
 const CARDS = [
-  { href: '/admin/businesses', label: 'Businesses', description: 'Create businesses and mint registration codes', icon: Store },
-  { href: '/admin/offers', label: 'Offers', description: 'Create and manage offers per business', icon: Gift },
+  { href: '/admin/businesses', label: 'Businesses', description: 'Review applications, advertising status and access', icon: Store },
+  { href: '/admin/offers', label: 'Offers', description: 'Approve submitted offers and manage them per business', icon: Gift },
   { href: '/admin/redemptions', label: 'Redemptions', description: 'View all reward redemptions', icon: Receipt },
 ];
 
