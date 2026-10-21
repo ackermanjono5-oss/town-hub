@@ -12,6 +12,7 @@ import type { BusinessWithOwner } from '@/lib/admin/types';
 import type { AdvertiserStatus, ApprovalStatus } from '@/lib/rewards/types';
 import { isBusinessEligible } from '@/lib/business/queries';
 import { getTownLabel } from '@/lib/garden-route/towns';
+import { formatDateTime } from '@/lib/rewards/voucher';
 
 const INPUT =
   'px-3 py-2 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary';
@@ -224,8 +225,8 @@ function ApplicationCard({
     ['Email', b.email],
     ['Address', [b.address, b.town ? getTownLabel(b.town) : null].filter(Boolean).join(', ')],
     ['Advertising ref.', b.advertising_reference],
-    ['Applied', b.created_at ? new Date(b.created_at).toLocaleString('en-ZA') : null],
-    ['Terms accepted', b.terms_accepted_at ? new Date(b.terms_accepted_at).toLocaleString('en-ZA') : null],
+    ['Applied', b.created_at ? formatDateTime(b.created_at) : null],
+    ['Terms accepted', b.terms_accepted_at ? formatDateTime(b.terms_accepted_at) : null],
   ];
 
   return (

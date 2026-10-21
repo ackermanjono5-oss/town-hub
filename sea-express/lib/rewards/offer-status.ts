@@ -31,7 +31,12 @@ export const OFFER_STATE_STYLES: Record<OfferDisplayState, string> = {
 /** "1 Oct 2026 – 31 Oct 2026", or a readable open-ended range. */
 export function formatOfferWindow(offer: Pick<Offer, 'starts_at' | 'ends_at'>): string {
   const fmt = (iso: string) =>
-    new Date(iso).toLocaleDateString('en-ZA', { day: 'numeric', month: 'short', year: 'numeric' });
+    new Date(iso).toLocaleDateString('en-ZA', {
+      timeZone: 'Africa/Johannesburg',
+      day: 'numeric',
+      month: 'short',
+      year: 'numeric',
+    });
   if (offer.starts_at && offer.ends_at) return `${fmt(offer.starts_at)} – ${fmt(offer.ends_at)}`;
   if (offer.starts_at) return `From ${fmt(offer.starts_at)}`;
   if (offer.ends_at) return `Until ${fmt(offer.ends_at)}`;

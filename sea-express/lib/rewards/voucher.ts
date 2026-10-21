@@ -19,9 +19,15 @@ export function formatPeriod(period: string): string {
   return new Date(y, m - 1, 1).toLocaleDateString('en-ZA', { month: 'long', year: 'numeric' });
 }
 
+/**
+ * A moment shown in South African time, whatever the viewer's device is set
+ * to — vouchers, redemptions and offer windows all run on SA time, and an
+ * admin abroad otherwise sees a 23:59 end date roll over into the next day.
+ */
 export function formatDateTime(iso: string | null | undefined): string {
   if (!iso) return '';
   return new Date(iso).toLocaleString('en-ZA', {
+    timeZone: 'Africa/Johannesburg',
     day: 'numeric',
     month: 'short',
     year: 'numeric',

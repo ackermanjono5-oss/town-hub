@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { listBusinesses, listRedemptionsAdmin } from '@/lib/admin/queries';
 import type { AdminRedemptionRow, BusinessWithOwner } from '@/lib/admin/types';
+import { formatDateTime } from '@/lib/rewards/voucher';
 
 export default function AdminRedemptionsPage() {
   const [businesses, setBusinesses] = useState<BusinessWithOwner[]>([]);
@@ -61,7 +62,7 @@ export default function AdminRedemptionsPage() {
                 </p>
                 <p className="text-xs text-muted-foreground">{row.customer?.full_name ?? 'Customer'}</p>
               </div>
-              <p className="text-xs text-muted-foreground shrink-0">{new Date(row.redeemed_at).toLocaleString()}</p>
+              <p className="text-xs text-muted-foreground shrink-0">{formatDateTime(row.redeemed_at)}</p>
             </div>
           ))}
         </div>
