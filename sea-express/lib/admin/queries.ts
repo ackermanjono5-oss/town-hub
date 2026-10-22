@@ -1,6 +1,7 @@
 import { getCurrentUser, getSupabaseClient } from '@/lib/supabase/client';
 import type { AdvertiserStatus, ApprovalStatus, Business, Offer } from '@/lib/rewards/types';
 import type {
+  AdminMemberRow,
   AdminRedemptionRow,
   BusinessWithOwner,
   CreateBusinessInput,
@@ -170,4 +171,25 @@ export async function listRedemptionsAdmin(filters: {
     return [];
   }
   return (data ?? []) as unknown as AdminRedemptionRow[];
+}
+
+/** Members matching a name, email or phone search (all if blank). Admin only. */
+export async function listMembers(search?: string): Promise<AdminMemberRow[]> {
+  const supabase = getSupabaseClient();
+  const { data, error } = await supabase.rpc('admin_list_members', {
+    p_search: search?.trim() || null,
+    p_limit: 200,
+  });
+  if (error) {
+    console.error('listMembers failed', error);
+    throw new Error(error.message);
+  }
+  return (data ?? []) as AdminMemberRow[];
+}
+
+/** Switches a member's rewards membership on or off. Admin only. */
+export async function setMembership(userId: string, subscribed: boolean): Promise<void> {
+  const supabase = getSupabaseClient();
+  const { error } = await supabase.rpc('admin_set_membership', { p_user: userId, p_subscribed: subscribed });
+  if (error) throw new Error(error.message);
 }

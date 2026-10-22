@@ -20,6 +20,18 @@ export interface AdminRedemptionRow {
   customer: { full_name: string | null } | null;
 }
 
+/** A row from public.admin_list_members() (migration 0012). */
+export interface AdminMemberRow {
+  id: string;
+  full_name: string | null;
+  email: string | null;
+  phone: string | null;
+  home_town: string | null;
+  role: string;
+  is_subscribed: boolean;
+  created_at: string;
+}
+
 export interface CreateBusinessInput {
   name: string;
   description?: string;

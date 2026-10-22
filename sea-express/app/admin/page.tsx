@@ -1,6 +1,7 @@
-import { Store, Gift, Receipt } from 'lucide-react';
+import { Users, Store, Gift, Receipt } from 'lucide-react';
 
 const CARDS = [
+  { href: '/admin/members', label: 'Members', description: 'Switch customer rewards memberships on or off', icon: Users },
   { href: '/admin/businesses', label: 'Businesses', description: 'Review applications, advertising status and access', icon: Store },
   { href: '/admin/offers', label: 'Offers', description: 'Approve submitted offers and manage them per business', icon: Gift },
   { href: '/admin/redemptions', label: 'Redemptions', description: 'View all reward redemptions', icon: Receipt },
@@ -11,7 +12,7 @@ export default function AdminDashboardPage() {
     <div>
       <h1 className="text-2xl font-bold mb-1">Town Hub Admin</h1>
       <p className="text-muted-foreground mb-6">Manage Town Hub Rewards businesses, offers, and redemptions.</p>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {CARDS.map(({ href, label, description, icon: Icon }) => (
           <a
             key={href}
