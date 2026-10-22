@@ -52,7 +52,12 @@ export default function HomePage() {
               width={192}
               height={192}
               className="w-full h-full object-cover"
-              priority
+              // Eager rather than `priority`: priority makes Next inject a
+              // <link rel="preload" href="/town-hub-logo.jpg"> at runtime,
+              // which the export's path rewrite never sees, so inside the
+              // Android app (file://) it points at the device root and
+              // fails — enough for the app shell to show "Couldn't load".
+              loading="eager"
             />
           </div>
 

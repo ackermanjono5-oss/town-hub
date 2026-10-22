@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { navigateTo } from '@/lib/app-nav';
 import { getCurrentUser } from '@/lib/supabase/client';
 import { getMyProfile } from '@/lib/rewards/queries';
 
@@ -12,7 +12,6 @@ import { getMyProfile } from '@/lib/rewards/queries';
 // server-side session handling anywhere today, so adding that is
 // infrastructure disproportionate to this pass.
 export default function RequireAdmin({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
   const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
@@ -24,7 +23,7 @@ export default function RequireAdmin({ children }: { children: React.ReactNode }
       // app — it never settles and the gate sits on its loading state.
       const user = await getCurrentUser();
       if (!user) {
-        router.replace('/');
+        navigateTo('/');
         return;
       }
       const profile = await getMyProfile(user.id);
@@ -32,7 +31,7 @@ export default function RequireAdmin({ children }: { children: React.ReactNode }
       if (profile?.role === 'admin') {
         setAllowed(true);
       } else {
-        router.replace('/');
+        navigateTo('/');
       }
     }
 
@@ -40,7 +39,7 @@ export default function RequireAdmin({ children }: { children: React.ReactNode }
     return () => {
       cancelled = true;
     };
-  }, [router]);
+  }, []);
 
   if (!allowed) {
     return <p className="text-sm text-muted-foreground text-center py-12">Checking access…</p>;

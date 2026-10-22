@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Plus_Jakarta_Sans } from 'next/font/google';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import SignInPrompt from '@/components/SignInPrompt';
+import AppLinkFix from '@/components/AppLinkFix';
 import './globals.css';
 
 const geistSans = Geist({
@@ -48,6 +49,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${jakarta.variable} min-h-full flex flex-col antialiased`}
       >
+        <AppLinkFix />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />

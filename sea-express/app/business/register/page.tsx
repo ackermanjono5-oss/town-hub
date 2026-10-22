@@ -6,6 +6,7 @@ import { getCurrentUser, isSupabaseConfigured } from '@/lib/supabase/client';
 import SupabaseSetupNotice from '@/components/SupabaseSetupNotice';
 import { TOWNS } from '@/lib/garden-route/towns';
 import { getMyBusiness, registerBusiness, updateBusinessDetails } from '@/lib/business/queries';
+import { navigateTo } from '@/lib/app-nav';
 import type { RegisterBusinessInput } from '@/lib/business/types';
 import type { Business } from '@/lib/rewards/types';
 import type { DirectoryListing } from '@/lib/business/directory-listings';
@@ -112,7 +113,7 @@ export default function RegisterBusinessPage() {
         setSaved(true);
       } else {
         await registerBusiness(form);
-        window.location.href = '/business';
+        navigateTo('/business');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to save. Please try again.');
