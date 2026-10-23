@@ -7,6 +7,8 @@ import MyVouchers from '@/components/rewards/MyVouchers';
 import { listActiveOffers } from '@/lib/rewards/queries';
 import { DEMO_MODE, DEMO_OFFERS } from '@/lib/rewards/demo';
 import type { OfferWithBusiness } from '@/lib/rewards/types';
+import PageHero from '@/components/PageHero';
+import { Ticket as HeroIcon } from 'lucide-react';
 
 function OfferGrid() {
   const [offers, setOffers] = useState<OfferWithBusiness[] | null>(DEMO_MODE ? DEMO_OFFERS : null);
@@ -29,7 +31,7 @@ function OfferGrid() {
   }
 
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
       {offers.map((offer) => (
         <OfferCard key={offer.id} offer={offer} />
       ))}
@@ -40,13 +42,14 @@ function OfferGrid() {
 export default function RewardsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Rewards</h1>
-        <p className="text-muted-foreground">
-          Exclusive monthly offers from Town Hub&rsquo;s participating businesses, for registered
-          members. Generate a voucher, then show its code at the till.
-        </p>
-      </div>
+      <PageHero
+        title="Rewards"
+        subtitle="Exclusive monthly offers from Town Hub’s participating businesses, for registered members. Generate a voucher, then show its code at the till."
+        icon={HeroIcon}
+        theme="sunset"
+        eyebrow="Members"
+        className="mb-8"
+      />
 
       <RewardsGate>
         <OfferGrid />

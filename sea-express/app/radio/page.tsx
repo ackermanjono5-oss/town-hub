@@ -1,12 +1,14 @@
+
 export default function RadioPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Local Radio</h1>
-        <p className="text-muted-foreground">
-          Listen live to Garden Route community radio
-        </p>
-      </div>
+      <PageHero
+        title="Local Radio"
+        subtitle="Listen live to Garden Route community radio"
+        icon={HeroIcon}
+        theme="dusk"
+        className="mb-8"
+      />
 
       <div className="grid grid-cols-1 gap-4">
         <div className="p-5 rounded-lg border border-border hover:border-primary card-lift bg-background">
@@ -26,3 +28,6 @@ export default function RadioPage() {
     </div>
   );
 }
+import PageHero from '@/components/PageHero';
+import { Radio as HeroIcon } from 'lucide-react';
+

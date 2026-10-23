@@ -52,7 +52,8 @@ export default function AdvertCarousel() {
   return (
     <section className="pt-4">
       <div className="flex items-baseline justify-between px-5 pb-2.5">
-        <h2 className="text-[13px] font-bold uppercase tracking-[0.1em] text-[#6b7280]">
+        <h2 className="flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0f3d5e]">
+          <span className="w-6 h-[3px] rounded-full bg-gradient-to-r from-[#f59e0b] to-[#ef8a4c]" aria-hidden="true" />
           Local partners
         </h2>
         <a

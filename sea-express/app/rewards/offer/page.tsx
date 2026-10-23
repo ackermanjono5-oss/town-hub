@@ -102,38 +102,48 @@ function OfferDetail() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center gap-3">
-        <div className="w-14 h-14 rounded-lg bg-secondary flex items-center justify-center shrink-0">
-          {offer.business.logo_url ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={offer.business.logo_url}
-              alt={offer.business.name}
-              className="max-h-10 max-w-[80%] object-contain"
-            />
-          ) : (
-            <Store className="w-6 h-6 text-muted-foreground" aria-hidden="true" />
+      <div className="rounded-3xl bg-white/90 backdrop-blur p-5 shadow-[0_14px_34px_-22px_rgba(15,23,42,0.5)] ring-1 ring-white/70 space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="w-14 h-14 rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm flex items-center justify-center shrink-0 overflow-hidden">
+            {offer.business.logo_url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={offer.business.logo_url}
+                alt={offer.business.name}
+                className="max-h-10 max-w-[80%] object-contain"
+              />
+            ) : (
+              <Store className="w-6 h-6 text-slate-400" aria-hidden="true" />
+            )}
+          </div>
+          <div className="min-w-0">
+            <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 truncate">
+              {offer.business.name}
+            </p>
+            <h1 className="text-2xl font-extrabold tracking-tight text-slate-900 leading-tight">{offer.title}</h1>
+          </div>
+        </div>
+
+        {offer.description && <p className="text-slate-600">{offer.description}</p>}
+
+        <div className="flex flex-wrap gap-2">
+          {offer.purchase_conditions && (
+            <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold ring-1 ring-amber-200">
+              {offer.purchase_conditions}
+            </span>
+          )}
+          {!DEMO_MODE && offer.monthly_limit > 0 && (
+            <span className="px-3 py-1 rounded-full bg-sky-50 text-sky-800 text-xs font-semibold ring-1 ring-sky-200">
+              {offer.monthly_limit === 1 ? 'Once a month' : `Up to ${offer.monthly_limit}× a month`}
+            </span>
           )}
         </div>
-        <div>
-          <p className="text-sm text-muted-foreground">{offer.business.name}</p>
-          <h1 className="text-2xl font-bold">{offer.title}</h1>
-        </div>
+
+        {offer.terms && <p className="text-xs text-slate-500">{offer.terms}</p>}
       </div>
 
-      {offer.description && <p className="text-muted-foreground">{offer.description}</p>}
-      {offer.purchase_conditions && <p className="text-sm">Conditions: {offer.purchase_conditions}</p>}
-      {offer.terms && <p className="text-xs text-muted-foreground">{offer.terms}</p>}
-      {!DEMO_MODE && offer.monthly_limit > 0 && (
-        <p className="text-xs text-muted-foreground">
-          {offer.monthly_limit === 1
-            ? 'You can redeem this reward once each calendar month.'
-            : `You can redeem this reward up to ${offer.monthly_limit} times each calendar month.`}
-        </p>
-      )}
-
       {demoDetails && (
-        <dl className="text-xs text-muted-foreground space-y-1 rounded-lg border border-border p-3">
+        <dl className="text-xs text-slate-600 space-y-1 rounded-2xl bg-white/80 p-4 ring-1 ring-white/70">
           <div className="flex gap-2">
             <dt className="font-semibold">Valid:</dt>
             <dd>{demoDetails.validity}</dd>
@@ -164,7 +174,7 @@ function OfferDetail() {
             type="button"
             onClick={handleRedeem}
             disabled={redeeming}
-            className="w-full px-5 py-3 rounded-full bg-primary text-primary-foreground shadow-sm hover:shadow-md hover:brightness-110 transition-all duration-200 active:scale-[0.98] disabled:opacity-60"
+            className="w-full px-5 py-4 rounded-full bg-gradient-to-r from-[#e0662b] to-[#f6b44b] text-white text-lg font-bold shadow-lg shadow-orange-500/30 hover:brightness-110 transition-all duration-200 active:scale-[0.98] disabled:opacity-60"
           >
             {redeeming ? 'Generating your code…' : 'Redeem Now'}
           </button>

@@ -1,15 +1,18 @@
 import { Globe, Newspaper } from 'lucide-react';
 import { NEWS_OUTLETS } from '@/lib/garden-route/news';
+import PageHero from '@/components/PageHero';
+import { Newspaper as HeroIcon } from 'lucide-react';
 
 export default function NewsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">News</h1>
-        <p className="text-muted-foreground">
-          Local news outlets covering the Garden Route
-        </p>
-      </div>
+      <PageHero
+        title="News"
+        subtitle="Local news outlets covering the Garden Route"
+        icon={HeroIcon}
+        theme="slate"
+        className="mb-8"
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {NEWS_OUTLETS.map((outlet) => (

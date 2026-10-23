@@ -113,9 +113,9 @@ export default function DirectoryPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 sm:py-8">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0a2f5c] via-[#1c6cb8] to-[#31a8c9] text-white shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#7a2e0e] via-[#e0662b] to-[#f6b44b] text-white shadow-xl">
         <div className="absolute -top-20 -right-16 w-64 h-64 rounded-full bg-white/10 blur-2xl" aria-hidden="true" />
-        <div className="absolute -bottom-24 -left-10 w-56 h-56 rounded-full bg-cyan-300/20 blur-2xl" aria-hidden="true" />
+        <div className="absolute -bottom-24 -left-10 w-56 h-56 rounded-full bg-white/15 blur-2xl" aria-hidden="true" />
 
         <div className="relative p-6 sm:p-10">
           <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/70">

@@ -1,12 +1,14 @@
 'use client';
 
 import { useState } from 'react';
-import { Phone, Siren } from 'lucide-react';
+import { Phone } from 'lucide-react';
 import { TOWNS, getTownLabel } from '@/lib/garden-route/towns';
 import {
   NATIONAL_CONTACTS,
   getEmergencyContactsByTown,
 } from '@/lib/garden-route/emergency';
+import PageHero from '@/components/PageHero';
+import { Siren as HeroIcon } from 'lucide-react';
 
 export default function SOSPage() {
   const [town, setTown] = useState(TOWNS[0].slug);
@@ -15,14 +17,14 @@ export default function SOSPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2 flex items-center gap-3 text-danger">
-          <Siren className="w-10 h-10" /> Emergency SOS
-        </h1>
-        <p className="text-muted-foreground">
-          Quick access to emergency services. Tap any number to call.
-        </p>
-      </div>
+      <PageHero
+        title="Emergency SOS"
+        subtitle="Quick access to emergency services. Tap any number to call."
+        icon={HeroIcon}
+        theme="ember"
+        eyebrow="Emergency"
+        className="mb-8"
+      />
 
       <div className="mb-8">
         <label className="block text-sm font-medium mb-2">Select Town:</label>

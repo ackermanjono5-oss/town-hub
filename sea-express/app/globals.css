@@ -1,14 +1,17 @@
 @import 'tailwindcss';
 
+/* Cards and inputs (bg-background) are white so they lift off the sky
+   backdrop; secondary text is a softer slate so it reads as secondary;
+   borders are a light sea-mist rather than a strong blue. */
 @theme {
-  --color-background: #bfe3f5;
-  --color-foreground: #0a0a0a;
-  --color-muted-foreground: #1f2d3a;
-  --color-border: #8fc7e7;
+  --color-background: #ffffff;
+  --color-foreground: #0f172a;
+  --color-muted-foreground: #4b5b6b;
+  --color-border: #d3e6f0;
   --color-primary: #1c6cb8;
   --color-primary-foreground: #ffffff;
-  --color-secondary: #a9d6ef;
-  --color-secondary-foreground: #0a0a0a;
+  --color-secondary: #e3f2fa;
+  --color-secondary-foreground: #0f3d5e;
   --color-accent: #ef8a4c;
   --color-accent-foreground: #ffffff;
   --color-danger: #d6473a;
@@ -19,12 +22,78 @@
   border-color: var(--color-border);
 }
 
+/* Sky to shoreline: open blue at the top easing into a pale sand by the
+   bottom of the screen, with two soft blooms of light. Fixed, so it reads
+   as the backdrop the cards float over rather than scrolling content. */
 body {
   color: var(--color-foreground);
-  background-color: #87ceeb;
-  background-image: linear-gradient(#aee0f6 0%, #87ceeb 60%);
+  background-color: #cdeaf6;
+  background-image:
+    radial-gradient(60rem 30rem at 110% -10%, rgb(255 255 255 / 0.55), transparent 60%),
+    radial-gradient(40rem 26rem at -20% 30%, rgb(49 168 201 / 0.18), transparent 60%),
+    linear-gradient(180deg, #bfe6f7 0%, #d7eff8 45%, #eef4ee 100%);
   background-attachment: fixed;
   min-height: 100vh;
+}
+
+/* Faint dot texture for gradient banners (components/PageHero.tsx). */
+.hero-dots {
+  background-image: radial-gradient(rgb(255 255 255 / 0.22) 1px, transparent 1.2px);
+  background-size: 18px 18px;
+  mask-image: linear-gradient(120deg, #000 0%, transparent 70%);
+}
+
+/* Coupon shape: two half-circle notches cut into the sides at --notch-y,
+   like a tear-off ticket. Used by reward cards and the voucher, which set
+   --notch-y with a Tailwind class ([--notch-y:112px]) to line the notches
+   up with their tear line. It's read with a fallback rather than declared
+   here: this rule is unlayered, so a declaration would beat the utility. */
+.ticket {
+  --notch: 11px;
+  -webkit-mask:
+    radial-gradient(circle var(--notch) at 0 var(--notch-y, 62%), transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% var(--notch-y, 62%), transparent 98%, #000) right / 51% 100% no-repeat;
+  mask:
+    radial-gradient(circle var(--notch) at 0 var(--notch-y, 62%), transparent 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle var(--notch) at 100% var(--notch-y, 62%), transparent 98%, #000) right / 51% 100% no-repeat;
+}
+
+/* Staggered rise-in for tile grids; set --i on each tile. */
+.rise-in {
+  animation: rise-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* A slow drift for decorative shapes. */
+.drift {
+  animation: drift 9s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-14px, 10px, 0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise-in,
+  .drift {
+    animation: none;
+  }
 }
 
 html {

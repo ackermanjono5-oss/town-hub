@@ -1,3 +1,4 @@
+
 const SECTIONS: { title: string; body: React.ReactNode }[] = [
   {
     title: 'Information We Collect',
@@ -121,12 +122,14 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
 export default function PrivacyPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Privacy Policy</h1>
-        <p className="text-sm text-muted-foreground">
-          Town Hub Coast Connect — Effective Date: 13 July 2026
-        </p>
-      </div>
+      <PageHero
+        title="Privacy Policy"
+        subtitle="Town Hub Coast Connect — Effective Date: 13 July 2026"
+        icon={HeroIcon}
+        theme="slate"
+        eyebrow="Town Hub"
+        className="mb-8"
+      />
 
       <p className="text-sm text-foreground mb-8">
         This Privacy Policy explains what information Town Hub Coast Connect
@@ -147,3 +150,6 @@ export default function PrivacyPage() {
     </div>
   );
 }
+import PageHero from '@/components/PageHero';
+import { ShieldCheck as HeroIcon } from 'lucide-react';
+

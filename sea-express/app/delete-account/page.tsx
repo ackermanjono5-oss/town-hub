@@ -1,10 +1,15 @@
+
 export default function DeleteAccountPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Delete Your Account</h1>
-        <p className="text-muted-foreground">Town Hub Coast Connect</p>
-      </div>
+      <PageHero
+        title="Delete Your Account"
+        subtitle="Town Hub Coast Connect"
+        icon={HeroIcon}
+        theme="slate"
+        eyebrow="Account"
+        className="mb-8"
+      />
 
       <div className="space-y-6 text-sm">
         <section>
@@ -66,3 +71,6 @@ export default function DeleteAccountPage() {
     </div>
   );
 }
+import PageHero from '@/components/PageHero';
+import { UserX as HeroIcon } from 'lucide-react';
+

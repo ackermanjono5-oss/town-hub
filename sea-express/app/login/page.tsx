@@ -103,16 +103,33 @@ export default function LoginPage() {
   const homeHref = isFileProtocol() ? 'index.html' : '/';
 
   return (
-    <div className="max-w-sm mx-auto px-4 py-12">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold mb-2">Sign In</h1>
-        <p className="text-muted-foreground">
+    <div className="max-w-sm mx-auto px-4 py-10">
+      <div className="overflow-hidden rounded-3xl bg-white shadow-[0_24px_48px_-28px_rgba(10,47,92,0.7)] ring-1 ring-white/70">
+      <div className="relative overflow-hidden bg-gradient-to-br from-[#0a2f5c] via-[#1569a8] to-[#2fb2cf] px-6 pt-8 pb-12 text-center text-white">
+        <div className="absolute inset-0 hero-dots opacity-40" aria-hidden="true" />
+        <div className="absolute -top-16 -right-12 w-44 h-44 rounded-full bg-white/15 blur-3xl" aria-hidden="true" />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/icon.png"
+          alt=""
+          width={64}
+          height={64}
+          className="relative mx-auto w-16 h-16 rounded-2xl ring-2 ring-white/40 shadow-lg"
+        />
+        <h1 className="relative mt-4 text-2xl font-extrabold tracking-tight">
+          {step === 'code' ? 'Check your email' : 'Welcome to Town Hub'}
+        </h1>
+        <p className="relative mt-1.5 text-sm text-white/85">
           {step === 'code'
-            ? `Enter the code we emailed to ${email}`
+            ? `Enter the 6-digit code we emailed to ${email}`
             : 'Sign in with your email address'}
         </p>
+        <svg className="absolute bottom-0 left-0 w-full h-6 text-white" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+          <path fill="currentColor" d="M0,40 C240,80 480,0 720,32 C960,64 1200,8 1440,36 L1440,80 L0,80 Z" />
+        </svg>
       </div>
 
+      <div className="px-6 pb-7 pt-3">
       {!isSupabaseConfigured ? (
         <SupabaseSetupNotice feature="Sign in" />
       ) : step === 'done' ? (
@@ -148,7 +165,7 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={busy || code.length < 6}
-            className="w-full px-4 py-2 rounded-md bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-60 transition"
+            className="w-full px-4 py-3 rounded-full bg-gradient-to-r from-[#1569a8] to-[#2fb2cf] text-white font-semibold shadow-lg shadow-sky-700/25 hover:brightness-110 active:scale-[0.98] disabled:opacity-60 transition"
           >
             {busy ? 'Checking…' : 'Verify and sign in'}
           </button>
@@ -171,7 +188,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={handleGoogleSignIn}
-                className="w-full flex items-center justify-center gap-3 px-4 py-2 rounded-md border border-border bg-background hover:bg-secondary transition"
+                className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-full border border-border bg-background font-medium hover:bg-secondary transition"
               >
                 <svg className="w-4 h-4" viewBox="0 0 48 48" aria-hidden="true">
                   <path
@@ -214,20 +231,22 @@ export default function LoginPage() {
                 placeholder="you@example.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-4 py-2 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-3 rounded-xl border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
             {errorMessage && <p className="text-sm text-danger">{errorMessage}</p>}
             <button
               type="submit"
               disabled={busy}
-              className="w-full px-4 py-2 rounded-md bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-60 transition"
+              className="w-full px-4 py-3 rounded-full bg-gradient-to-r from-[#1569a8] to-[#2fb2cf] text-white font-semibold shadow-lg shadow-sky-700/25 hover:brightness-110 active:scale-[0.98] disabled:opacity-60 transition"
             >
               {busy ? 'Sending…' : 'Email me a sign-in code'}
             </button>
           </form>
         </div>
       )}
+      </div>
+      </div>
     </div>
   );
 }

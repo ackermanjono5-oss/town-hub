@@ -1,12 +1,18 @@
 import { Mail, MapPin } from 'lucide-react';
+import PageHero from '@/components/PageHero';
+import { Mail as HeroIcon } from 'lucide-react';
 
 export default function ContactPage() {
   return (
     <div className="max-w-2xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Contact Us</h1>
-        <p className="text-muted-foreground">JJ Production Group — Town Hub Coast Connect</p>
-      </div>
+      <PageHero
+        title="Contact Us"
+        subtitle="JJ Production Group — Town Hub Coast Connect"
+        icon={HeroIcon}
+        theme="ocean"
+        eyebrow="Town Hub"
+        className="mb-8"
+      />
 
       <div className="space-y-4">
         <a

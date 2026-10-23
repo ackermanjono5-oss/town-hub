@@ -21,7 +21,7 @@ export default function PropertyPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 py-6 sm:py-8">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0a2f5c] via-[#1c6cb8] to-[#31a8c9] text-white shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0f3d5e] via-[#1f6f8b] to-[#7fc8d8] text-white shadow-xl">
         <div className="absolute -top-20 -right-16 w-64 h-64 rounded-full bg-white/10 blur-2xl" aria-hidden="true" />
         <div className="absolute -bottom-24 -left-10 w-56 h-56 rounded-full bg-cyan-300/20 blur-2xl" aria-hidden="true" />
 

@@ -116,19 +116,21 @@ export default function RequireBusiness({
 
 function PortalIntro({ children }: { children: React.ReactNode }) {
   return (
-    <div className="max-w-md mx-auto py-8 text-center space-y-5">
-      <div className="mx-auto w-14 h-14 rounded-2xl bg-primary/10 text-primary flex items-center justify-center">
-        <BadgeCheck className="w-7 h-7" aria-hidden="true" />
-      </div>
-      <div>
-        <h2 className="text-2xl font-bold mb-2">Business Rewards Portal</h2>
-        <p className="text-muted-foreground">
+    <div className="max-w-md mx-auto space-y-5">
+      <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#14321f] via-[#2f6b3a] to-[#84a83a] px-6 pt-7 pb-8 text-center text-white shadow-[0_20px_40px_-22px_rgba(20,50,31,0.9)]">
+        <div className="absolute inset-0 hero-dots opacity-40" aria-hidden="true" />
+        <div className="absolute -top-16 -right-12 w-48 h-48 rounded-full bg-[#ffd27a]/25 blur-3xl" aria-hidden="true" />
+        <div className="relative mx-auto w-16 h-16 rounded-2xl bg-[#ffd27a] text-[#14321f] flex items-center justify-center shadow-lg rotate-[-6deg]">
+          <BadgeCheck className="w-9 h-9" aria-hidden="true" />
+        </div>
+        <h2 className="relative mt-4 text-2xl font-extrabold tracking-tight">Business Rewards Portal</h2>
+        <p className="relative mt-2 text-sm text-white/85">
           This portal is for registered Town Hub advertising businesses. Approved businesses use it
           to manage their monthly loyalty rewards and to verify and redeem customer vouchers.
         </p>
       </div>
-      {children}
-      <p className="text-xs text-muted-foreground">
+      <div className="text-center">{children}</div>
+      <p className="text-xs text-center text-muted-foreground">
         Looking for rewards as a customer? Open{' '}
         <a href="/rewards" className="text-primary underline">
           Rewards

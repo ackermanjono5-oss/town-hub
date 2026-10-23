@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { CloudRain, Sun, Wind, Droplets } from 'lucide-react';
 import { TOWNS, getTownLabel } from '@/lib/garden-route/towns';
+import PageHero from '@/components/PageHero';
+import { CloudSun as HeroIcon } from 'lucide-react';
 
 export default function WeatherPage() {
   const [town, setTown] = useState(TOWNS[0].slug);
@@ -19,12 +21,13 @@ export default function WeatherPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Weather & Tides</h1>
-        <p className="text-muted-foreground">
-          Live forecast, storm/rain alerts and tide times for the Garden Route
-        </p>
-      </div>
+      <PageHero
+        title="Weather & Tides"
+        subtitle="Live forecast, storm and rain alerts, and tide times for the Garden Route"
+        icon={HeroIcon}
+        theme="ocean"
+        className="mb-8"
+      />
 
       <div className="mb-8">
         <label className="block text-sm font-medium mb-2">Select Town:</label>

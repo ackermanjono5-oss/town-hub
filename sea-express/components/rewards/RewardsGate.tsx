@@ -52,11 +52,21 @@ export default function RewardsGate({ children }: { children: React.ReactNode })
 
   if (state === 'signed-out') {
     return (
-      <div className="text-center py-8">
-        <p className="text-muted-foreground mb-4">Sign in to view and redeem local rewards.</p>
+      <div className="relative overflow-hidden rounded-3xl bg-white/85 backdrop-blur px-6 py-10 text-center shadow-[0_14px_34px_-20px_rgba(15,23,42,0.45)] ring-1 ring-white/70">
+        <div className="absolute -top-16 -left-10 w-48 h-48 rounded-full bg-amber-200/50 blur-3xl" aria-hidden="true" />
+        {/* A little fan of coupons. */}
+        <div className="relative mx-auto mb-6 h-20 w-40" aria-hidden="true">
+          <span className="absolute left-2 top-3 h-14 w-24 rounded-xl bg-gradient-to-br from-[#a78bfa] to-[#3f36b5] rotate-[-14deg] shadow-md" />
+          <span className="absolute right-2 top-3 h-14 w-24 rounded-xl bg-gradient-to-br from-[#4cc3dd] to-[#155f9c] rotate-[14deg] shadow-md" />
+          <span className="absolute left-1/2 top-0 h-16 w-28 -translate-x-1/2 rounded-xl bg-gradient-to-br from-[#f6b44b] to-[#d9532a] shadow-lg flex items-center justify-center text-white text-xl font-black">
+            2 for 1
+          </span>
+        </div>
+        <p className="relative text-xl font-extrabold text-slate-900">Local deals, just for members</p>
+        <p className="relative mt-2 text-slate-600">Sign in to see this month&rsquo;s rewards and get your vouchers.</p>
         <a
           href="/login"
-          className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-primary text-primary-foreground shadow-sm hover:shadow-md hover:brightness-110 transition-all duration-200 active:scale-[0.98]"
+          className="relative mt-6 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-[#e0662b] to-[#f6b44b] text-white font-semibold shadow-lg shadow-orange-500/30 hover:brightness-110 transition-all duration-200 active:scale-[0.98]"
         >
           Sign In
         </a>

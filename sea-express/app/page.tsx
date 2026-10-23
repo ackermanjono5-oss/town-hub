@@ -7,117 +7,244 @@ import {
   Ticket,
   ScrollText,
   Users,
+  UtensilsCrossed,
+  Stethoscope,
+  Store,
+  Scale,
+  BedDouble,
+  BadgeCheck,
+  ArrowRight,
+  Newspaper,
+  Leaf,
+  Radio,
   type LucideIcon,
 } from 'lucide-react';
 import AdvertCarousel from '@/components/AdvertCarousel';
+import Greeting from '@/components/Greeting';
 
 /**
- * Home screen, following the Town Hub prototype: a centred hero on a soft
- * teal-to-white wash, three full-width directory buttons, the local
- * partners strip, a two-up quick links grid and the emergency call to
- * action.
+ * Home screen: an ocean banner with a time-of-day greeting, the directories
+ * as colourful tiles, the local partners strip, quick links and the
+ * emergency call to action.
  *
- * Widths are capped rather than left to fill the viewport — the prototype
- * is a phone mockup, and its 20px gutters become very long line lengths on
- * a tablet or desktop browser.
+ * Widths are capped rather than left to fill the viewport — the app is
+ * designed phone-first, and its gutters become very long line lengths on a
+ * tablet or desktop browser.
  */
 
-const DIRECTORIES = [
-  { href: '/directory', label: 'Restaurant Directory' },
-  { href: '/medical', label: 'Medical Directory' },
-  { href: '/businesses', label: 'Business Directory' },
-  { href: '/attorneys', label: 'Attorneys Directory' },
-  { href: '/business', label: 'Business Rewards Portal' },
+// Full class strings, because Tailwind only keeps classes it can see as
+// literals.
+const DIRECTORIES: {
+  href: string;
+  label: string;
+  hint: string;
+  icon: LucideIcon;
+  tile: string;
+}[] = [
+  {
+    href: '/directory',
+    label: 'Restaurants',
+    hint: 'Eat & drink',
+    icon: UtensilsCrossed,
+    tile: 'from-[#f6b44b] via-[#ee7d3a] to-[#d9532a]',
+  },
+  {
+    href: '/medical',
+    label: 'Medical',
+    hint: 'Doctors & pharmacies',
+    icon: Stethoscope,
+    tile: 'from-[#ff8f7a] via-[#e5566f] to-[#b8325a]',
+  },
+  {
+    href: '/businesses',
+    label: 'Businesses',
+    hint: 'Shops & services',
+    icon: Store,
+    tile: 'from-[#4cc3dd] via-[#1c8ec4] to-[#155f9c]',
+  },
+  {
+    href: '/accommodation',
+    label: 'Stay',
+    hint: 'Hotels & B&Bs',
+    icon: BedDouble,
+    tile: 'from-[#5fd3b9] via-[#14a38c] to-[#0e6e66]',
+  },
+  {
+    href: '/attorneys',
+    label: 'Attorneys',
+    hint: 'Legal help',
+    icon: Scale,
+    tile: 'from-[#a78bfa] via-[#6d5ce8] to-[#3f36b5]',
+  },
+  {
+    href: '/news',
+    label: 'News',
+    hint: 'Local papers',
+    icon: Newspaper,
+    tile: 'from-[#94a3b8] via-[#5b6b83] to-[#334155]',
+  },
 ];
 
-const QUICK_LINKS: { href: string; label: string; icon: LucideIcon }[] = [
-  { href: '/events', label: 'Events', icon: Calendar },
-  { href: '/weather', label: 'Weather & Tides', icon: CloudSun },
-  { href: '/rewards', label: 'Rewards', icon: Ticket },
-  { href: '/markets', label: 'Markets', icon: ShoppingBasket },
-  { href: '/legal-notices', label: 'Legal Notices', icon: ScrollText },
-  { href: '/community', label: 'Community Wall', icon: Users },
+const QUICK_LINKS: { href: string; label: string; icon: LucideIcon; chip: string }[] = [
+  { href: '/rewards', label: 'Rewards', icon: Ticket, chip: 'bg-amber-100 text-amber-700' },
+  { href: '/weather', label: 'Weather', icon: CloudSun, chip: 'bg-sky-100 text-sky-700' },
+  { href: '/events', label: 'Events', icon: Calendar, chip: 'bg-fuchsia-100 text-fuchsia-700' },
+  { href: '/markets', label: 'Markets', icon: ShoppingBasket, chip: 'bg-lime-100 text-lime-700' },
+  { href: '/nature', label: 'Nature', icon: Leaf, chip: 'bg-emerald-100 text-emerald-700' },
+  { href: '/radio', label: 'Radio', icon: Radio, chip: 'bg-violet-100 text-violet-700' },
+  { href: '/legal-notices', label: 'Notices', icon: ScrollText, chip: 'bg-slate-200 text-slate-700' },
+  { href: '/community', label: 'Community', icon: Users, chip: 'bg-rose-100 text-rose-700' },
 ];
 
 export default function HomePage() {
   return (
-    <div className="font-[family-name:var(--font-jakarta)] bg-white">
+    <div className="font-[family-name:var(--font-jakarta)] max-w-md mx-auto px-4 pt-4 pb-8 space-y-6">
       {/* Hero */}
-      <section className="px-5 pt-7 pb-6 text-center bg-[linear-gradient(170deg,#f0fbfd_0%,#ffffff_100%)] border-b border-[#e5e7eb]">
-        <div className="max-w-md mx-auto">
-          <div className="w-24 h-24 mx-auto mb-3.5 rounded-[22px] overflow-hidden shadow-[0_16px_30px_-14px_rgba(14,116,144,0.7)]">
-            <Image
-              src="/town-hub-logo.jpg"
-              alt="Town Hub — Connect. Discover. Live."
-              width={192}
-              height={192}
-              className="w-full h-full object-cover"
-              // Eager rather than `priority`: priority makes Next inject a
-              // <link rel="preload" href="/town-hub-logo.jpg"> at runtime,
-              // which the export's path rewrite never sees, so inside the
-              // Android app (file://) it points at the device root and
-              // fails — enough for the app shell to show "Couldn't load".
-              loading="eager"
-            />
+      <section className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0a2f5c] via-[#1569a8] to-[#2fb2cf] text-white shadow-[0_24px_48px_-24px_rgba(10,47,92,0.8)]">
+        <div className="absolute -top-20 -right-16 w-64 h-64 rounded-full bg-white/15 blur-3xl drift" aria-hidden="true" />
+        <div className="absolute -bottom-24 -left-10 w-56 h-56 rounded-full bg-cyan-200/25 blur-3xl" aria-hidden="true" />
+        <div className="absolute inset-0 hero-dots opacity-40" aria-hidden="true" />
+
+        <div className="relative px-6 pt-6 pb-16">
+          <div className="flex items-center gap-3">
+            <div className="w-14 h-14 rounded-2xl overflow-hidden ring-2 ring-white/40 shadow-lg flex-none">
+              <Image
+                src="/town-hub-logo.jpg"
+                alt="Town Hub — Connect. Discover. Live."
+                width={112}
+                height={112}
+                className="w-full h-full object-cover"
+                // Eager rather than `priority`: priority makes Next inject a
+                // <link rel="preload" href="/town-hub-logo.jpg"> at runtime,
+                // which the export's path rewrite never sees, so inside the
+                // Android app (file://) it points at the device root and
+                // fails — enough for the app shell to show "Couldn't load".
+                loading="eager"
+              />
+            </div>
+            <div>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/70">
+                Garden Route
+              </p>
+              <p className="text-lg font-bold leading-tight">
+                <Greeting />
+              </p>
+            </div>
           </div>
 
-          <h1 className="text-[27px] font-extrabold tracking-[-0.03em] leading-[1.15] text-[#1f2937]">
-            Your town, on one screen
+          <h1 className="mt-6 text-[30px] font-extrabold tracking-[-0.03em] leading-[1.08] text-balance">
+            Your town, <span className="text-[#ffd27a]">on one screen.</span>
           </h1>
-          <p className="mt-2 text-sm text-[#6b7280] text-pretty">
-            Directories, news, weather, tides and emergency numbers for the
-            Garden Route.
+          <p className="mt-2.5 text-[14.5px] leading-relaxed text-white/85 text-pretty">
+            Places to eat and stay, doctors, news, weather, tides, rewards and emergency numbers —
+            from Witsand to Storms River.
           </p>
-
-          <div className="mt-5 flex flex-col gap-[9px]">
-            {DIRECTORIES.map(({ href, label }) => (
-              <a
-                key={href}
-                href={href}
-                className="px-[18px] py-[13px] rounded-full bg-[#0e7490] text-white text-[14.5px] font-bold shadow-[0_10px_20px_-12px_rgba(14,116,144,0.9)] transition-all duration-150 hover:brightness-110 active:scale-[0.98]"
-              >
-                {label}
-              </a>
-            ))}
-          </div>
         </div>
+
+        {/* Waves */}
+        <svg className="absolute bottom-0 left-0 w-full h-10 text-white/20" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+          <path fill="currentColor" d="M0,48 C180,80 360,16 540,32 C720,48 900,80 1080,56 C1260,32 1350,40 1440,48 L1440,80 L0,80 Z" />
+        </svg>
+        <svg className="absolute bottom-0 left-0 w-full h-6 text-white/30" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true">
+          <path fill="currentColor" d="M0,56 C240,24 480,72 720,52 C960,32 1200,64 1440,40 L1440,80 L0,80 Z" />
+        </svg>
       </section>
 
-      <div className="max-w-md mx-auto">
+      {/* Directories */}
+      <section>
+        <SectionTitle>Explore</SectionTitle>
+        <div className="grid grid-cols-2 gap-3">
+          {DIRECTORIES.map(({ href, label, hint, icon: Icon, tile }, i) => (
+            <a
+              key={href}
+              href={href}
+              style={{ ['--i' as string]: i }}
+              className={`rise-in group relative overflow-hidden rounded-2xl bg-gradient-to-br ${tile} p-4 h-[112px] text-white shadow-[0_14px_26px_-16px_rgba(15,23,42,0.6)] transition-transform duration-200 active:scale-[0.97] hover:-translate-y-0.5`}
+            >
+              <Icon
+                className="absolute -right-3 -bottom-3 w-20 h-20 text-white/15 transition-transform duration-300 group-hover:scale-110 group-hover:-rotate-6"
+                strokeWidth={1.5}
+                aria-hidden="true"
+              />
+              <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/20 backdrop-blur ring-1 ring-white/25">
+                <Icon className="w-[18px] h-[18px]" aria-hidden="true" />
+              </span>
+              <span className="block mt-3 text-[15px] font-bold leading-tight">{label}</span>
+              <span className="block text-[11.5px] text-white/80">{hint}</span>
+            </a>
+          ))}
+        </div>
+
+        {/* Featured: the rewards portal for businesses. */}
+        <a
+          href="/business"
+          className="rise-in mt-3 flex items-center gap-4 rounded-2xl bg-gradient-to-r from-[#14321f] via-[#2f6b3a] to-[#7a9a2e] p-4 text-white shadow-[0_14px_26px_-16px_rgba(20,50,31,0.8)] active:scale-[0.98] transition-transform"
+          style={{ ['--i' as string]: DIRECTORIES.length }}
+        >
+          <span className="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-[#ffd27a] text-[#14321f] flex-none shadow-md">
+            <BadgeCheck className="w-6 h-6" aria-hidden="true" />
+          </span>
+          <span className="flex-1 min-w-0">
+            <span className="block text-[15px] font-bold">Business Rewards Portal</span>
+            <span className="block text-[12px] text-white/80">
+              For Town Hub advertisers — run loyalty rewards and redeem vouchers.
+            </span>
+          </span>
+          <ArrowRight className="w-5 h-5 text-white/80 flex-none" aria-hidden="true" />
+        </a>
+      </section>
+
+      {/* Partners */}
+      <section className="rounded-3xl bg-white/80 backdrop-blur shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] overflow-hidden">
         <AdvertCarousel />
-      </div>
+      </section>
 
       {/* Quick links */}
-      <section className="px-5 pt-4 pb-6 border-t border-[#e5e7eb] bg-white">
-        <div className="max-w-md mx-auto">
-          <h2 className="mb-2.5 text-[13px] font-bold uppercase tracking-[0.1em] text-[#6b7280]">
-            Quick links
-          </h2>
-          <div className="grid grid-cols-2 gap-2">
-            {QUICK_LINKS.map(({ href, label, icon: Icon }) => (
-              <a
-                key={href}
-                href={href}
-                className="flex items-center gap-2 px-3 py-[11px] rounded-xl border border-[#e5e7eb] bg-white text-[13px] font-semibold text-[#1f2937] transition-all duration-150 hover:bg-[#f9fafb] hover:border-[#0e7490] active:scale-[0.98]"
-              >
-                <Icon
-                  className="w-[15px] h-[15px] flex-none text-[#0e7490]"
-                  aria-hidden="true"
-                />
-                {label}
-              </a>
-            ))}
-          </div>
-
-          <a
-            href="/sos"
-            className="mt-3 w-full flex items-center justify-center gap-2.5 p-3.5 rounded-[14px] bg-[#dc2626] text-white text-[15px] font-extrabold tracking-[0.04em] shadow-[0_12px_22px_-12px_rgba(220,38,38,0.9)] transition-all duration-150 hover:brightness-110 active:scale-[0.98]"
-          >
-            <Siren className="w-[18px] h-[18px]" aria-hidden="true" />
-            Emergency SOS
-          </a>
+      <section>
+        <SectionTitle>Quick links</SectionTitle>
+        <div className="grid grid-cols-4 gap-2.5">
+          {QUICK_LINKS.map(({ href, label, icon: Icon, chip }, i) => (
+            <a
+              key={href}
+              href={href}
+              style={{ ['--i' as string]: i }}
+              className="rise-in flex flex-col items-center gap-1.5 rounded-2xl bg-white/85 backdrop-blur py-3 px-1 shadow-[0_8px_18px_-14px_rgba(15,23,42,0.5)] ring-1 ring-white/70 transition-transform active:scale-[0.95] hover:-translate-y-0.5"
+            >
+              <span className={`inline-flex items-center justify-center w-10 h-10 rounded-xl ${chip}`}>
+                <Icon className="w-5 h-5" aria-hidden="true" />
+              </span>
+              <span className="text-[11.5px] font-semibold text-[#1f2937] text-center leading-tight">{label}</span>
+            </a>
+          ))}
         </div>
       </section>
+
+      {/* Emergency */}
+      <a
+        href="/sos"
+        className="relative flex items-center gap-4 overflow-hidden rounded-3xl bg-gradient-to-r from-[#b91c1c] via-[#dc2626] to-[#f2643d] p-5 text-white shadow-[0_18px_34px_-18px_rgba(220,38,38,0.95)] active:scale-[0.98] transition-transform"
+      >
+        <span className="relative flex-none">
+          <span className="absolute inset-0 rounded-full bg-white/40 animate-ping" aria-hidden="true" />
+          <span className="relative inline-flex items-center justify-center w-12 h-12 rounded-full bg-white text-[#dc2626] shadow-lg">
+            <Siren className="w-6 h-6" aria-hidden="true" />
+          </span>
+        </span>
+        <span className="flex-1">
+          <span className="block text-lg font-extrabold tracking-wide">Emergency SOS</span>
+          <span className="block text-[12.5px] text-white/85">Police, ambulance, fire and sea rescue — one tap to call.</span>
+        </span>
+        <ArrowRight className="w-5 h-5 text-white/85 flex-none" aria-hidden="true" />
+      </a>
     </div>
+  );
+}
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <h2 className="mb-3 flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0f3d5e]">
+      <span className="w-6 h-[3px] rounded-full bg-gradient-to-r from-[#1c6cb8] to-[#2fb2cf]" aria-hidden="true" />
+      {children}
+    </h2>
   );
 }

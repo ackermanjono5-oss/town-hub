@@ -1,3 +1,4 @@
+
 const SECTIONS: { title: string; body: React.ReactNode }[] = [
   {
     title: '1. Respect, Kindness & Zero Tolerance for Hate Speech',
@@ -369,15 +370,14 @@ const SECTIONS: { title: string; body: React.ReactNode }[] = [
 export default function GuidelinesPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">TownHub Coast Connect</h1>
-        <h2 className="text-lg font-semibold text-muted-foreground mb-1">
-          Official Community Wall Guidelines &amp; Rules
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          Connecting Communities from all small towns on the Garden Route and more!
-        </p>
-      </div>
+      <PageHero
+        title="Community Guidelines"
+        subtitle="Official Community Wall Guidelines & Rules — connecting communities from all small towns on the Garden Route and more!"
+        icon={HeroIcon}
+        theme="lagoon"
+        eyebrow="TownHub Coast Connect"
+        className="mb-8"
+      />
 
       <div className="space-y-4 text-sm text-foreground mb-8">
         <p>
@@ -416,3 +416,6 @@ export default function GuidelinesPage() {
     </div>
   );
 }
+import PageHero from '@/components/PageHero';
+import { BookOpen as HeroIcon } from 'lucide-react';
+

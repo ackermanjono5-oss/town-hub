@@ -1,12 +1,14 @@
+
 export default function SocialPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2">Social Feeds</h1>
-        <p className="text-muted-foreground">
-          See what the Garden Route community is sharing
-        </p>
-      </div>
+      <PageHero
+        title="Social Feeds"
+        subtitle="See what the Garden Route community is sharing"
+        icon={HeroIcon}
+        theme="coral"
+        className="mb-8"
+      />
 
       <div className="grid grid-cols-1 gap-4">
         <div className="p-5 rounded-lg border border-border hover:border-primary card-lift bg-background">
@@ -29,3 +31,6 @@ export default function SocialPage() {
     </div>
   );
 }
+import PageHero from '@/components/PageHero';
+import { Share2 as HeroIcon } from 'lucide-react';
+

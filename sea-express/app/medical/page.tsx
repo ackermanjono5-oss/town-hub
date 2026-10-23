@@ -154,13 +154,13 @@ export default function MedicalPage() {
       {/* ---------------------------------------------------------------- */}
       {/* Hero                                                              */}
       {/* ---------------------------------------------------------------- */}
-      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#0a2f5c] via-[#1c6cb8] to-[#31a8c9] text-white shadow-xl">
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-[#6b1235] via-[#d4416a] to-[#ff8f7a] text-white shadow-xl">
         <div
           className="absolute -top-20 -right-16 w-64 h-64 rounded-full bg-white/10 blur-2xl"
           aria-hidden="true"
         />
         <div
-          className="absolute -bottom-24 -left-10 w-56 h-56 rounded-full bg-cyan-300/20 blur-2xl"
+          className="absolute -bottom-24 -left-10 w-56 h-56 rounded-full bg-white/15 blur-2xl"
           aria-hidden="true"
         />
 

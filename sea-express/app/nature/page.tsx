@@ -1,8 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { Leaf, MapPin, Clock } from 'lucide-react';
+import { MapPin, Clock } from 'lucide-react';
 import { NATURE_ARTICLES } from '@/lib/garden-route/nature';
+import PageHero from '@/components/PageHero';
+import { Leaf as HeroIcon } from 'lucide-react';
 
 export default function NaturePage() {
   const [tab, setTab] = useState<'trails' | 'dyk'>('trails');
@@ -10,13 +12,13 @@ export default function NaturePage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-2 flex items-center gap-3">
-          <Leaf className="w-9 h-9 text-primary" aria-hidden="true" />
-          Nature &amp; Blog
-        </h1>
-        <p className="text-muted-foreground">Garden Route trails, reserves and stories</p>
-      </div>
+      <PageHero
+        title="Nature & Blog"
+        subtitle="Garden Route trails, reserves and stories"
+        icon={HeroIcon}
+        theme="forest"
+        className="mb-8"
+      />
 
       <div className="flex gap-1 mb-6 border-b">
         <button
