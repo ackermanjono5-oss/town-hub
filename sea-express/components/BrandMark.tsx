@@ -34,7 +34,7 @@ const MONOGRAM_COLORS = [
   'from-indigo-400 to-indigo-600',
   'from-violet-400 to-violet-600',
   'from-fuchsia-400 to-fuchsia-600',
-  'from-slate-500 to-slate-700',
+  'from-[#64748b] to-[#334155]',
 ];
 
 /** Direction varies too, so neighbouring cards in the same hue differ. */

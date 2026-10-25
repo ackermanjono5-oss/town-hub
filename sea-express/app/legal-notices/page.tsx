@@ -89,7 +89,7 @@ export default function LegalNoticesPage() {
           <div className="mt-6 flex flex-wrap gap-3">
             <a
               href={`mailto:${SUBMIT_EMAIL}?subject=${encodeURIComponent('Legal notice for publication')}`}
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white text-slate-900 font-semibold shadow-lg shadow-black/20 hover:bg-slate-100 active:scale-95 transition"
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white text-[#0f172a] font-semibold shadow-lg shadow-black/20 hover:bg-[#f1f5f9] active:scale-95 transition"
             >
               <Mail className="w-5 h-5" aria-hidden="true" />
               Submit a notice
@@ -105,7 +105,7 @@ export default function LegalNoticesPage() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-2xl bg-white/85 backdrop-blur border border-white/60 shadow-lg p-4 sm:p-5">
+      <section className="mt-6 rounded-2xl bg-card/85 backdrop-blur border border-white/60 dark:border-white/10 shadow-lg p-4 sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
           Notice type
         </p>
@@ -123,7 +123,7 @@ export default function LegalNoticesPage() {
                   'inline-flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition active:scale-95',
                   selected
                     ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100',
+                    : 'bg-card text-slate-600 border-slate-200 hover:bg-slate-100',
                 ].join(' ')}
               >
                 <Icon className="w-4 h-4" aria-hidden="true" />
@@ -151,7 +151,7 @@ export default function LegalNoticesPage() {
         ) : notices === null ? (
           <p className="text-sm text-slate-500 text-center py-12">Loading notices…</p>
         ) : visible.length === 0 ? (
-          <div className="rounded-2xl bg-white/80 border border-white/60 p-8 text-center shadow">
+          <div className="rounded-2xl bg-card/80 border border-white/60 dark:border-white/10 p-8 text-center shadow">
             {(() => {
               const Icon = CATEGORY_ICON[category];
               return <Icon className="w-8 h-8 mx-auto text-slate-300" aria-hidden="true" />;
@@ -190,7 +190,7 @@ export default function LegalNoticesPage() {
 
 function NoticeCard({ notice }: { notice: LegalNotice }) {
   return (
-    <article className="rounded-2xl bg-white shadow-md border border-slate-200/70 p-5">
+    <article className="rounded-2xl bg-card shadow-md border border-slate-200/70 p-5">
       <p className="text-xs text-slate-500">Published {formatDate(notice.published_on)}</p>
       <h2 className="mt-1 text-lg font-semibold text-slate-900">{notice.title}</h2>
 
@@ -208,7 +208,7 @@ function NoticeCard({ notice }: { notice: LegalNotice }) {
           </span>
         )}
         {notice.closes_on && (
-          <span className="inline-flex items-center gap-1.5 font-medium text-amber-700">
+          <span className="inline-flex items-center gap-1.5 font-medium text-amber-700 dark:text-amber-300">
             <CalendarClock className="w-4 h-4" aria-hidden="true" />
             Closes {formatDate(notice.closes_on)}
           </span>

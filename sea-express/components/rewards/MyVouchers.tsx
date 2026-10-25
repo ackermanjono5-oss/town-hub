@@ -14,9 +14,9 @@ function voucherState(v: RedemptionToken, now = Date.now()): VoucherState {
 }
 
 const STATE_STYLES: Record<VoucherState, string> = {
-  Active: 'bg-emerald-100 text-emerald-800',
+  Active: 'bg-emerald-100 dark:bg-emerald-400/15 text-emerald-800 dark:text-emerald-300',
   Redeemed: 'bg-slate-200 text-slate-700',
-  Expired: 'bg-rose-100 text-rose-800',
+  Expired: 'bg-rose-100 dark:bg-rose-400/15 text-rose-800 dark:text-rose-300',
 };
 
 /** The member's vouchers and what happened to each, newest first. */

@@ -93,7 +93,7 @@ function Tile({
       className={`rise-in group flex items-center gap-4 p-5 rounded-2xl transition-transform active:scale-[0.98] hover:-translate-y-0.5 ${
         primary
           ? `bg-gradient-to-r ${gradient} text-white shadow-[0_16px_30px_-16px_rgba(224,102,43,0.9)]`
-          : 'bg-white/90 backdrop-blur ring-1 ring-white/70 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.5)]'
+          : 'bg-card/90 backdrop-blur ring-1 ring-white/70 dark:ring-white/10 shadow-[0_10px_24px_-18px_rgba(15,23,42,0.5)]'
       }`}
     >
       <span

@@ -46,13 +46,13 @@ const CATEGORY_META: Record<EventCategory, { icon: LucideIcon; accent: Accent }>
 
 // Full class strings — Tailwind only keeps classes it can see as literals.
 const ACCENT_CLASSES: Record<Accent, { badge: string; chip: string; bar: string }> = {
-  rose: { badge: 'bg-rose-100 text-rose-700', chip: 'bg-rose-600 text-white border-rose-600', bar: 'bg-rose-500' },
-  emerald: { badge: 'bg-emerald-100 text-emerald-700', chip: 'bg-emerald-600 text-white border-emerald-600', bar: 'bg-emerald-500' },
-  sky: { badge: 'bg-sky-100 text-sky-700', chip: 'bg-sky-600 text-white border-sky-600', bar: 'bg-sky-500' },
-  violet: { badge: 'bg-violet-100 text-violet-700', chip: 'bg-violet-600 text-white border-violet-600', bar: 'bg-violet-500' },
-  amber: { badge: 'bg-amber-100 text-amber-700', chip: 'bg-amber-600 text-white border-amber-600', bar: 'bg-amber-500' },
-  teal: { badge: 'bg-teal-100 text-teal-700', chip: 'bg-teal-600 text-white border-teal-600', bar: 'bg-teal-500' },
-  fuchsia: { badge: 'bg-fuchsia-100 text-fuchsia-700', chip: 'bg-fuchsia-600 text-white border-fuchsia-600', bar: 'bg-fuchsia-500' },
+  rose: { badge: 'bg-rose-100 dark:bg-rose-400/15 text-rose-700 dark:text-rose-300', chip: 'bg-rose-600 text-white border-rose-600', bar: 'bg-rose-500' },
+  emerald: { badge: 'bg-emerald-100 dark:bg-emerald-400/15 text-emerald-700 dark:text-emerald-300', chip: 'bg-emerald-600 text-white border-emerald-600', bar: 'bg-emerald-500' },
+  sky: { badge: 'bg-sky-100 dark:bg-sky-400/15 text-sky-700 dark:text-sky-300', chip: 'bg-sky-600 text-white border-sky-600', bar: 'bg-sky-500' },
+  violet: { badge: 'bg-violet-100 dark:bg-violet-400/15 text-violet-700 dark:text-violet-300', chip: 'bg-violet-600 text-white border-violet-600', bar: 'bg-violet-500' },
+  amber: { badge: 'bg-amber-100 dark:bg-amber-400/15 text-amber-700 dark:text-amber-300', chip: 'bg-amber-600 text-white border-amber-600', bar: 'bg-amber-500' },
+  teal: { badge: 'bg-teal-100 dark:bg-teal-400/15 text-teal-700 dark:text-teal-300', chip: 'bg-teal-600 text-white border-teal-600', bar: 'bg-teal-500' },
+  fuchsia: { badge: 'bg-fuchsia-100 dark:bg-fuchsia-400/15 text-fuchsia-700 dark:text-fuchsia-300', chip: 'bg-fuchsia-600 text-white border-fuchsia-600', bar: 'bg-fuchsia-500' },
 };
 
 const ACTION =
@@ -125,7 +125,7 @@ export default function EventsPage() {
       </section>
 
       {/* Filters */}
-      <section className="mt-6 rounded-2xl bg-white/85 backdrop-blur border border-white/60 shadow-lg p-4 sm:p-5">
+      <section className="mt-6 rounded-2xl bg-card/85 backdrop-blur border border-white/60 dark:border-white/10 shadow-lg p-4 sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Town</p>
         <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 [scrollbar-width:thin]">
           {[{ slug: 'all', label: 'All towns' }, ...TOWNS].map((t) => {
@@ -140,7 +140,7 @@ export default function EventsPage() {
                   'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition active:scale-95',
                   active
                     ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100',
+                    : 'bg-card text-slate-600 border-slate-200 hover:bg-slate-100',
                 ].join(' ')}
               >
                 {t.label}
@@ -195,7 +195,7 @@ export default function EventsPage() {
       </div>
 
       {events.length === 0 ? (
-        <div className="mt-4 rounded-2xl bg-white/80 border border-white/60 p-8 text-center shadow">
+        <div className="mt-4 rounded-2xl bg-card/80 border border-white/60 dark:border-white/10 p-8 text-center shadow">
           <Calendar className="w-8 h-8 mx-auto text-slate-300" aria-hidden="true" />
           <p className="mt-3 font-medium text-slate-700">
             {town === 'all'
@@ -256,7 +256,7 @@ function CategoryChip({
       aria-pressed={active}
       className={[
         'inline-flex items-center gap-1.5 pl-3 pr-2 py-1.5 rounded-full text-sm font-medium border transition active:scale-95',
-        active ? `${activeClass} shadow-sm` : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100',
+        active ? `${activeClass} shadow-sm` : 'bg-card text-slate-600 border-slate-200 hover:bg-slate-100',
       ].join(' ')}
     >
       {Icon && <Icon className="w-3.5 h-3.5" aria-hidden="true" />}
@@ -287,7 +287,7 @@ function StatusPill({ event }: { event: Event }) {
   }
   if (status === 'upcoming' && days !== null) {
     return (
-      <span className="px-2.5 py-1 rounded-full bg-sky-100 text-sky-700 text-[11px] font-bold uppercase tracking-wide">
+      <span className="px-2.5 py-1 rounded-full bg-sky-100 dark:bg-sky-400/15 text-sky-700 dark:text-sky-300 text-[11px] font-bold uppercase tracking-wide">
         In {days} {days === 1 ? 'day' : 'days'}
       </span>
     );
@@ -312,7 +312,7 @@ function EventCard({ event }: { event: Event }) {
   const calendarUrl = getAddToCalendarUrl(event);
 
   return (
-    <article className="group relative flex flex-col rounded-2xl bg-white shadow-md hover:shadow-xl border border-slate-200/70 overflow-hidden card-lift">
+    <article className="group relative flex flex-col rounded-2xl bg-card shadow-md hover:shadow-xl border border-slate-200/70 overflow-hidden card-lift">
       <span className={`absolute left-0 top-0 h-full w-1 ${classes.bar}`} aria-hidden="true" />
 
       <DirectoryPhoto src={event.image} alt={event.name} />
@@ -327,7 +327,7 @@ function EventCard({ event }: { event: Event }) {
               <h3 className="font-bold text-lg text-slate-900 leading-snug">{event.name}</h3>
               {event.verified && (
                 <BadgeCheck
-                  className="w-4 h-4 mt-1 flex-shrink-0 text-sky-600"
+                  className="w-4 h-4 mt-1 flex-shrink-0 text-sky-600 dark:text-sky-400"
                   aria-label="Dates confirmed on the organiser's website"
                 />
               )}

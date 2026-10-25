@@ -18,10 +18,10 @@ const INPUT =
   'px-3 py-2 rounded-md border border-border bg-background focus:outline-none focus:ring-2 focus:ring-primary';
 
 const APPROVAL_STYLES: Record<ApprovalStatus, string> = {
-  pending: 'bg-sky-100 text-sky-800',
-  approved: 'bg-emerald-100 text-emerald-800',
-  denied: 'bg-rose-100 text-rose-800',
-  suspended: 'bg-amber-100 text-amber-800',
+  pending: 'bg-sky-100 dark:bg-sky-400/15 text-sky-800 dark:text-sky-300',
+  approved: 'bg-emerald-100 dark:bg-emerald-400/15 text-emerald-800 dark:text-emerald-300',
+  denied: 'bg-rose-100 dark:bg-rose-400/15 text-rose-800 dark:text-rose-300',
+  suspended: 'bg-amber-100 dark:bg-amber-400/15 text-amber-800 dark:text-amber-300',
 };
 
 const ADVERTISER_LABELS: Record<AdvertiserStatus, string> = {
@@ -134,7 +134,7 @@ export default function AdminBusinessesPage() {
                     {b.approval_status}
                   </span>
                 )}
-                <span className={`text-xs ${isBusinessEligible(b) ? 'text-emerald-700' : 'text-muted-foreground'}`}>
+                <span className={`text-xs ${isBusinessEligible(b) ? 'text-emerald-700 dark:text-emerald-300' : 'text-muted-foreground'}`}>
                   {isBusinessEligible(b) ? 'Rewards active' : 'Rewards inactive'}
                 </span>
               </div>
@@ -230,7 +230,7 @@ function ApplicationCard({
   ];
 
   return (
-    <div className="p-4 rounded-lg border-2 border-sky-200 bg-background space-y-3">
+    <div className="p-4 rounded-lg border-2 border-sky-200 dark:border-sky-400/30 bg-background space-y-3">
       <p className="font-semibold">{b.trading_name || b.registered_name || b.name}</p>
       <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
         {rows.map(([label, value]) => (

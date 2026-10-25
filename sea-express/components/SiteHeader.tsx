@@ -102,9 +102,9 @@ export default function SiteHeader() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 bg-white border-b border-[#e5e7eb] font-[family-name:var(--font-jakarta)]">
+    <header className="sticky top-0 z-50 bg-card border-b border-hairline font-[family-name:var(--font-jakarta)]">
       <div className="max-w-5xl mx-auto">
-        <div className="flex items-center justify-between px-[18px] pt-1 pb-2.5 border-b border-[#e5e7eb]">
+        <div className="flex items-center justify-between px-[18px] pt-1 pb-2.5 border-b border-hairline">
           <div className="flex min-w-0 items-center gap-2.5">
             <a href="/" className="flex-none transition-transform duration-200 active:scale-95">
               <Image
@@ -119,7 +119,7 @@ export default function SiteHeader() {
           </div>
           <a
             href={signedIn ? '/profile' : '/login'}
-            className="flex flex-none items-center gap-1.5 whitespace-nowrap px-[15px] py-[7px] rounded-full border border-[#e5e7eb] bg-white text-[12.5px] font-semibold text-[#1f2937] transition-all duration-150 hover:bg-[#f9fafb] active:scale-95"
+            className="flex flex-none items-center gap-1.5 whitespace-nowrap px-[15px] py-[7px] rounded-full border border-hairline bg-card text-[12.5px] font-semibold text-ink transition-all duration-150 hover:bg-card-hover active:scale-95"
           >
             {signedIn ? (
               <Avatar
@@ -158,7 +158,7 @@ export default function SiteHeader() {
                   'transition-all duration-150 ease-out active:scale-95',
                   isActive
                     ? 'bg-[#0e7490] text-white border-[#0e7490] shadow-[0_6px_14px_-8px_rgba(14,116,144,0.9)]'
-                    : 'bg-white text-[#1f2937] border-[#e5e7eb] hover:bg-[#f9fafb]',
+                    : 'bg-card text-ink border-hairline hover:bg-card-hover',
                 ].join(' ')}
               >
                 <Icon className="w-3.5 h-3.5" aria-hidden="true" />

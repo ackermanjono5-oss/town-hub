@@ -52,8 +52,8 @@ export default function RewardsGate({ children }: { children: React.ReactNode })
 
   if (state === 'signed-out') {
     return (
-      <div className="relative overflow-hidden rounded-3xl bg-white/85 backdrop-blur px-6 py-10 text-center shadow-[0_14px_34px_-20px_rgba(15,23,42,0.45)] ring-1 ring-white/70">
-        <div className="absolute -top-16 -left-10 w-48 h-48 rounded-full bg-amber-200/50 blur-3xl" aria-hidden="true" />
+      <div className="relative overflow-hidden rounded-3xl bg-card/85 backdrop-blur px-6 py-10 text-center shadow-[0_14px_34px_-20px_rgba(15,23,42,0.45)] ring-1 ring-white/70 dark:ring-white/10">
+        <div className="absolute -top-16 -left-10 w-48 h-48 rounded-full bg-amber-200/50 dark:bg-amber-400/15 blur-3xl" aria-hidden="true" />
         {/* A little fan of coupons. */}
         <div className="relative mx-auto mb-6 h-20 w-40" aria-hidden="true">
           <span className="absolute left-2 top-3 h-14 w-24 rounded-xl bg-gradient-to-br from-[#a78bfa] to-[#3f36b5] rotate-[-14deg] shadow-md" />

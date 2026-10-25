@@ -44,7 +44,7 @@ export default function PropertyPage() {
       </section>
 
       {/* Town picker */}
-      <section className="mt-6 rounded-2xl bg-white/85 backdrop-blur border border-white/60 shadow-lg p-4 sm:p-5">
+      <section className="mt-6 rounded-2xl bg-card/85 backdrop-blur border border-white/60 dark:border-white/10 shadow-lg p-4 sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
           Find offices in
         </p>
@@ -61,7 +61,7 @@ export default function PropertyPage() {
                   'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition active:scale-95',
                   active
                     ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100',
+                    : 'bg-card text-slate-600 border-slate-200 hover:bg-slate-100',
                 ].join(' ')}
               >
                 {t.label}
@@ -87,7 +87,7 @@ export default function PropertyPage() {
       </div>
 
       {/* Searching for a home */}
-      <section className="mt-8 rounded-2xl bg-white/85 backdrop-blur border border-white/60 shadow-lg p-6 text-center">
+      <section className="mt-8 rounded-2xl bg-card/85 backdrop-blur border border-white/60 dark:border-white/10 shadow-lg p-6 text-center">
         <Home className="w-8 h-8 mx-auto text-primary" aria-hidden="true" />
         <p className="mt-3 font-semibold text-slate-800">Looking for a specific property?</p>
         <p className="mt-1 text-sm text-slate-600 max-w-lg mx-auto">
@@ -127,7 +127,7 @@ function AgencyCard({
   townLabel?: string;
 }) {
   return (
-    <article className="group relative flex flex-col rounded-2xl bg-white shadow-md hover:shadow-xl border border-slate-200/70 overflow-hidden card-lift">
+    <article className="group relative flex flex-col rounded-2xl bg-card shadow-md hover:shadow-xl border border-slate-200/70 overflow-hidden card-lift">
       <span className="absolute left-0 top-0 h-full w-1 bg-primary" aria-hidden="true" />
 
       <div className="p-5 pl-6 flex flex-col flex-1">

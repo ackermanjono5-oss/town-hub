@@ -127,7 +127,7 @@ export default function AttorneysPage() {
         </div>
       </section>
 
-      <section className="mt-6 rounded-2xl bg-white/85 backdrop-blur border border-white/60 shadow-lg p-4 sm:p-5">
+      <section className="mt-6 rounded-2xl bg-card/85 backdrop-blur border border-white/60 dark:border-white/10 shadow-lg p-4 sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">
           Town
         </p>
@@ -146,8 +146,8 @@ export default function AttorneysPage() {
                   active
                     ? 'bg-primary text-primary-foreground border-primary shadow-sm'
                     : n > 0
-                      ? 'bg-white text-slate-700 border-slate-200 hover:bg-slate-100'
-                      : 'bg-white text-slate-400 border-slate-200 hover:bg-slate-100',
+                      ? 'bg-card text-slate-700 border-slate-200 hover:bg-slate-100'
+                      : 'bg-card text-slate-400 border-slate-200 hover:bg-slate-100',
                 ].join(' ')}
               >
                 {t.label}
@@ -168,7 +168,7 @@ export default function AttorneysPage() {
               placeholder={`Search attorneys in ${townLabel}…`}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-card text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
         )}
@@ -191,7 +191,7 @@ export default function AttorneysPage() {
                       'inline-flex items-center gap-1.5 pl-3 pr-2 py-1.5 rounded-full text-sm font-medium border transition active:scale-95',
                       active
                         ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                        : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100',
+                        : 'bg-card text-slate-600 border-slate-200 hover:bg-slate-100',
                     ].join(' ')}
                   >
                     {label}
@@ -212,7 +212,7 @@ export default function AttorneysPage() {
       </section>
 
       {inTown.length === 0 ? (
-        <div className="mt-6 rounded-2xl bg-white/80 border border-white/60 p-8 text-center shadow">
+        <div className="mt-6 rounded-2xl bg-card/80 border border-white/60 dark:border-white/10 p-8 text-center shadow">
           <Scale className="w-8 h-8 mx-auto text-slate-300" aria-hidden="true" />
           <p className="mt-3 font-medium text-slate-700">
             No attorneys listed in {townLabel} yet
@@ -254,7 +254,7 @@ export default function AttorneysPage() {
           </div>
 
           {attorneys.length === 0 ? (
-            <div className="mt-4 rounded-2xl bg-white/80 border border-white/60 p-8 text-center shadow">
+            <div className="mt-4 rounded-2xl bg-card/80 border border-white/60 dark:border-white/10 p-8 text-center shadow">
               <p className="font-medium text-slate-700">No matches</p>
               <p className="mt-1 text-sm text-slate-500">
                 Try a different search or clear the service filter.
@@ -289,7 +289,7 @@ function AttorneyCard({ attorney, townLabel }: { attorney: Attorney; townLabel: 
   const logo = getAttorneyLogo(attorney.website);
 
   return (
-    <article className="group relative flex flex-col rounded-2xl bg-white shadow-md hover:shadow-xl border border-slate-200/70 overflow-hidden card-lift">
+    <article className="group relative flex flex-col rounded-2xl bg-card shadow-md hover:shadow-xl border border-slate-200/70 overflow-hidden card-lift">
       <span className="absolute left-0 top-0 h-full w-1 bg-indigo-500" aria-hidden="true" />
 
       <div className="p-5 pl-6 flex flex-col flex-1">
@@ -305,7 +305,7 @@ function AttorneyCard({ attorney, townLabel }: { attorney: Attorney; townLabel: 
           <h3 className="font-semibold text-slate-900 leading-snug">{attorney.name}</h3>
           {attorney.verified && (
             <BadgeCheck
-              className="w-4 h-4 mt-0.5 flex-shrink-0 text-indigo-600"
+              className="w-4 h-4 mt-0.5 flex-shrink-0 text-indigo-600 dark:text-indigo-400"
               aria-label="Checked against the firm's own website"
             />
           )}
@@ -316,7 +316,7 @@ function AttorneyCard({ attorney, townLabel }: { attorney: Attorney; townLabel: 
             {attorney.services.map((s) => (
               <span
                 key={s}
-                className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 text-indigo-700"
+                className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-indigo-50 dark:bg-indigo-400/10 text-indigo-700 dark:text-indigo-300"
               >
                 {s}
               </span>

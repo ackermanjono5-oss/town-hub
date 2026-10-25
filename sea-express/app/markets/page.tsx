@@ -31,10 +31,10 @@ const DEFAULT_META = { icon: ShoppingBasket, accent: 'slate' as Accent };
 
 // Full class strings — Tailwind only keeps classes it can see as literals.
 const ACCENT_CLASSES: Record<Accent, { badge: string; chip: string; bar: string }> = {
-  emerald: { badge: 'bg-emerald-100 text-emerald-700', chip: 'bg-emerald-600 text-white border-emerald-600', bar: 'bg-emerald-500' },
-  amber: { badge: 'bg-amber-100 text-amber-700', chip: 'bg-amber-600 text-white border-amber-600', bar: 'bg-amber-500' },
-  fuchsia: { badge: 'bg-fuchsia-100 text-fuchsia-700', chip: 'bg-fuchsia-600 text-white border-fuchsia-600', bar: 'bg-fuchsia-500' },
-  slate: { badge: 'bg-slate-200 text-slate-700', chip: 'bg-slate-700 text-white border-slate-700', bar: 'bg-slate-500' },
+  emerald: { badge: 'bg-emerald-100 dark:bg-emerald-400/15 text-emerald-700 dark:text-emerald-300', chip: 'bg-emerald-600 text-white border-emerald-600', bar: 'bg-emerald-500' },
+  amber: { badge: 'bg-amber-100 dark:bg-amber-400/15 text-amber-700 dark:text-amber-300', chip: 'bg-amber-600 text-white border-amber-600', bar: 'bg-amber-500' },
+  fuchsia: { badge: 'bg-fuchsia-100 dark:bg-fuchsia-400/15 text-fuchsia-700 dark:text-fuchsia-300', chip: 'bg-fuchsia-600 text-white border-fuchsia-600', bar: 'bg-fuchsia-500' },
+  slate: { badge: 'bg-slate-200 text-slate-700', chip: 'bg-[#334155] dark:bg-[#3e5a78] text-white border-[#334155] dark:border-[#3e5a78]', bar: 'bg-[#64748b]' },
 };
 
 const ACTION =
@@ -96,7 +96,7 @@ export default function MarketsPage() {
       </section>
 
       {/* Filters */}
-      <section className="mt-6 rounded-2xl bg-white/85 backdrop-blur border border-white/60 shadow-lg p-4 sm:p-5">
+      <section className="mt-6 rounded-2xl bg-card/85 backdrop-blur border border-white/60 dark:border-white/10 shadow-lg p-4 sm:p-5">
         <p className="text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">Town</p>
         <div className="flex gap-2 overflow-x-auto pb-1 -mx-1 px-1 [scrollbar-width:thin]">
           {[{ slug: 'all', label: 'All towns' }, ...TOWNS].map((t) => {
@@ -111,7 +111,7 @@ export default function MarketsPage() {
                   'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border transition active:scale-95',
                   active
                     ? 'bg-primary text-primary-foreground border-primary shadow-sm'
-                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100',
+                    : 'bg-card text-slate-600 border-slate-200 hover:bg-slate-100',
                 ].join(' ')}
               >
                 {t.label}
@@ -130,7 +130,7 @@ export default function MarketsPage() {
             placeholder="Search a market or farm stall…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-white text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 bg-card text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary"
           />
         </div>
       </section>
@@ -142,7 +142,7 @@ export default function MarketsPage() {
       </h2>
 
       {markets.length === 0 ? (
-        <div className="mt-4 rounded-2xl bg-white/80 border border-white/60 p-8 text-center shadow">
+        <div className="mt-4 rounded-2xl bg-card/80 border border-white/60 dark:border-white/10 p-8 text-center shadow">
           <ShoppingBasket className="w-8 h-8 mx-auto text-slate-300" aria-hidden="true" />
           <p className="mt-3 font-medium text-slate-700">
             {town === 'all' ? 'Nothing matches' : `Nothing listed in ${getTownLabel(town)} yet`}
@@ -182,7 +182,7 @@ function MarketCard({ market }: { market: Market }) {
   const classes = ACCENT_CLASSES[accent];
 
   return (
-    <article className="group relative flex flex-col rounded-2xl bg-white shadow-md hover:shadow-xl border border-slate-200/70 overflow-hidden card-lift">
+    <article className="group relative flex flex-col rounded-2xl bg-card shadow-md hover:shadow-xl border border-slate-200/70 overflow-hidden card-lift">
       <span className={`absolute left-0 top-0 h-full w-1 ${classes.bar}`} aria-hidden="true" />
 
       <div className="p-5 pl-6 flex flex-col flex-1">

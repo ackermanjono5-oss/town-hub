@@ -53,14 +53,14 @@ export default function DailyDoodle() {
   const [T, w, n, H, u, b] = doodle.letters;
   const night = Boolean(doodle.night);
   const letters: { key: string; node: React.ReactNode }[] = [
-    { key: 'T', node: <span style={{ color: T }}>T</span> },
+    { key: 'T', node: <Ink color={T}>T</Ink> },
     { key: 'o', node: <Glyph glyph={doodle.glyph} night={night} /> },
-    { key: 'w', node: <span style={{ color: w }}>w</span> },
-    { key: 'n', node: <span style={{ color: n }}>n</span> },
+    { key: 'w', node: <Ink color={w}>w</Ink> },
+    { key: 'n', node: <Ink color={n}>n</Ink> },
     { key: ' ', node: <span className="block w-[0.28em]" /> },
-    { key: 'H', node: <span style={{ color: H }}>H</span> },
-    { key: 'u', node: <span style={{ color: u }}>u</span> },
-    { key: 'b', node: <span style={{ color: b }}>b</span> },
+    { key: 'H', node: <Ink color={H}>H</Ink> },
+    { key: 'u', node: <Ink color={u}>u</Ink> },
+    { key: 'b', node: <Ink color={b}>b</Ink> },
   ];
 
   return (
@@ -85,8 +85,8 @@ export default function DailyDoodle() {
           <Accent accent={doodle.accent} />
         </span>
         <span
-          className="mt-[3px] max-w-[11.5rem] truncate text-[10.5px] font-semibold tracking-[0.01em]"
-          style={{ color: doodle.tint }}
+          className="doodle-ink mt-[3px] max-w-[11.5rem] truncate text-[10.5px] font-semibold tracking-[0.01em]"
+          style={{ ['--ink' as string]: doodle.tint }}
         >
           {doodle.caption}
         </span>
@@ -123,13 +123,13 @@ function DoodleCard({ doodle, hour, onClose }: { doodle: Doodle; hour: number; o
         aria-label="Close"
         tabIndex={-1}
         onClick={onClose}
-        className="absolute inset-0 bg-slate-900/30 animate-[fadeIn_200ms_ease-out]"
+        className="absolute inset-0 bg-[#0f172a]/30 dark:bg-[#020a14]/60 animate-[fadeIn_200ms_ease-out]"
       />
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="doodle-card-title"
-        className="doodle-pop relative mx-auto mt-16 w-[calc(100%-32px)] max-w-sm overflow-hidden rounded-3xl bg-white shadow-[0_24px_60px_-20px_rgba(15,23,42,0.55)] ring-1 ring-black/5"
+        className="doodle-pop relative mx-auto mt-16 w-[calc(100%-32px)] max-w-sm overflow-hidden rounded-3xl bg-card shadow-[0_24px_60px_-20px_rgba(15,23,42,0.55)] ring-1 ring-black/5"
       >
         <DoodleScene doodle={doodle} hour={hour} />
         <button
@@ -137,12 +137,15 @@ function DoodleCard({ doodle, hour, onClose }: { doodle: Doodle; hour: number; o
           type="button"
           onClick={onClose}
           aria-label="Close"
-          className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-white/85 text-slate-700 shadow-sm backdrop-blur transition active:scale-90"
+          className="absolute right-3 top-3 grid h-8 w-8 place-items-center rounded-full bg-card/85 text-slate-700 shadow-sm backdrop-blur transition active:scale-90"
         >
           <X className="h-4 w-4" aria-hidden="true" />
         </button>
         <div className="px-5 pb-5 pt-4">
-          <p className="text-[11px] font-bold uppercase tracking-[0.14em]" style={{ color: doodle.tint }}>
+          <p
+            className="doodle-ink text-[11px] font-bold uppercase tracking-[0.14em]"
+            style={{ ['--ink' as string]: doodle.tint }}
+          >
             {today} · Garden Route
           </p>
           <h2 id="doodle-card-title" className="mt-1.5 text-[19px] font-extrabold leading-snug text-slate-900">
@@ -153,6 +156,15 @@ function DoodleCard({ doodle, hour, onClose }: { doodle: Doodle; hour: number; o
         </div>
       </div>
     </div>
+  );
+}
+
+/** A wordmark letter in one of the doodle's colours (lifted at night; see .doodle-ink). */
+function Ink({ color, children }: { color: string; children: React.ReactNode }) {
+  return (
+    <span className="doodle-ink" style={{ ['--ink' as string]: color }}>
+      {children}
+    </span>
   );
 }
 

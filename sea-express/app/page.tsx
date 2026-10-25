@@ -87,14 +87,14 @@ const DIRECTORIES: {
 ];
 
 const QUICK_LINKS: { href: string; label: string; icon: LucideIcon; chip: string }[] = [
-  { href: '/rewards', label: 'Rewards', icon: Ticket, chip: 'bg-amber-100 text-amber-700' },
-  { href: '/weather', label: 'Weather', icon: CloudSun, chip: 'bg-sky-100 text-sky-700' },
-  { href: '/events', label: 'Events', icon: Calendar, chip: 'bg-fuchsia-100 text-fuchsia-700' },
-  { href: '/markets', label: 'Markets', icon: ShoppingBasket, chip: 'bg-lime-100 text-lime-700' },
-  { href: '/nature', label: 'Nature', icon: Leaf, chip: 'bg-emerald-100 text-emerald-700' },
-  { href: '/radio', label: 'Radio', icon: Radio, chip: 'bg-violet-100 text-violet-700' },
+  { href: '/rewards', label: 'Rewards', icon: Ticket, chip: 'bg-amber-100 dark:bg-amber-400/15 text-amber-700 dark:text-amber-300' },
+  { href: '/weather', label: 'Weather', icon: CloudSun, chip: 'bg-sky-100 dark:bg-sky-400/15 text-sky-700 dark:text-sky-300' },
+  { href: '/events', label: 'Events', icon: Calendar, chip: 'bg-fuchsia-100 dark:bg-fuchsia-400/15 text-fuchsia-700 dark:text-fuchsia-300' },
+  { href: '/markets', label: 'Markets', icon: ShoppingBasket, chip: 'bg-lime-100 dark:bg-lime-400/15 text-lime-700 dark:text-lime-300' },
+  { href: '/nature', label: 'Nature', icon: Leaf, chip: 'bg-emerald-100 dark:bg-emerald-400/15 text-emerald-700 dark:text-emerald-300' },
+  { href: '/radio', label: 'Radio', icon: Radio, chip: 'bg-violet-100 dark:bg-violet-400/15 text-violet-700 dark:text-violet-300' },
   { href: '/legal-notices', label: 'Notices', icon: ScrollText, chip: 'bg-slate-200 text-slate-700' },
-  { href: '/community', label: 'Community', icon: Users, chip: 'bg-rose-100 text-rose-700' },
+  { href: '/community', label: 'Community', icon: Users, chip: 'bg-rose-100 dark:bg-rose-400/15 text-rose-700 dark:text-rose-300' },
 ];
 
 export default function HomePage() {
@@ -199,7 +199,7 @@ export default function HomePage() {
       </div>
 
       {/* Partners */}
-      <section className="rounded-3xl bg-white/80 backdrop-blur shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] overflow-hidden">
+      <section className="rounded-3xl bg-card/80 backdrop-blur shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] overflow-hidden">
         <AdvertCarousel />
       </section>
 
@@ -212,12 +212,12 @@ export default function HomePage() {
               key={href}
               href={href}
               style={{ ['--i' as string]: i }}
-              className="rise-in flex flex-col items-center gap-1.5 rounded-2xl bg-white/85 backdrop-blur py-3 px-1 shadow-[0_8px_18px_-14px_rgba(15,23,42,0.5)] ring-1 ring-white/70 transition-transform active:scale-[0.95] hover:-translate-y-0.5"
+              className="rise-in flex flex-col items-center gap-1.5 rounded-2xl bg-card/85 backdrop-blur py-3 px-1 shadow-[0_8px_18px_-14px_rgba(15,23,42,0.5)] ring-1 ring-white/70 dark:ring-white/10 transition-transform active:scale-[0.95] hover:-translate-y-0.5"
             >
               <span className={`inline-flex items-center justify-center w-10 h-10 rounded-xl ${chip}`}>
                 <Icon className="w-5 h-5" aria-hidden="true" />
               </span>
-              <span className="text-[11.5px] font-semibold text-[#1f2937] text-center leading-tight">{label}</span>
+              <span className="text-[11.5px] font-semibold text-ink text-center leading-tight">{label}</span>
             </a>
           ))}
         </div>
@@ -246,7 +246,7 @@ export default function HomePage() {
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mb-3 flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em] text-[#0f3d5e]">
+    <h2 className="mb-3 flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em] text-secondary-foreground">
       <span className="w-6 h-[3px] rounded-full bg-gradient-to-r from-[#1c6cb8] to-[#2fb2cf]" aria-hidden="true" />
       {children}
     </h2>

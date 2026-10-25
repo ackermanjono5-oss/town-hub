@@ -16,6 +16,14 @@
   --color-accent-foreground: #ffffff;
   --color-danger: #d6473a;
   --color-danger-foreground: #ffffff;
+
+  /* Surfaces and ink that used to be hard-coded (bg-white, #e5e7eb,
+     #1f2937, #f9fafb). Same values in light; redefined for dark below. */
+  --color-card: #ffffff;
+  --color-card-hover: #f9fafb;
+  --color-hairline: #e5e7eb;
+  --color-ink: #1f2937;
+  --color-ink-muted: #6b7280;
 }
 
 * {
@@ -34,6 +42,71 @@ body {
     linear-gradient(180deg, #bfe6f7 0%, #d7eff8 45%, #eef4ee 100%);
   background-attachment: fixed;
   min-height: 100vh;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+/* Night at sea: the same tokens as deep-ocean navy surfaces (never pure
+   black) with sea-mist ink. The slate scale is flipped as well, so the
+   neutral text, chips and borders used across the pages (text-slate-500,
+   bg-slate-100, border-slate-200 ...) read light-on-navy without a dark:
+   variant on every one. Slate meant to stay dark (selected chips, solid
+   buttons) uses hex values instead, which aren't flipped. Tinted chips
+   (bg-emerald-100 text-emerald-700 ...) carry their own dark: variants. */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #102a44;
+    --color-foreground: #e6f0f7;
+    --color-muted-foreground: #9db4c7;
+    --color-border: #23425f;
+    --color-primary: #2a78c4;
+    --color-primary-foreground: #ffffff;
+    --color-secondary: #15344f;
+    --color-secondary-foreground: #cfe5f4;
+    --color-accent: #f0955c;
+    --color-danger: #e5574a;
+
+    --color-card: #102a44;
+    --color-card-hover: #15344f;
+    --color-hairline: #21405c;
+    --color-ink: #e6f0f7;
+    --color-ink-muted: #9db4c7;
+
+    --color-slate-50: #0d2440;
+    --color-slate-100: #163552;
+    --color-slate-200: #23425f;
+    --color-slate-300: #3b5a77;
+    --color-slate-400: #7d96ac;
+    --color-slate-500: #98afc2;
+    --color-slate-600: #b3c5d4;
+    --color-slate-700: #cbd9e4;
+    --color-slate-800: #dde8f0;
+    --color-slate-900: #ecf3f8;
+    --color-slate-950: #f6f9fc;
+  }
+
+  /* Open ocean at night: deep navy easing into a darker trough, with a
+     faint moonlit bloom and a teal glow where the sky blooms were. */
+  body {
+    background-color: #071a2e;
+    background-image:
+      radial-gradient(60rem 30rem at 110% -10%, rgb(125 180 230 / 0.12), transparent 60%),
+      radial-gradient(40rem 26rem at -20% 30%, rgb(49 168 201 / 0.12), transparent 60%),
+      linear-gradient(180deg, #0b2440 0%, #081d34 45%, #06172a 100%);
+  }
+
+  .card-lift:hover {
+    box-shadow: 0 8px 20px -8px rgb(0 0 0 / 0.55);
+  }
+
+  /* Primary stays deep enough for white text on buttons and selected
+     chips; as a text colour on navy it's lifted to a lighter sea blue. */
+  .text-primary,
+  .hover\:text-primary:hover {
+    color: #6cb2f0;
+  }
 }
 
 /* Faint dot texture for gradient banners (components/PageHero.tsx). */
@@ -225,6 +298,14 @@ main {
 @keyframes doodle-needle {
   0%, 100% { transform: rotate(-25deg); }
   50% { transform: rotate(35deg); }
+}
+
+/* Wordmark letters and captions in the doodle's colours. Those are picked
+   to sit on white, so in dark mode they're mixed toward white to stay
+   readable on the navy header. */
+.doodle-ink { color: var(--ink); }
+@media (prefers-color-scheme: dark) {
+  .doodle-ink { color: color-mix(in oklab, var(--ink), white 60%); }
 }
 
 /* The doodle scene card. */

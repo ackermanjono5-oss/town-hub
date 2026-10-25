@@ -84,7 +84,7 @@ export default function SignInPrompt() {
       aria-labelledby="signin-prompt-title"
       className="fixed inset-x-3 bottom-3 z-50 mx-auto max-w-sm sm:inset-x-auto sm:right-5 sm:bottom-5 animate-[slideUp_260ms_cubic-bezier(0.16,1,0.3,1)]"
     >
-      <div className="relative overflow-hidden rounded-3xl bg-white shadow-[0_20px_50px_-18px_rgba(10,47,92,0.55)] ring-1 ring-black/5">
+      <div className="relative overflow-hidden rounded-3xl bg-card shadow-[0_20px_50px_-18px_rgba(10,47,92,0.55)] ring-1 ring-black/5">
         <button
           type="button"
           onClick={dismiss}

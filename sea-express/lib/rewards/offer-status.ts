@@ -20,12 +20,12 @@ export function offerDisplayState(offer: Offer, now = new Date()): OfferDisplayS
 
 export const OFFER_STATE_STYLES: Record<OfferDisplayState, string> = {
   Draft: 'bg-slate-100 text-slate-700',
-  Submitted: 'bg-sky-100 text-sky-800',
-  Rejected: 'bg-rose-100 text-rose-800',
-  Scheduled: 'bg-violet-100 text-violet-800',
-  Live: 'bg-emerald-100 text-emerald-800',
+  Submitted: 'bg-sky-100 dark:bg-sky-400/15 text-sky-800 dark:text-sky-300',
+  Rejected: 'bg-rose-100 dark:bg-rose-400/15 text-rose-800 dark:text-rose-300',
+  Scheduled: 'bg-violet-100 dark:bg-violet-400/15 text-violet-800 dark:text-violet-300',
+  Live: 'bg-emerald-100 dark:bg-emerald-400/15 text-emerald-800 dark:text-emerald-300',
   Expired: 'bg-slate-200 text-slate-600',
-  Deactivated: 'bg-amber-100 text-amber-800',
+  Deactivated: 'bg-amber-100 dark:bg-amber-400/15 text-amber-800 dark:text-amber-300',
 };
 
 /** "1 Oct 2026 – 31 Oct 2026", or a readable open-ended range. */

@@ -142,9 +142,9 @@ function PortalIntro({ children }: { children: React.ReactNode }) {
 }
 
 const TONES = {
-  amber: 'bg-amber-50 border-amber-200 text-amber-900',
-  rose: 'bg-rose-50 border-rose-200 text-rose-900',
-  sky: 'bg-sky-50 border-sky-200 text-sky-900',
+  amber: 'bg-amber-50 dark:bg-amber-400/10 border-amber-200 dark:border-amber-400/30 text-amber-900 dark:text-amber-200',
+  rose: 'bg-rose-50 dark:bg-rose-400/10 border-rose-200 dark:border-rose-400/30 text-rose-900 dark:text-rose-200',
+  sky: 'bg-sky-50 dark:bg-sky-400/10 border-sky-200 dark:border-sky-400/30 text-sky-900 dark:text-sky-200',
 };
 
 function StatusCard({

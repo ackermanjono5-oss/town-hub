@@ -4,10 +4,10 @@ import { Users as HeroIcon } from 'lucide-react';
 
 // What the wall is for, from the official Community Wall guidelines.
 const TOPICS = [
-  { icon: PawPrint, title: 'Lost & found pets', text: 'Missing dogs, cats and rescued animals, with photos and where they were last seen.', chip: 'bg-amber-100 text-amber-700' },
-  { icon: Car, title: 'Stranded motorists', text: 'Broken-down vehicles and roadside help, without putting anyone at risk.', chip: 'bg-sky-100 text-sky-700' },
-  { icon: ShieldAlert, title: 'Safety alerts', text: 'Responsible reports of theft, unrest, road closures and storm damage.', chip: 'bg-rose-100 text-rose-700' },
-  { icon: Megaphone, title: 'Community notices', text: 'Missing property, local disruptions and useful information for residents.', chip: 'bg-emerald-100 text-emerald-700' },
+  { icon: PawPrint, title: 'Lost & found pets', text: 'Missing dogs, cats and rescued animals, with photos and where they were last seen.', chip: 'bg-amber-100 dark:bg-amber-400/15 text-amber-700 dark:text-amber-300' },
+  { icon: Car, title: 'Stranded motorists', text: 'Broken-down vehicles and roadside help, without putting anyone at risk.', chip: 'bg-sky-100 dark:bg-sky-400/15 text-sky-700 dark:text-sky-300' },
+  { icon: ShieldAlert, title: 'Safety alerts', text: 'Responsible reports of theft, unrest, road closures and storm damage.', chip: 'bg-rose-100 dark:bg-rose-400/15 text-rose-700 dark:text-rose-300' },
+  { icon: Megaphone, title: 'Community notices', text: 'Missing property, local disruptions and useful information for residents.', chip: 'bg-emerald-100 dark:bg-emerald-400/15 text-emerald-700 dark:text-emerald-300' },
 ];
 
 export default function CommunityPage() {
@@ -21,8 +21,8 @@ export default function CommunityPage() {
         className="mb-8"
       />
 
-      <section className="relative overflow-hidden rounded-3xl bg-white/85 backdrop-blur p-6 shadow-[0_14px_34px_-20px_rgba(15,23,42,0.45)] ring-1 ring-white/70">
-        <div className="absolute -top-16 -right-10 w-48 h-48 rounded-full bg-rose-200/40 blur-3xl" aria-hidden="true" />
+      <section className="relative overflow-hidden rounded-3xl bg-card/85 backdrop-blur p-6 shadow-[0_14px_34px_-20px_rgba(15,23,42,0.45)] ring-1 ring-white/70 dark:ring-white/10">
+        <div className="absolute -top-16 -right-10 w-48 h-48 rounded-full bg-rose-200/40 dark:bg-rose-400/15 blur-3xl" aria-hidden="true" />
         <span className="relative inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-[#d4416a] to-[#ff8f7a] text-white text-xs font-bold tracking-wide shadow">
           <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
           Coming soon
@@ -40,7 +40,7 @@ export default function CommunityPage() {
             <div
               key={title}
               style={{ ['--i' as string]: i }}
-              className="rise-in flex gap-3 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-100"
+              className="rise-in flex gap-3 rounded-2xl bg-card p-4 shadow-sm ring-1 ring-slate-100"
             >
               <span className={`inline-flex items-center justify-center w-10 h-10 flex-none rounded-xl ${chip}`}>
                 <Icon className="w-5 h-5" aria-hidden="true" />
@@ -55,7 +55,7 @@ export default function CommunityPage() {
 
         <a
           href="/guidelines"
-          className="relative mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-slate-900 text-white text-sm font-semibold shadow-lg hover:bg-slate-800 active:scale-95 transition"
+          className="relative mt-6 inline-flex items-center gap-2 px-5 py-3 rounded-full bg-[#0f172a] dark:bg-[#1e3a5f] text-white text-sm font-semibold shadow-lg hover:bg-[#1e293b] dark:hover:bg-[#244870] active:scale-95 transition"
         >
           <BookOpen className="w-4 h-4" aria-hidden="true" />
           Read the Community Wall guidelines

@@ -63,7 +63,7 @@ function QueueItem({
   const [limit, setLimit] = useState(String(offer.monthly_limit ?? 1));
 
   return (
-    <div className="p-4 rounded-lg border-2 border-sky-200 bg-background space-y-2">
+    <div className="p-4 rounded-lg border-2 border-sky-200 dark:border-sky-400/30 bg-background space-y-2">
       <div>
         <p className="text-sm text-muted-foreground">{offer.business.name}</p>
         <p className="font-semibold">{offer.title}</p>

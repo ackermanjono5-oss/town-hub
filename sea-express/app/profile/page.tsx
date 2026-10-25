@@ -291,7 +291,7 @@ export default function ProfilePage() {
                 {ROLE_LABEL[role]}
               </span>
               {profile?.is_subscribed && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-400/90 text-amber-950 text-xs font-semibold">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-amber-400/90 text-amber-950 dark:text-amber-200 text-xs font-semibold">
                   <Sparkles className="w-3.5 h-3.5" aria-hidden="true" />
                   Member
                 </span>
@@ -396,7 +396,7 @@ export default function ProfilePage() {
       </section>
 
       {/* Details */}
-      <section className="mt-5 rounded-2xl bg-white border border-slate-200/70 shadow-md p-5">
+      <section className="mt-5 rounded-2xl bg-card border border-slate-200/70 shadow-md p-5">
         <div className="flex items-center justify-between gap-3">
           <h2 className="font-semibold text-slate-900">Your details</h2>
           {!editing && (
@@ -423,14 +423,14 @@ export default function ProfilePage() {
                 maxLength={80}
                 placeholder="Your name"
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-card focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </Field>
             <Field label="Home town">
               <select
                 value={town}
                 onChange={(e) => setTown(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-card focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="">Not set</option>
                 {TOWNS.map((t) => (
@@ -448,7 +448,7 @@ export default function ProfilePage() {
                 maxLength={20}
                 placeholder="082 123 4567"
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-card focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </Field>
 
@@ -489,12 +489,12 @@ export default function ProfilePage() {
           </dl>
         )}
 
-        {message && <p className="mt-3 text-sm text-emerald-600">{message}</p>}
+        {message && <p className="mt-3 text-sm text-emerald-600 dark:text-emerald-400">{message}</p>}
         {!editing && error && <p className="mt-3 text-sm text-danger">{error}</p>}
       </section>
 
       {/* Membership */}
-      <section className="mt-4 rounded-2xl bg-white border border-slate-200/70 shadow-md p-5">
+      <section className="mt-4 rounded-2xl bg-card border border-slate-200/70 shadow-md p-5">
         <h2 className="font-semibold text-slate-900">Membership</h2>
         <p className="mt-2 text-sm text-slate-600">
           {profile?.is_subscribed

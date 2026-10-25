@@ -160,7 +160,7 @@ function OfferManager({ business }: { business: Business }) {
                   </span>
                 </div>
                 {offer.status === 'rejected' && offer.review_note && (
-                  <p className="text-sm text-rose-700">Town Hub: {offer.review_note}</p>
+                  <p className="text-sm text-rose-700 dark:text-rose-300">Town Hub: {offer.review_note}</p>
                 )}
                 <div className="flex gap-2">
                   {editable && (
@@ -260,7 +260,7 @@ function OfferEditor({
       <div>
         <h1 className="text-2xl font-bold">{offer ? 'Edit offer' : 'New reward offer'}</h1>
         {wasApproved && (
-          <p className="text-sm text-amber-700 mt-1">
+          <p className="text-sm text-amber-700 dark:text-amber-300 mt-1">
             This offer is approved. Saving changes sends it back to Town Hub for approval. Vouchers
             already issued keep their original terms.
           </p>

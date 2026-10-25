@@ -58,7 +58,7 @@ export default function OfferCard({ offer }: { offer: OfferWithBusiness }) {
       </div>
 
       {/* Stub */}
-      <div className="relative rounded-b-2xl bg-white px-5 pt-4 pb-4">
+      <div className="relative rounded-b-2xl bg-card px-5 pt-4 pb-4">
         {/* Perforation along the tear line. */}
         <div
           className="absolute -top-px left-4 right-4 border-t-2 border-dashed border-slate-200"
@@ -68,7 +68,7 @@ export default function OfferCard({ offer }: { offer: OfferWithBusiness }) {
           {offer.business.name}
         </p>
         <p className="mt-0.5 font-bold leading-snug text-slate-900">{offer.title}</p>
-        <p className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-[#1c6cb8]">
+        <p className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-primary">
           Get voucher
           <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
         </p>

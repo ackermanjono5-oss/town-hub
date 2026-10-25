@@ -29,7 +29,7 @@ function formatCountdown(msRemaining: number): string {
 const STATUS_STYLES: Record<TokenStatus, { label: string; className: string }> = {
   available: { label: 'AVAILABLE', className: 'bg-white text-[#c2410c] shadow-sm' },
   used: { label: 'ALREADY USED', className: 'bg-white text-[#2f6b3a] shadow-sm' },
-  expired: { label: 'EXPIRED', className: 'bg-white/90 text-slate-700 shadow-sm' },
+  expired: { label: 'EXPIRED', className: 'bg-white/90 text-[#334155] shadow-sm' },
 };
 
 export default function QRDisplay({
@@ -128,7 +128,7 @@ export default function QRDisplay({
         ) : null}
       </div>
 
-      <div className="relative rounded-b-3xl bg-white px-6 pt-6 pb-6">
+      <div className="relative rounded-b-3xl bg-card px-6 pt-6 pb-6">
         <div className="absolute -top-px left-5 right-5 border-t-2 border-dashed border-slate-200" aria-hidden="true" />
 
         {available ? (
@@ -145,7 +145,7 @@ export default function QRDisplay({
           </div>
         ) : status === 'used' ? (
           <div className="flex flex-col items-center gap-3 py-4 text-center">
-            <span className="inline-flex items-center gap-2 px-5 py-2 rounded-xl border-[3px] border-[#2f6b3a] text-[#2f6b3a] text-xl font-black tracking-[0.2em] rotate-[-6deg]">
+            <span className="inline-flex items-center gap-2 px-5 py-2 rounded-xl border-[3px] border-[#2f6b3a] dark:border-[#7fc48a] text-[#2f6b3a] dark:text-[#7fc48a] text-xl font-black tracking-[0.2em] rotate-[-6deg]">
               <CheckCircle2 className="w-6 h-6" aria-hidden="true" />
               REDEEMED
             </span>

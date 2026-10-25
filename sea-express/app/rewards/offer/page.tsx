@@ -102,7 +102,7 @@ function OfferDetail() {
 
   return (
     <div className="space-y-6">
-      <div className="rounded-3xl bg-white/90 backdrop-blur p-5 shadow-[0_14px_34px_-22px_rgba(15,23,42,0.5)] ring-1 ring-white/70 space-y-3">
+      <div className="rounded-3xl bg-card/90 backdrop-blur p-5 shadow-[0_14px_34px_-22px_rgba(15,23,42,0.5)] ring-1 ring-white/70 dark:ring-white/10 space-y-3">
         <div className="flex items-center gap-3">
           <div className="w-14 h-14 rounded-2xl bg-white ring-1 ring-slate-100 shadow-sm flex items-center justify-center shrink-0 overflow-hidden">
             {offer.business.logo_url ? (
@@ -128,12 +128,12 @@ function OfferDetail() {
 
         <div className="flex flex-wrap gap-2">
           {offer.purchase_conditions && (
-            <span className="px-3 py-1 rounded-full bg-amber-50 text-amber-800 text-xs font-semibold ring-1 ring-amber-200">
+            <span className="px-3 py-1 rounded-full bg-amber-50 dark:bg-amber-400/10 text-amber-800 dark:text-amber-300 text-xs font-semibold ring-1 ring-amber-200 dark:ring-amber-400/30">
               {offer.purchase_conditions}
             </span>
           )}
           {!DEMO_MODE && offer.monthly_limit > 0 && (
-            <span className="px-3 py-1 rounded-full bg-sky-50 text-sky-800 text-xs font-semibold ring-1 ring-sky-200">
+            <span className="px-3 py-1 rounded-full bg-sky-50 dark:bg-sky-400/10 text-sky-800 dark:text-sky-300 text-xs font-semibold ring-1 ring-sky-200 dark:ring-sky-400/30">
               {offer.monthly_limit === 1 ? 'Once a month' : `Up to ${offer.monthly_limit}× a month`}
             </span>
           )}
@@ -143,7 +143,7 @@ function OfferDetail() {
       </div>
 
       {demoDetails && (
-        <dl className="text-xs text-slate-600 space-y-1 rounded-2xl bg-white/80 p-4 ring-1 ring-white/70">
+        <dl className="text-xs text-slate-600 space-y-1 rounded-2xl bg-card/80 p-4 ring-1 ring-white/70 dark:ring-white/10">
           <div className="flex gap-2">
             <dt className="font-semibold">Valid:</dt>
             <dd>{demoDetails.validity}</dd>
