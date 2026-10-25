@@ -41,7 +41,6 @@ export interface Doodle {
   holiday?: boolean;
 }
 
-const OCEAN: Doodle['letters'] = ['#0e7490', '#0891b2', '#0e7490', '#f59e0b', '#0e7490', '#0891b2'];
 const SUNSET: Doodle['letters'] = ['#ea580c', '#f59e0b', '#e11d48', '#0e7490', '#f59e0b', '#ea580c'];
 const FYNBOS: Doodle['letters'] = ['#be185d', '#15803d', '#be185d', '#15803d', '#db2777', '#15803d'];
 // The flag's own colours: green, gold, red, blue and black.
@@ -50,13 +49,20 @@ const FESTIVE: Doodle['letters'] = ['#b91c1c', '#15803d', '#ca8a04', '#b91c1c', 
 const PARTY: Doodle['letters'] = ['#7c3aed', '#db2777', '#f59e0b', '#0891b2', '#7c3aed', '#db2777'];
 
 /** Rotating scenes for ordinary days. `months` limits a scene to its season. */
+// Ordinary days keep the wordmark calm: "Town" in navy, "Hub" in the day's
+// colour. Holidays use their full palettes, so they stand out.
+const NAVY = '#0f3d5e';
+function calm(tint: string): Doodle['letters'] {
+  return [NAVY, NAVY, NAVY, tint, tint, tint];
+}
+
 const EVERYDAY: (Doodle & { months?: number[] })[] = [
   {
     id: 'ocean',
     glyph: 'wave',
     accent: 'gull',
     caption: 'Fresh sea air on the Garden Route',
-    letters: OCEAN,
+    letters: calm('#0e7490'),
     tint: '#0e7490',
     fact: "The Garden Route stretches roughly 300 km along the coast, from Mossel Bay to Storms River.",
   },
@@ -65,7 +71,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     glyph: 'sun',
     accent: 'boat',
     caption: 'Sunshine along the coast today',
-    letters: SUNSET,
+    letters: calm('#ea580c'),
     tint: '#ea580c',
     fact: "Mossel Bay is known for its mild, sunny climate all year round.",
   },
@@ -74,7 +80,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     glyph: 'wave',
     accent: 'whale',
     caption: 'Whale season: keep an eye on the bay',
-    letters: OCEAN,
+    letters: calm('#0369a1'),
     tint: '#0369a1',
     fact: "Southern right whales come into the Garden Route's bays from about June to November to calve.",
     months: [6, 7, 8, 9, 10, 11],
@@ -84,7 +90,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     glyph: 'protea',
     accent: 'sparkles',
     caption: 'Proudly fynbos country',
-    letters: FYNBOS,
+    letters: calm('#be185d'),
     tint: '#be185d',
     fact: "The Cape Floral Kingdom is the smallest of the world's six floral kingdoms, and the richest for its size. The king protea is South Africa's national flower.",
   },
@@ -93,7 +99,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     glyph: 'lifebuoy',
     accent: 'boat',
     caption: 'Swim safe: stay between the flags',
-    letters: ['#dc2626', '#0e7490', '#dc2626', '#0e7490', '#dc2626', '#0e7490'],
+    letters: calm('#dc2626'),
     tint: '#dc2626',
     fact: "Swim at beaches where lifeguards are on duty, and stay between the red-and-yellow flags.",
     months: [11, 12, 1, 2, 3, 4],
@@ -103,7 +109,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     glyph: 'compass',
     accent: 'gull',
     caption: 'Explore a new town this week',
-    letters: ['#0f766e', '#0e7490', '#0f766e', '#b45309', '#0f766e', '#0e7490'],
+    letters: calm('#0f766e'),
     tint: '#0f766e',
     fact: `Town Hub covers ${TOWNS.length} towns, from Witsand to Storms River. Which one will you visit next?`,
   },
@@ -112,7 +118,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     glyph: 'beachball',
     accent: 'sparkles',
     caption: 'Beach weather? Check the forecast',
-    letters: PARTY,
+    letters: calm('#7c3aed'),
     tint: '#7c3aed',
     fact: "Check the Weather page for today's forecast before you head to the beach.",
     months: [10, 11, 12, 1, 2, 3, 4],

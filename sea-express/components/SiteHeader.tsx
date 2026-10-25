@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import {
@@ -42,10 +42,10 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/events', label: 'Events', icon: Calendar },
   { href: '/medical', label: 'Medical', icon: Stethoscope },
   { href: '/attorneys', label: 'Attorneys', icon: Scale },
-  { href: '/legal-notices', label: 'Legal Notices', icon: ScrollText },
-  { href: '/business', label: 'Business Rewards Portal', icon: BadgeCheck },
+  { href: '/legal-notices', label: 'Notices', icon: ScrollText },
+  { href: '/business', label: 'Rewards Portal', icon: BadgeCheck },
   { href: '/businesses', label: 'Businesses', icon: Store },
-  { href: '/accommodation', label: 'Hotels & B&Bs', icon: BedDouble },
+  { href: '/accommodation', label: 'Stay', icon: BedDouble },
   { href: '/property', label: 'Property', icon: ShoppingBag },
   { href: '/radio', label: 'Radio', icon: Radio },
   { href: '/nature', label: 'Nature', icon: Leaf },
@@ -56,6 +56,16 @@ const NAV_ITEMS: NavItem[] = [
 
 export default function SiteHeader() {
   const pathname = usePathname();
+
+  // On a phone most of the menu sits off-screen, so the current page's pill
+  // is scrolled into view rather than left hidden past the right edge.
+  const navRef = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const nav = navRef.current;
+    const active = nav?.querySelector<HTMLElement>('[aria-current="page"]');
+    if (!nav || !active || nav.scrollWidth <= nav.clientWidth) return;
+    nav.scrollLeft = active.offsetLeft - (nav.clientWidth - active.offsetWidth) / 2;
+  }, [pathname]);
 
   // Starts false so the prerendered header and the first client render
   // agree; the session is only knowable after mount.
@@ -109,7 +119,7 @@ export default function SiteHeader() {
           </div>
           <a
             href={signedIn ? '/profile' : '/login'}
-            className="flex items-center gap-1.5 px-[15px] py-[7px] rounded-full border border-[#e5e7eb] bg-white text-[12.5px] font-semibold text-[#1f2937] transition-all duration-150 hover:bg-[#f9fafb] active:scale-95"
+            className="flex flex-none items-center gap-1.5 whitespace-nowrap px-[15px] py-[7px] rounded-full border border-[#e5e7eb] bg-white text-[12.5px] font-semibold text-[#1f2937] transition-all duration-150 hover:bg-[#f9fafb] active:scale-95"
           >
             {signedIn ? (
               <Avatar
@@ -124,7 +134,12 @@ export default function SiteHeader() {
             <span>{signedIn ? 'Profile' : 'Sign in'}</span>
           </a>
         </div>
-        <nav className="flex gap-[7px] overflow-x-auto px-[18px] py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {/* Scrolls sideways on phones, with the edges faded so it's clear
+            there's more; on wide screens every pill fits, wrapped and centred. */}
+        <nav
+          ref={navRef}
+          className="flex gap-[7px] overflow-x-auto px-[18px] py-2.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden [mask-image:linear-gradient(to_right,transparent,#000_18px,#000_calc(100%-28px),transparent)] lg:flex-wrap lg:justify-center lg:overflow-visible lg:[mask-image:none]"
+        >
           {NAV_ITEMS.map(({ href, label, icon: Icon }) => {
             // A whole path segment must match, so /businesses doesn't also
             // light up /business. The Android build serves pages from

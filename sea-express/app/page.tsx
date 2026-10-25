@@ -27,9 +27,10 @@ import Greeting from '@/components/Greeting';
  * as colourful tiles, the local partners strip, quick links and the
  * emergency call to action.
  *
- * Widths are capped rather than left to fill the viewport — the app is
- * designed phone-first, and its gutters become very long line lengths on a
- * tablet or desktop browser.
+ * Phone-first. On a tablet the tiles go three across, and on a computer the
+ * banner and the tiles sit side by side, so wide screens are filled rather
+ * than left as a narrow column in empty space. The width stays capped to
+ * the header's, so lines never get too long to read.
  */
 
 // Full class strings, because Tailwind only keeps classes it can see as
@@ -98,9 +99,10 @@ const QUICK_LINKS: { href: string; label: string; icon: LucideIcon; chip: string
 
 export default function HomePage() {
   return (
-    <div className="font-[family-name:var(--font-jakarta)] max-w-md mx-auto px-4 pt-4 pb-8 space-y-6">
+    <div className="font-[family-name:var(--font-jakarta)] max-w-md md:max-w-3xl lg:max-w-5xl mx-auto px-4 md:px-6 pt-4 md:pt-6 pb-8 space-y-6 md:space-y-8">
+      <div className="space-y-6 md:space-y-8 lg:grid lg:grid-cols-[1fr_1.15fr] lg:items-stretch lg:gap-6 lg:space-y-0">
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-[28px] bg-gradient-to-br from-[#0a2f5c] via-[#1569a8] to-[#2fb2cf] text-white shadow-[0_24px_48px_-24px_rgba(10,47,92,0.8)]">
+      <section className="relative overflow-hidden rounded-[28px] lg:flex lg:flex-col lg:justify-center bg-gradient-to-br from-[#0a2f5c] via-[#1569a8] to-[#2fb2cf] text-white shadow-[0_24px_48px_-24px_rgba(10,47,92,0.8)]">
         <div className="absolute -top-20 -right-16 w-64 h-64 rounded-full bg-white/15 blur-3xl drift" aria-hidden="true" />
         <div className="absolute -bottom-24 -left-10 w-56 h-56 rounded-full bg-cyan-200/25 blur-3xl" aria-hidden="true" />
         <div className="absolute inset-0 hero-dots opacity-40" aria-hidden="true" />
@@ -132,7 +134,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <h1 className="mt-6 text-[30px] font-extrabold tracking-[-0.03em] leading-[1.08] text-balance">
+          <h1 className="mt-6 text-[30px] md:text-[38px] font-extrabold tracking-[-0.03em] leading-[1.08] text-balance">
             Your town, <span className="text-[#ffd27a]">on one screen.</span>
           </h1>
           <p className="mt-2.5 text-[14.5px] leading-relaxed text-white/85 text-pretty">
@@ -153,7 +155,7 @@ export default function HomePage() {
       {/* Directories */}
       <section>
         <SectionTitle>Explore</SectionTitle>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
           {DIRECTORIES.map(({ href, label, hint, icon: Icon, tile }, i) => (
             <a
               key={href}
@@ -169,8 +171,9 @@ export default function HomePage() {
               <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-white/20 backdrop-blur ring-1 ring-white/25">
                 <Icon className="w-[18px] h-[18px]" aria-hidden="true" />
               </span>
-              <span className="block mt-3 text-[15px] font-bold leading-tight">{label}</span>
-              <span className="block text-[11.5px] text-white/80">{hint}</span>
+              {/* A soft shadow keeps the text readable on the bright tiles, even outdoors. */}
+              <span className="block mt-3 text-[15px] font-bold leading-tight [text-shadow:0_1px_2px_rgba(0,0,0,0.22)]">{label}</span>
+              <span className="block mt-0.5 text-[12px] font-medium text-white/95 [text-shadow:0_1px_2px_rgba(0,0,0,0.28)]">{hint}</span>
             </a>
           ))}
         </div>
@@ -193,6 +196,7 @@ export default function HomePage() {
           <ArrowRight className="w-5 h-5 text-white/80 flex-none" aria-hidden="true" />
         </a>
       </section>
+      </div>
 
       {/* Partners */}
       <section className="rounded-3xl bg-white/80 backdrop-blur shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] overflow-hidden">
@@ -202,7 +206,7 @@ export default function HomePage() {
       {/* Quick links */}
       <section>
         <SectionTitle>Quick links</SectionTitle>
-        <div className="grid grid-cols-4 gap-2.5">
+        <div className="grid grid-cols-4 md:grid-cols-8 gap-2.5">
           {QUICK_LINKS.map(({ href, label, icon: Icon, chip }, i) => (
             <a
               key={href}
