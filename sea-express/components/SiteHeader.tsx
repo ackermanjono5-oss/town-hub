@@ -95,19 +95,18 @@ export default function SiteHeader() {
     <header className="sticky top-0 z-50 bg-white border-b border-[#e5e7eb] font-[family-name:var(--font-jakarta)]">
       <div className="max-w-5xl mx-auto">
         <div className="flex items-center justify-between px-[18px] pt-1 pb-2.5 border-b border-[#e5e7eb]">
-          <a
-            href="/"
-            className="flex min-w-0 items-center gap-2.5 transition-transform duration-200 active:scale-95"
-          >
-            <Image
-              src="/icon.png"
-              alt="Town Hub logo"
-              width={36}
-              height={36}
-              className="w-9 h-9 rounded-[11px] shadow-sm ring-1 ring-black/5"
-            />
+          <div className="flex min-w-0 items-center gap-2.5">
+            <a href="/" className="flex-none transition-transform duration-200 active:scale-95">
+              <Image
+                src="/icon.png"
+                alt="Town Hub home"
+                width={36}
+                height={36}
+                className="w-9 h-9 rounded-[11px] shadow-sm ring-1 ring-black/5"
+              />
+            </a>
             <DailyDoodle />
-          </a>
+          </div>
           <a
             href={signedIn ? '/profile' : '/login'}
             className="flex items-center gap-1.5 px-[15px] py-[7px] rounded-full border border-[#e5e7eb] bg-white text-[12.5px] font-semibold text-[#1f2937] transition-all duration-150 hover:bg-[#f9fafb] active:scale-95"

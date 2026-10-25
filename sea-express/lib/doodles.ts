@@ -4,6 +4,8 @@
 // Everything is drawn in code (components/DailyDoodle.tsx), so it works
 // offline in the Android app.
 
+import { TOWNS } from '@/lib/garden-route/towns';
+
 export type DoodleGlyph =
   | 'wave'
   | 'sun'
@@ -33,6 +35,10 @@ export interface Doodle {
   letters: [string, string, string, string, string, string];
   /** Caption colour. */
   tint: string;
+  /** Shown in the scene card when the doodle is tapped. */
+  fact: string;
+  /** Holidays get confetti and bunting in the scene card. */
+  holiday?: boolean;
 }
 
 const OCEAN: Doodle['letters'] = ['#0e7490', '#0891b2', '#0e7490', '#f59e0b', '#0e7490', '#0891b2'];
@@ -52,6 +58,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     caption: 'Fresh sea air on the Garden Route',
     letters: OCEAN,
     tint: '#0e7490',
+    fact: "The Garden Route stretches roughly 300 km along the coast, from Mossel Bay to Storms River.",
   },
   {
     id: 'sunny',
@@ -60,6 +67,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     caption: 'Sunshine along the coast today',
     letters: SUNSET,
     tint: '#ea580c',
+    fact: "Mossel Bay is known for its mild, sunny climate all year round.",
   },
   {
     id: 'whales',
@@ -68,6 +76,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     caption: 'Whale season: keep an eye on the bay',
     letters: OCEAN,
     tint: '#0369a1',
+    fact: "Southern right whales come into the Garden Route's bays from about June to November to calve.",
     months: [6, 7, 8, 9, 10, 11],
   },
   {
@@ -77,6 +86,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     caption: 'Proudly fynbos country',
     letters: FYNBOS,
     tint: '#be185d',
+    fact: "The Cape Floral Kingdom is the smallest of the world's six floral kingdoms, and the richest for its size. The king protea is South Africa's national flower.",
   },
   {
     id: 'lifeguard',
@@ -85,6 +95,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     caption: 'Swim safe: stay between the flags',
     letters: ['#dc2626', '#0e7490', '#dc2626', '#0e7490', '#dc2626', '#0e7490'],
     tint: '#dc2626',
+    fact: "Swim at beaches where lifeguards are on duty, and stay between the red-and-yellow flags.",
     months: [11, 12, 1, 2, 3, 4],
   },
   {
@@ -94,6 +105,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     caption: 'Explore a new town this week',
     letters: ['#0f766e', '#0e7490', '#0f766e', '#b45309', '#0f766e', '#0e7490'],
     tint: '#0f766e',
+    fact: `Town Hub covers ${TOWNS.length} towns, from Witsand to Storms River. Which one will you visit next?`,
   },
   {
     id: 'beach',
@@ -102,6 +114,7 @@ const EVERYDAY: (Doodle & { months?: number[] })[] = [
     caption: 'Beach weather? Check the forecast',
     letters: PARTY,
     tint: '#7c3aed',
+    fact: "Check the Weather page for today's forecast before you head to the beach.",
     months: [10, 11, 12, 1, 2, 3, 4],
   },
 ];
@@ -115,6 +128,7 @@ const FIXED: Record<string, Doodle> = {
     caption: 'Happy New Year from the Garden Route!',
     letters: PARTY,
     tint: '#7c3aed',
+    fact: "Wishing every town on the Garden Route a safe and happy new year.",
   },
   '02-14': {
     id: 'valentines',
@@ -123,6 +137,7 @@ const FIXED: Record<string, Doodle> = {
     caption: "Happy Valentine's Day",
     letters: ['#e11d48', '#db2777', '#e11d48', '#db2777', '#e11d48', '#db2777'],
     tint: '#e11d48',
+    fact: "Treat someone special to a meal at one of the Garden Route's restaurants. Find one in the Restaurants directory.",
   },
   '03-21': {
     id: 'human-rights',
@@ -131,6 +146,7 @@ const FIXED: Record<string, Doodle> = {
     caption: 'Human Rights Day',
     letters: FLAG,
     tint: '#007749',
+    fact: "Human Rights Day remembers 21 March 1960 in Sharpeville, and the rights in South Africa's Constitution.",
   },
   '04-27': {
     id: 'freedom',
@@ -139,6 +155,7 @@ const FIXED: Record<string, Doodle> = {
     caption: 'Happy Freedom Day, South Africa!',
     letters: FLAG,
     tint: '#007749',
+    fact: "Freedom Day marks South Africa's first democratic election, held on 27 April 1994.",
   },
   '05-01': {
     id: 'workers',
@@ -147,6 +164,7 @@ const FIXED: Record<string, Doodle> = {
     caption: "Workers' Day: thank you, Garden Route",
     letters: ['#b45309', '#475569', '#b45309', '#475569', '#b45309', '#475569'],
     tint: '#b45309',
+    fact: "Workers' Day honours the people who keep our towns running, every day of the year.",
   },
   '06-16': {
     id: 'youth',
@@ -155,6 +173,7 @@ const FIXED: Record<string, Doodle> = {
     caption: "Youth Day: honouring the class of '76",
     letters: SUNSET,
     tint: '#ea580c',
+    fact: "Youth Day remembers the Soweto uprising of 16 June 1976, when students protested for a better education.",
   },
   '07-18': {
     id: 'mandela',
@@ -163,6 +182,7 @@ const FIXED: Record<string, Doodle> = {
     caption: 'Mandela Day: 67 minutes for good',
     letters: FLAG,
     tint: '#007749',
+    fact: "Mandela Day falls on Nelson Mandela's birthday. Give 67 minutes, one for each year of his public service.",
   },
   '08-09': {
     id: 'womens',
@@ -171,6 +191,7 @@ const FIXED: Record<string, Doodle> = {
     caption: "Happy National Women's Day",
     letters: FYNBOS,
     tint: '#be185d',
+    fact: "Women's Day remembers the march of about 20,000 women to the Union Buildings on 9 August 1956.",
   },
   '09-24': {
     id: 'heritage',
@@ -179,6 +200,7 @@ const FIXED: Record<string, Doodle> = {
     caption: 'Happy Heritage Day: light the braai!',
     letters: FLAG,
     tint: '#ea580c',
+    fact: "Heritage Day celebrates South Africa's many cultures. It's also popularly known as National Braai Day.",
   },
   '12-16': {
     id: 'reconciliation',
@@ -187,6 +209,7 @@ const FIXED: Record<string, Doodle> = {
     caption: 'Day of Reconciliation',
     letters: FLAG,
     tint: '#007749',
+    fact: "The Day of Reconciliation promotes national unity, and has been a public holiday since 1995.",
   },
   '12-24': {
     id: 'christmas-eve',
@@ -195,6 +218,7 @@ const FIXED: Record<string, Doodle> = {
     caption: 'Merry Christmas Eve!',
     letters: FESTIVE,
     tint: '#b91c1c',
+    fact: "Wishing everyone on the Garden Route a safe and happy festive season.",
   },
   '12-25': {
     id: 'christmas',
@@ -203,6 +227,7 @@ const FIXED: Record<string, Doodle> = {
     caption: 'Merry Christmas from Town Hub',
     letters: FESTIVE,
     tint: '#b91c1c',
+    fact: "Wishing everyone on the Garden Route a safe and happy festive season.",
   },
   '12-26': {
     id: 'goodwill',
@@ -211,6 +236,7 @@ const FIXED: Record<string, Doodle> = {
     caption: 'Day of Goodwill',
     letters: FESTIVE,
     tint: '#15803d',
+    fact: "A day for kindness. Check on a neighbour, or lend a hand in your town.",
   },
   '12-31': {
     id: 'new-years-eve',
@@ -219,6 +245,7 @@ const FIXED: Record<string, Doodle> = {
     caption: "New Year's Eve: see you in the new year!",
     letters: PARTY,
     tint: '#7c3aed',
+    fact: "Celebrate safely tonight. Save the emergency numbers on the SOS page before you head out.",
   },
 };
 
@@ -229,6 +256,7 @@ const EASTER: Doodle = {
   caption: 'Happy Easter',
   letters: ['#7c3aed', '#16a34a', '#db2777', '#0891b2', '#f59e0b', '#7c3aed'],
   tint: '#7c3aed',
+  fact: "Wishing every town on the Garden Route a peaceful Easter weekend.",
 };
 
 export const DEFAULT_DOODLE: Doodle = EVERYDAY[0];
@@ -273,6 +301,8 @@ export function southAfricaNow(now: Date = new Date()) {
     hour: Number(parts.hour),
   };
 }
+
+for (const d of [...Object.values(FIXED), EASTER]) d.holiday = true;
 
 const ALL_DOODLES: Doodle[] = [...EVERYDAY, ...Object.values(FIXED), EASTER];
 

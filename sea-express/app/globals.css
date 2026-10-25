@@ -227,6 +227,55 @@ main {
   50% { transform: rotate(35deg); }
 }
 
+/* The doodle scene card. */
+.doodle-hop { display: inline-block; animation: doodle-hop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.doodle-pop { animation: doodle-pop 0.35s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.doodle-rise { animation: doodle-rise 1.4s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.doodle-cloud { animation: doodle-cloud 30s linear infinite; }
+.doodle-fly { animation: doodle-fly 18s linear infinite; }
+.doodle-sea { animation: doodle-sea 6s linear infinite; }
+.doodle-sail { animation: doodle-sail 18s linear infinite; }
+.doodle-breach { animation: doodle-breach 5s ease-in-out infinite; }
+.doodle-confetti { animation: doodle-confetti 3s linear infinite; }
+
+@keyframes doodle-hop {
+  0% { transform: translateY(0); }
+  40% { transform: translateY(-5px) scale(1.06); }
+  100% { transform: translateY(0); }
+}
+@keyframes doodle-pop {
+  from { opacity: 0; transform: translateY(-10px) scale(0.94); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes doodle-rise {
+  from { opacity: 0; transform: translateY(46px); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes doodle-cloud {
+  from { transform: translateX(-120px); }
+  to { transform: translateX(340px); }
+}
+@keyframes doodle-fly {
+  from { transform: translateX(-40px); }
+  to { transform: translateX(340px); }
+}
+@keyframes doodle-sea { to { transform: translateX(40px); } }
+@keyframes doodle-sail {
+  from { transform: translateX(-60px); }
+  to { transform: translateX(340px); }
+}
+@keyframes doodle-breach {
+  0%, 18% { opacity: 0; transform: translateY(26px) rotate(18deg); }
+  30% { opacity: 1; transform: translateY(-4px) rotate(-14deg); }
+  48% { opacity: 1; transform: translateY(-10px) rotate(0deg); }
+  66% { opacity: 1; transform: translateY(4px) rotate(16deg); }
+  76%, 100% { opacity: 0; transform: translateY(26px) rotate(24deg); }
+}
+@keyframes doodle-confetti {
+  from { transform: translateY(0) rotate(0deg); }
+  to { transform: translateY(190px) rotate(540deg); }
+}
+
 @media (prefers-reduced-motion: reduce) {
   [class*='doodle-'] {
     animation: none !important;
