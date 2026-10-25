@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { getCurrentUser, getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import Avatar from '@/components/Avatar';
+import DailyDoodle from '@/components/DailyDoodle';
 import { getMyProfile } from '@/lib/rewards/queries';
 
 interface NavItem {
@@ -96,7 +97,7 @@ export default function SiteHeader() {
         <div className="flex items-center justify-between px-[18px] pt-1 pb-2.5 border-b border-[#e5e7eb]">
           <a
             href="/"
-            className="flex items-center gap-2.5 transition-transform duration-200 active:scale-95"
+            className="flex min-w-0 items-center gap-2.5 transition-transform duration-200 active:scale-95"
           >
             <Image
               src="/icon.png"
@@ -105,9 +106,7 @@ export default function SiteHeader() {
               height={36}
               className="w-9 h-9 rounded-[11px] shadow-sm ring-1 ring-black/5"
             />
-            <span className="text-[19px] font-extrabold tracking-[-0.02em] text-[#1f2937]">
-              Town Hub
-            </span>
+            <DailyDoodle />
           </a>
           <a
             href={signedIn ? '/profile' : '/login'}
