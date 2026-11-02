@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { RADIO_STATIONS } from '@/lib/garden-route/radio';
+import { RADIO_GROUPS, RADIO_STATIONS } from '@/lib/garden-route/radio';
 import { TOWNS, getTownLabel } from '@/lib/garden-route/towns';
 import { NATIONAL_CONTACTS, getEmergencyContactsByTown } from '@/lib/garden-route/emergency';
 import { BUSINESS_REGISTRATIONS_EMAIL, MEMBER_REGISTRATIONS_EMAIL } from '@/lib/contact';
@@ -8,6 +8,13 @@ describe('radio stations', () => {
   it('have unique ids', () => {
     const ids = RADIO_STATIONS.map((s) => s.id);
     expect(new Set(ids).size).toBe(ids.length);
+  });
+
+  it('each belong to a group, and every group has stations', () => {
+    for (const g of RADIO_GROUPS) {
+      expect(RADIO_STATIONS.filter((s) => s.group === g.id).length, g.label).toBeGreaterThan(0);
+    }
+    for (const s of RADIO_STATIONS) expect(RADIO_GROUPS.map((g) => g.id)).toContain(s.group);
   });
 
   it('only use streams the Android app can play (https)', () => {

@@ -37,6 +37,10 @@ export interface Doodle {
   tint: string;
   /** Shown in the scene card when the doodle is tapped. */
   fact: string;
+  /** When it happens, shown in the scene card, e.g. "All of September". */
+  when?: string;
+  /** Where it happens, for the scene card's heading. Defaults to the Garden Route. */
+  place?: string;
   /** Holidays get confetti and bunting in the scene card. */
   holiday?: boolean;
 }
@@ -255,6 +259,383 @@ const FIXED: Record<string, Doodle> = {
   },
 };
 
+/**
+ * What's happening in South Africa and on the Garden Route at this time of
+ * year: national months and days, festivals and nature's big events. Dates
+ * are "MM-DD" and inclusive; a range can run over New Year. Events whose
+ * dates move from year to year are written as "usually" and "around".
+ *
+ * On a day covered by one of these, it's shown instead of an everyday
+ * scene. A short one (3 days or fewer) wins outright; otherwise the
+ * matching ones take turns, a different one each day.
+ */
+interface Happening extends Doodle {
+  from: string;
+  to: string;
+}
+
+const ZA = 'South Africa';
+
+const HAPPENINGS: Happening[] = [
+  {
+    id: 'summer-holidays',
+    from: '12-10',
+    to: '01-12',
+    glyph: 'beachball',
+    accent: 'boat',
+    caption: 'Summer holidays: the coast is busy',
+    when: 'Mid-December to mid-January',
+    letters: calm('#ea580c'),
+    tint: '#ea580c',
+    fact: "This is the Garden Route's busiest season, when holidaymakers from across the country head for its beaches. Expect busy roads on the N2, book restaurants ahead, and swim only where lifeguards are on duty.",
+  },
+  {
+    id: 'back-to-school',
+    from: '01-13',
+    to: '01-31',
+    glyph: 'compass',
+    accent: 'none',
+    caption: 'Back to school after summer',
+    when: 'Mid to late January',
+    letters: calm('#0f766e'),
+    tint: '#0f766e',
+    place: ZA,
+    fact: 'Schools reopen after the long summer break, and matric results come out around this time. Drive carefully near schools as the roads fill with learners again.',
+  },
+  {
+    id: 'wetlands-day',
+    from: '02-02',
+    to: '02-02',
+    glyph: 'wave',
+    accent: 'gull',
+    caption: 'World Wetlands Day',
+    when: '2 February',
+    letters: calm('#0e7490'),
+    tint: '#0e7490',
+    fact: 'The Wilderness lakes, between George and Sedgefield, are a Ramsar wetland of international importance and home to many water birds. World Wetlands Day marks the signing of the Ramsar Convention on 2 February 1971.',
+  },
+  {
+    id: 'old-car-show',
+    from: '02-06',
+    to: '02-16',
+    glyph: 'gear',
+    accent: 'sparkles',
+    caption: 'Classic cars gather in George',
+    when: 'Usually in February',
+    letters: calm('#b45309'),
+    tint: '#b45309',
+    fact: 'The George Old Car Show, a much-loved classic-car show, is usually held in February, drawing collectors and families from across South Africa.',
+  },
+  {
+    id: 'human-rights-month',
+    from: '03-01',
+    to: '03-31',
+    glyph: 'flag',
+    accent: 'none',
+    caption: 'Human Rights Month',
+    when: 'All of March',
+    letters: FLAG,
+    tint: '#007749',
+    place: ZA,
+    fact: "March is Human Rights Month in South Africa, built around Human Rights Day on 21 March. It's a time to reflect on the rights every person has under the Constitution.",
+  },
+  {
+    id: 'water-day',
+    from: '03-22',
+    to: '03-22',
+    glyph: 'wave',
+    accent: 'none',
+    caption: 'World Water Day: save every drop',
+    when: '22 March',
+    letters: calm('#0369a1'),
+    tint: '#0369a1',
+    place: ZA,
+    fact: "South Africa is a water-scarce country. Fix leaks, take shorter showers and keep an eye on your town's water restrictions.",
+  },
+  {
+    id: 'kknk',
+    from: '03-28',
+    to: '04-10',
+    glyph: 'firework',
+    accent: 'sparkles',
+    caption: 'Arts festival time in Oudtshoorn',
+    when: 'Usually late March or April',
+    letters: calm('#7c3aed'),
+    tint: '#7c3aed',
+    fact: "The Klein Karoo Nasionale Kunstefees (KKNK), one of South Africa's biggest arts festivals, is usually held in Oudtshoorn around this time, with theatre, music and art.",
+  },
+  {
+    id: 'freedom-month',
+    from: '04-01',
+    to: '04-30',
+    glyph: 'flag',
+    accent: 'sparkles',
+    caption: 'Freedom Month',
+    when: 'All of April',
+    letters: FLAG,
+    tint: '#007749',
+    place: ZA,
+    fact: "April is Freedom Month, marking South Africa's first democratic election on 27 April 1994, when millions queued to vote for the first time.",
+  },
+  {
+    id: 'africa-day',
+    from: '05-25',
+    to: '05-25',
+    glyph: 'heart',
+    accent: 'sparkles',
+    caption: 'Happy Africa Day!',
+    when: '25 May',
+    letters: FLAG,
+    tint: '#007749',
+    place: ZA,
+    fact: "Africa Day marks the founding of the Organisation of African Unity on 25 May 1963, today's African Union, and celebrates the continent's people and cultures.",
+  },
+  {
+    id: 'youth-month',
+    from: '06-01',
+    to: '06-30',
+    glyph: 'sun',
+    accent: 'none',
+    caption: 'Youth Month',
+    when: 'All of June',
+    letters: SUNSET,
+    tint: '#ea580c',
+    place: ZA,
+    fact: 'June is Youth Month, honouring the students of the 1976 Soweto uprising and the young people shaping South Africa today.',
+  },
+  {
+    id: 'environment-day',
+    from: '06-05',
+    to: '06-05',
+    glyph: 'protea',
+    accent: 'none',
+    caption: 'World Environment Day',
+    when: '5 June',
+    letters: calm('#15803d'),
+    tint: '#15803d',
+    fact: "From fynbos to indigenous forest, the Garden Route has some of the country's most precious natural areas, much of it protected in the Garden Route National Park.",
+  },
+  {
+    id: 'oceans-day',
+    from: '06-08',
+    to: '06-08',
+    glyph: 'wave',
+    accent: 'whale',
+    caption: 'World Oceans Day',
+    when: '8 June',
+    letters: calm('#0369a1'),
+    tint: '#0369a1',
+    fact: 'Take your litter home from the beach, and choose sustainable seafood: the SASSI list shows which fish are green-listed.',
+  },
+  {
+    id: 'sardine-run',
+    from: '06-10',
+    to: '07-31',
+    glyph: 'wave',
+    accent: 'gull',
+    caption: 'The sardine run is on',
+    when: 'Winter, about June to July',
+    letters: calm('#0e7490'),
+    tint: '#0e7490',
+    place: ZA,
+    fact: "Every winter, huge shoals of sardines move up the east coast, chased by dolphins, sharks, seals and seabirds. It's one of the great wildlife spectacles on the planet, best seen off the Eastern Cape and KwaZulu-Natal.",
+  },
+  {
+    id: 'oyster-festival',
+    from: '07-01',
+    to: '07-12',
+    glyph: 'compass',
+    accent: 'boat',
+    caption: 'Oyster festival season in Knysna',
+    when: 'Usually in July',
+    letters: calm('#0f766e'),
+    tint: '#0f766e',
+    fact: 'The Knysna Oyster Festival usually runs over about ten days in July, with oyster tastings, the Knysna Forest Marathon and plenty to do across town.',
+  },
+  {
+    id: 'mandela-month',
+    from: '07-01',
+    to: '07-31',
+    glyph: 'heart',
+    accent: 'none',
+    caption: 'Mandela Month: do some good',
+    when: 'All of July',
+    letters: FLAG,
+    tint: '#007749',
+    place: ZA,
+    fact: "July is Mandela Month. Mandela Day on 18 July asks everyone to give 67 minutes of service, one for every year of Nelson Mandela's public life.",
+  },
+  {
+    id: 'womens-month',
+    from: '08-01',
+    to: '08-31',
+    glyph: 'protea',
+    accent: 'sparkles',
+    caption: "Women's Month",
+    when: 'All of August',
+    letters: FYNBOS,
+    tint: '#be185d',
+    place: ZA,
+    fact: "August is Women's Month, remembering the 20,000 women who marched to the Union Buildings on 9 August 1956 against the pass laws.",
+  },
+  {
+    id: 'wildflowers',
+    from: '08-01',
+    to: '09-15',
+    glyph: 'protea',
+    accent: 'sparkles',
+    caption: 'Wildflower season up the West Coast',
+    when: 'Usually August to September',
+    letters: calm('#be185d'),
+    tint: '#be185d',
+    place: ZA,
+    fact: "After the winter rain, Namaqualand and the West Coast burst into carpets of spring flowers. It's one of South Africa's great natural shows.",
+  },
+  {
+    id: 'spring-day',
+    from: '09-01',
+    to: '09-01',
+    glyph: 'protea',
+    accent: 'sparkles',
+    caption: 'Happy Spring Day!',
+    when: '1 September',
+    letters: FYNBOS,
+    tint: '#be185d',
+    place: ZA,
+    fact: "South Africans celebrate 1 September as the first day of spring. Look out for blooming fynbos on the Garden Route's trails.",
+  },
+  {
+    id: 'arbor-week',
+    from: '09-02',
+    to: '09-07',
+    glyph: 'protea',
+    accent: 'none',
+    caption: 'Arbor Week: plant a tree',
+    when: '1 to 7 September',
+    letters: calm('#15803d'),
+    tint: '#15803d',
+    fact: "Plant an indigenous tree this week, such as the real yellowwood: South Africa's national tree, which grows in the Garden Route's forests.",
+  },
+  {
+    id: 'heritage-month',
+    from: '09-01',
+    to: '09-30',
+    glyph: 'flame',
+    accent: 'none',
+    caption: 'Heritage Month',
+    when: 'All of September',
+    letters: FLAG,
+    tint: '#ea580c',
+    place: ZA,
+    fact: 'September is Heritage Month, celebrating the languages, food, music and traditions that make up South Africa, leading up to Heritage Day on 24 September.',
+  },
+  {
+    id: 'whale-peak',
+    from: '09-15',
+    to: '10-31',
+    glyph: 'wave',
+    accent: 'whale',
+    caption: 'Peak whale-watching season',
+    when: 'Spring, about September to October',
+    letters: calm('#0369a1'),
+    tint: '#0369a1',
+    fact: "Southern right whales are often seen close to shore in the Garden Route's bays in spring, especially around Plettenberg Bay and Mossel Bay. Look for blows and breaching from the cliffs.",
+  },
+  {
+    id: 'marine-month',
+    from: '10-01',
+    to: '10-31',
+    glyph: 'lifebuoy',
+    accent: 'boat',
+    caption: 'National Marine Month',
+    when: 'All of October',
+    letters: calm('#0e7490'),
+    tint: '#0e7490',
+    place: ZA,
+    fact: "October is National Marine Month, a time to celebrate and protect South Africa's oceans and coastline, home to thousands of marine species.",
+  },
+  {
+    id: 'jacarandas',
+    from: '10-15',
+    to: '11-15',
+    glyph: 'protea',
+    accent: 'sparkles',
+    caption: 'Jacarandas are blooming in Pretoria',
+    when: 'Mid-October to mid-November',
+    letters: calm('#7c3aed'),
+    tint: '#7c3aed',
+    place: ZA,
+    fact: "Each spring, Pretoria's streets turn purple as thousands of jacaranda trees flower, which is why it's known as Jacaranda City.",
+  },
+  {
+    id: 'matric-exams',
+    from: '10-27',
+    to: '11-28',
+    glyph: 'compass',
+    accent: 'none',
+    caption: 'Good luck, matrics!',
+    when: 'Late October to late November',
+    letters: calm('#0f766e'),
+    tint: '#0f766e',
+    place: ZA,
+    fact: 'Matric final exams run from late October into late November. Good luck to every Grade 12 learner sitting their exams.',
+  },
+  {
+    id: 'sixteen-days',
+    from: '11-25',
+    to: '12-10',
+    glyph: 'heart',
+    accent: 'none',
+    caption: '16 Days of Activism',
+    when: '25 November to 10 December',
+    letters: FYNBOS,
+    tint: '#be185d',
+    place: ZA,
+    fact: 'South Africa joins the 16 Days of Activism for No Violence against Women and Children. If you or someone you know needs help, call the GBV Command Centre on 0800 428 428.',
+  },
+  {
+    id: 'aids-day',
+    from: '12-01',
+    to: '12-01',
+    glyph: 'heart',
+    accent: 'none',
+    caption: 'World AIDS Day',
+    when: '1 December',
+    letters: calm('#dc2626'),
+    tint: '#dc2626',
+    place: ZA,
+    fact: 'World AIDS Day remembers those lost and supports people living with HIV. Free, confidential testing is available at public clinics.',
+  },
+];
+
+/** Day of the year for an "MM-DD", in a non-leap year (1–365). */
+function dayNumber(mmdd: string): number {
+  const [m, d] = mmdd.split('-').map(Number);
+  return Math.round((Date.UTC(2001, m - 1, d) - Date.UTC(2001, 0, 1)) / 86_400_000) + 1;
+}
+
+function covers(h: Happening, mmdd: string): boolean {
+  const day = dayNumber(mmdd);
+  const from = dayNumber(h.from);
+  const to = dayNumber(h.to);
+  return from <= to ? day >= from && day <= to : day >= from || day <= to;
+}
+
+function lengthInDays(h: Happening): number {
+  const from = dayNumber(h.from);
+  const to = dayNumber(h.to);
+  return (from <= to ? to - from : 365 - from + to) + 1;
+}
+
+/** The happening to show on a day ("MM-DD"), or null when none covers it. */
+export function happeningOn(mmdd: string, rotation = 0): Doodle | null {
+  const matching = HAPPENINGS.filter((h) => covers(h, mmdd));
+  if (matching.length === 0) return null;
+  const short = matching.filter((h) => lengthInDays(h) <= 3);
+  const pool = short.length ? short : matching;
+  return pool[rotation % pool.length];
+}
+
 const EASTER: Doodle = {
   id: 'easter',
   glyph: 'egg',
@@ -310,7 +691,7 @@ export function southAfricaNow(now: Date = new Date()) {
 
 for (const d of [...Object.values(FIXED), EASTER]) d.holiday = true;
 
-const ALL_DOODLES: Doodle[] = [...EVERYDAY, ...Object.values(FIXED), EASTER];
+const ALL_DOODLES: Doodle[] = [...EVERYDAY, ...Object.values(FIXED), EASTER, ...HAPPENINGS];
 
 /** Looks a doodle up by id, for previewing with ?doodle=<id>. */
 export function findDoodle(id: string): Doodle | undefined {
@@ -332,12 +713,16 @@ export function pickDoodle(now: Date = new Date()): Doodle & { night: boolean } 
   if (offset >= -2 && offset <= 1) return { ...EASTER, night };
 
   // Same scene all day, a different one tomorrow.
-  const eligible = EVERYDAY.filter((d) => !d.months || d.months.includes(month));
   const dayOfYear = Math.round((today - Date.UTC(year, 0, 1)) / 86_400_000);
+
+  const happening = happeningOn(key, dayOfYear);
+  if (happening) return { ...happening, night };
+
+  const eligible = EVERYDAY.filter((d) => !d.months || d.months.includes(month));
   const pick = eligible[dayOfYear % eligible.length];
 
   // The sunny scene becomes a moonlit one after dark.
-  if (night && pick.glyph === 'sun') {
+  if (night && pick.id === 'sunny') {
     return { ...pick, caption: 'Goodnight from the Garden Route', night };
   }
   return { ...pick, night };

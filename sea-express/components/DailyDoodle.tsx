@@ -146,11 +146,14 @@ function DoodleCard({ doodle, hour, onClose }: { doodle: Doodle; hour: number; o
             className="doodle-ink text-[11px] font-bold uppercase tracking-[0.14em]"
             style={{ ['--ink' as string]: doodle.tint }}
           >
-            {today} · Garden Route
+            {today} · {doodle.place ?? 'Garden Route'}
           </p>
           <h2 id="doodle-card-title" className="mt-1.5 text-[19px] font-extrabold leading-snug text-slate-900">
             {doodle.caption}
           </h2>
+          {doodle.when && (
+            <p className="mt-1 text-[12.5px] font-semibold text-slate-500">{doodle.when}</p>
+          )}
           <p className="mt-2 text-[14px] leading-relaxed text-slate-600">{doodle.fact}</p>
           <p className="mt-4 text-[11px] text-slate-400">A new Town Hub doodle every day.</p>
         </div>
