@@ -25,7 +25,7 @@ export default function NewsPage() {
               <Newspaper className="w-5 h-5 text-primary opacity-70" aria-hidden="true" />
             </div>
             
-            <p className="text-sm font-medium text-accent mb-3">{outlet.coverage}</p>
+            <p className="text-sm font-medium text-[#b45309] dark:text-amber-400 mb-3">{outlet.coverage}</p>
             <p className="text-sm text-muted-foreground flex-grow mb-4">
               {outlet.description}
             </p>

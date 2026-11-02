@@ -147,7 +147,7 @@ export default function AttorneysPage() {
                     ? 'bg-primary text-primary-foreground border-primary shadow-sm'
                     : n > 0
                       ? 'bg-card text-slate-700 border-slate-200 hover:bg-slate-100'
-                      : 'bg-card text-slate-400 border-slate-200 hover:bg-slate-100',
+                      : 'bg-card text-slate-500 border-slate-200 hover:bg-slate-100',
                 ].join(' ')}
               >
                 {t.label}
@@ -198,7 +198,7 @@ export default function AttorneysPage() {
                     <span
                       className={[
                         'ml-0.5 min-w-5 px-1.5 rounded-full text-[11px] font-semibold',
-                        active ? 'bg-white/25' : 'bg-slate-100 text-slate-500',
+                        active ? 'bg-black/20' : 'bg-slate-100 text-slate-500',
                       ].join(' ')}
                     >
                       {n}

@@ -1,10 +1,12 @@
-import { Users, Store, Gift, Receipt } from 'lucide-react';
+import { Users, Store, Gift, Receipt, Scale, MessagesSquare } from 'lucide-react';
 
 const CARDS = [
   { href: '/admin/members', label: 'Members', description: 'Switch customer rewards memberships on or off', icon: Users },
   { href: '/admin/businesses', label: 'Businesses', description: 'Review applications, advertising status and access', icon: Store },
   { href: '/admin/offers', label: 'Offers', description: 'Approve submitted offers and manage them per business', icon: Gift },
   { href: '/admin/redemptions', label: 'Redemptions', description: 'View all reward redemptions', icon: Receipt },
+  { href: '/admin/notices', label: 'Legal Notices', description: 'Publish notices sent in by attorneys and law firms', icon: Scale },
+  { href: '/admin/wall', label: 'Community Wall', description: 'Review reported posts, hide, restore or delete them', icon: MessagesSquare },
 ];
 
 export default function AdminDashboardPage() {

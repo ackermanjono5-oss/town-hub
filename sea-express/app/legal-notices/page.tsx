@@ -132,7 +132,7 @@ export default function LegalNoticesPage() {
                   <span
                     className={[
                       'ml-0.5 min-w-5 px-1.5 rounded-full text-[11px] font-semibold',
-                      selected ? 'bg-white/25' : 'bg-slate-100 text-slate-500',
+                      selected ? 'bg-black/20' : 'bg-slate-100 text-slate-500',
                     ].join(' ')}
                   >
                     {counts.get(c.value) ?? 0}

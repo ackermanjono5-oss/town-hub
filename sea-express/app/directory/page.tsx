@@ -301,7 +301,7 @@ function CategoryChip({
       <span
         className={[
           'ml-0.5 min-w-5 px-1.5 rounded-full text-[11px] font-semibold',
-          active ? 'bg-white/25' : 'bg-slate-100 text-slate-500',
+          active ? 'bg-black/20' : 'bg-slate-100 text-slate-500',
         ].join(' ')}
       >
         {count}
@@ -330,7 +330,7 @@ function RestaurantCard({ restaurant }: { restaurant: Restaurant }) {
           <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${classes.badge}`}>
             {restaurant.category}
           </span>
-          <span className="text-xs text-slate-400">{townLabel}</span>
+          <span className="text-xs text-slate-500">{townLabel}</span>
         </div>
 
         {restaurant.cuisine && (

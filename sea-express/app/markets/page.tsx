@@ -193,7 +193,7 @@ function MarketCard({ market }: { market: Market }) {
           <span className={`px-2 py-0.5 rounded-full text-[11px] font-semibold ${classes.badge}`}>
             {market.type}
           </span>
-          <span className="text-xs text-slate-400">{getTownLabel(market.town)}</span>
+          <span className="text-xs text-slate-500">{getTownLabel(market.town)}</span>
         </div>
 
         {market.schedule && (

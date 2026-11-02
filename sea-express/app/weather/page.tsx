@@ -22,33 +22,19 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { TOWNS, getTownLabel } from '@/lib/garden-route/towns';
+import { describeAge, fetchForecast, readCachedForecast, saveForecast, type Forecast } from '@/lib/weather';
 import PageHero from '@/components/PageHero';
 import TownPills from '@/components/TownPills';
 import { CloudSun as HeroIcon } from 'lucide-react';
 
 /**
- * Live weather for each town from Open-Meteo (free, no key, CC BY 4.0), by
- * the town's coordinates in lib/garden-route/towns.ts. Coastal towns also
- * get wave height and sea temperature from Open-Meteo's marine API, which
- * returns nulls inland, so that card only appears where there is sea.
+ * Live weather for each town, by the town's coordinates in
+ * lib/garden-route/towns.ts. Fetching, parsing and the offline cache live
+ * in lib/weather.ts.
  */
 
 const TOWN_KEY = 'townhub:weather-town';
 const DEFAULT_TOWN = 'george';
-
-interface Forecast {
-  current: {
-    temperature: number;
-    feelsLike: number;
-    humidity: number;
-    isDay: boolean;
-    code: number;
-    windSpeed: number;
-    windDirection: number;
-  };
-  days: { date: string; code: number; max: number; min: number; rain: number | null; uv: number | null }[];
-  sea: { waveHeight: number | null; temperature: number | null } | null;
-}
 
 /** WMO weather codes, as Open-Meteo reports them. */
 function describe(code: number, isDay = true): { label: string; icon: LucideIcon } {
@@ -76,57 +62,12 @@ function dayName(date: string, index: number) {
   return new Intl.DateTimeFormat('en-ZA', { weekday: 'short', timeZone: 'UTC' }).format(new Date(`${date}T00:00:00Z`));
 }
 
-async function loadForecast(lat: number, lng: number): Promise<Forecast> {
-  const tz = 'Africa%2FJohannesburg';
-  const weatherUrl =
-    `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}` +
-    '&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,weather_code,wind_speed_10m,wind_direction_10m' +
-    '&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max,uv_index_max' +
-    `&timezone=${tz}&forecast_days=5`;
-  const marineUrl =
-    `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${lng}` +
-    `&current=wave_height,sea_surface_temperature&timezone=${tz}`;
-
-  const [weatherRes, marine] = await Promise.all([
-    fetch(weatherUrl),
-    // Sea data is a bonus: if it fails, the forecast still shows.
-    fetch(marineUrl)
-      .then((r) => (r.ok ? r.json() : null))
-      .catch(() => null),
-  ]);
-  if (!weatherRes.ok) throw new Error(`Weather request failed: ${weatherRes.status}`);
-  const w = await weatherRes.json();
-
-  const sea =
-    marine?.current && (marine.current.wave_height != null || marine.current.sea_surface_temperature != null)
-      ? { waveHeight: marine.current.wave_height, temperature: marine.current.sea_surface_temperature }
-      : null;
-
-  return {
-    current: {
-      temperature: w.current.temperature_2m,
-      feelsLike: w.current.apparent_temperature,
-      humidity: w.current.relative_humidity_2m,
-      isDay: w.current.is_day === 1,
-      code: w.current.weather_code,
-      windSpeed: w.current.wind_speed_10m,
-      windDirection: w.current.wind_direction_10m,
-    },
-    days: (w.daily.time as string[]).map((date, i) => ({
-      date,
-      code: w.daily.weather_code[i],
-      max: w.daily.temperature_2m_max[i],
-      min: w.daily.temperature_2m_min[i],
-      rain: w.daily.precipitation_probability_max?.[i] ?? null,
-      uv: w.daily.uv_index_max?.[i] ?? null,
-    })),
-    sea,
-  };
-}
-
 export default function WeatherPage() {
   const [town, setTown] = useState(DEFAULT_TOWN);
   const [forecast, setForecast] = useState<Forecast | null>(null);
+  // Set when the forecast on screen is a saved one because the live one
+  // couldn't be fetched.
+  const [savedAt, setSavedAt] = useState<number | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const townLabel = getTownLabel(town);
 
@@ -154,14 +95,24 @@ export default function WeatherPage() {
     if (!t) return () => {};
     let cancelled = false;
     setStatus('loading');
-    loadForecast(t.lat, t.lng)
+    fetchForecast(t.lat, t.lng)
       .then((f) => {
         if (cancelled) return;
+        saveForecast(town, f);
         setForecast(f);
+        setSavedAt(null);
         setStatus('ready');
       })
       .catch(() => {
-        if (!cancelled) setStatus('error');
+        if (cancelled) return;
+        const cached = readCachedForecast(town);
+        if (cached) {
+          setForecast(cached.forecast);
+          setSavedAt(cached.savedAt);
+          setStatus('ready');
+        } else {
+          setStatus('error');
+        }
       });
     return () => {
       cancelled = true;
@@ -191,12 +142,29 @@ export default function WeatherPage() {
           <WifiOff className="mx-auto h-10 w-10 text-slate-400" aria-hidden="true" />
           <h2 className="mt-3 text-lg font-bold text-slate-900">Couldn&apos;t load the weather</h2>
           <p className="mt-1 text-sm text-slate-600">
-            The forecast needs an internet connection. Check you&apos;re online and try again.
+            You may be offline, or the weather service is busy. Please try again in a minute.
           </p>
           <button
             type="button"
             onClick={() => load()}
             className="mt-4 inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground shadow-sm transition active:scale-95"
+          >
+            <RefreshCw className="h-4 w-4" aria-hidden="true" />
+            Try again
+          </button>
+        </div>
+      )}
+
+      {status === 'ready' && forecast && savedAt !== null && (
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl bg-amber-100 dark:bg-amber-400/15 px-4 py-3 text-sm text-amber-800 dark:text-amber-300">
+          <span className="inline-flex items-center gap-2">
+            <WifiOff className="h-4 w-4 flex-none" aria-hidden="true" />
+            Couldn&apos;t update. Showing the forecast from {describeAge(savedAt)}.
+          </span>
+          <button
+            type="button"
+            onClick={() => load()}
+            className="inline-flex items-center gap-1.5 font-semibold underline-offset-2 hover:underline"
           >
             <RefreshCw className="h-4 w-4" aria-hidden="true" />
             Try again
