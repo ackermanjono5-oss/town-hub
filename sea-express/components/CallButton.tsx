@@ -1,7 +1,8 @@
-import { Ambulance, Flame, LifeBuoy, Lock, Shield, Users, Phone } from 'lucide-react';
+import { Ambulance, Flame, LifeBuoy, Lock, Phone, Shield, Siren, Users } from 'lucide-react';
 import type { EmergencyContact } from '@/lib/garden-route/emergency';
 
 const ICONS = {
+  general: Siren,
   nsri: LifeBuoy,
   police: Shield,
   ambulance: Ambulance,
@@ -10,21 +11,24 @@ const ICONS = {
   neighbourhood: Users,
 };
 
+/** One emergency number as a full-width row: tap anywhere to call. */
 export default function CallButton({ contact }: { contact: EmergencyContact }) {
   const Icon = ICONS[contact.type];
   return (
     <a
-      href={`tel:${contact.phone}`}
-      className="flex items-center gap-3 w-full p-4 rounded-lg border border-border bg-background hover:bg-secondary hover:border-primary card-lift active:scale-[0.99]"
+      href={`tel:${contact.phone.replace(/\s+/g, '')}`}
+      className="flex w-full items-center gap-3 rounded-2xl bg-white/90 p-3.5 shadow-[0_8px_20px_-14px_rgba(15,23,42,0.5)] ring-1 ring-white/70 transition active:scale-[0.98] hover:-translate-y-0.5"
     >
-      <span className="flex items-center justify-center w-10 h-10 rounded-full bg-primary/10 text-primary flex-shrink-0">
-        <Icon className="w-5 h-5" aria-hidden="true" />
+      <span className="grid h-11 w-11 flex-none place-items-center rounded-xl bg-red-50 text-[#dc2626]">
+        <Icon className="h-5 w-5" aria-hidden="true" />
       </span>
-      <div className="flex-1">
-        <p className="font-medium">{contact.name}</p>
-        <p className="text-sm text-muted-foreground">{contact.phone}</p>
-      </div>
-      <Phone className="w-5 h-5 text-primary" aria-hidden="true" />
+      <span className="min-w-0 flex-1">
+        <span className="block truncate text-[15px] font-semibold text-slate-900">{contact.name}</span>
+        <span className="block text-[15px] font-bold tracking-wide text-[#dc2626]">{contact.phone}</span>
+      </span>
+      <span className="grid h-10 w-10 flex-none place-items-center rounded-full bg-[#dc2626] text-white shadow-md">
+        <Phone className="h-[18px] w-[18px]" aria-hidden="true" />
+      </span>
     </a>
   );
 }

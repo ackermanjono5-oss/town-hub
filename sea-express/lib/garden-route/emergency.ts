@@ -1,4 +1,5 @@
 export type EmergencyType =
+  | 'general'
   | 'nsri'
   | 'police'
   | 'ambulance'
@@ -15,7 +16,10 @@ export interface EmergencyContact {
 }
 
 // National numbers — apply across South Africa regardless of town.
+// 112 is listed first: it works from any mobile phone, and is the number the
+// Community Guidelines (app/guidelines) tell people to dial.
 export const NATIONAL_CONTACTS: EmergencyContact[] = [
+  { id: 'nat-0', type: 'general', name: 'Emergency from a mobile', phone: '112' },
   { id: 'nat-1', type: 'police', name: 'SAPS Emergency', phone: '10111' },
   { id: 'nat-2', type: 'ambulance', name: 'Ambulance / EMS', phone: '10177' },
   { id: 'nat-3', type: 'fire', name: 'Fire Department', phone: '10179' },
