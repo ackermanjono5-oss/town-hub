@@ -19,9 +19,21 @@ export type DoodleGlyph =
   | 'flame'
   | 'firework'
   | 'bauble'
-  | 'egg';
+  | 'egg'
+  | 'gradcap'
+  | 'jacaranda'
+  | 'sardines'
+  | 'oyster'
+  | 'car'
+  | 'tree'
+  | 'drop'
+  | 'masks'
+  | 'ribbon'
+  | 'ribbon-purple'
+  | 'daisy'
+  | 'pencil';
 
-export type DoodleAccent = 'whale' | 'boat' | 'gull' | 'sparkles' | 'none';
+export type DoodleAccent = 'whale' | 'boat' | 'gull' | 'sparkles' | 'shoal' | 'petals' | 'flowers' | 'none';
 
 export interface Doodle {
   id: string;
@@ -293,8 +305,8 @@ const HAPPENINGS: Happening[] = [
     id: 'back-to-school',
     from: '01-13',
     to: '01-31',
-    glyph: 'compass',
-    accent: 'none',
+    glyph: 'pencil',
+    accent: 'sparkles',
     caption: 'Back to school after summer',
     when: 'Mid to late January',
     letters: calm('#0f766e'),
@@ -318,7 +330,7 @@ const HAPPENINGS: Happening[] = [
     id: 'old-car-show',
     from: '02-06',
     to: '02-16',
-    glyph: 'gear',
+    glyph: 'car',
     accent: 'sparkles',
     caption: 'Classic cars gather in George',
     when: 'Usually in February',
@@ -343,7 +355,7 @@ const HAPPENINGS: Happening[] = [
     id: 'water-day',
     from: '03-22',
     to: '03-22',
-    glyph: 'wave',
+    glyph: 'drop',
     accent: 'none',
     caption: 'World Water Day: save every drop',
     when: '22 March',
@@ -356,7 +368,7 @@ const HAPPENINGS: Happening[] = [
     id: 'kknk',
     from: '03-28',
     to: '04-10',
-    glyph: 'firework',
+    glyph: 'masks',
     accent: 'sparkles',
     caption: 'Arts festival time in Oudtshoorn',
     when: 'Usually late March or April',
@@ -407,8 +419,8 @@ const HAPPENINGS: Happening[] = [
     id: 'environment-day',
     from: '06-05',
     to: '06-05',
-    glyph: 'protea',
-    accent: 'none',
+    glyph: 'tree',
+    accent: 'gull',
     caption: 'World Environment Day',
     when: '5 June',
     letters: calm('#15803d'),
@@ -431,8 +443,8 @@ const HAPPENINGS: Happening[] = [
     id: 'sardine-run',
     from: '06-10',
     to: '07-31',
-    glyph: 'wave',
-    accent: 'gull',
+    glyph: 'sardines',
+    accent: 'shoal',
     caption: 'The sardine run is on',
     when: 'Winter, about June to July',
     letters: calm('#0e7490'),
@@ -444,7 +456,7 @@ const HAPPENINGS: Happening[] = [
     id: 'oyster-festival',
     from: '07-01',
     to: '07-12',
-    glyph: 'compass',
+    glyph: 'oyster',
     accent: 'boat',
     caption: 'Oyster festival season in Knysna',
     when: 'Usually in July',
@@ -482,9 +494,9 @@ const HAPPENINGS: Happening[] = [
     id: 'wildflowers',
     from: '08-01',
     to: '09-15',
-    glyph: 'protea',
-    accent: 'sparkles',
-    caption: 'Wildflower season up the West Coast',
+    glyph: 'daisy',
+    accent: 'flowers',
+    caption: 'Spring wildflowers are blooming',
     when: 'Usually August to September',
     letters: calm('#be185d'),
     tint: '#be185d',
@@ -495,8 +507,8 @@ const HAPPENINGS: Happening[] = [
     id: 'spring-day',
     from: '09-01',
     to: '09-01',
-    glyph: 'protea',
-    accent: 'sparkles',
+    glyph: 'daisy',
+    accent: 'flowers',
     caption: 'Happy Spring Day!',
     when: '1 September',
     letters: FYNBOS,
@@ -508,8 +520,8 @@ const HAPPENINGS: Happening[] = [
     id: 'arbor-week',
     from: '09-02',
     to: '09-07',
-    glyph: 'protea',
-    accent: 'none',
+    glyph: 'tree',
+    accent: 'flowers',
     caption: 'Arbor Week: plant a tree',
     when: '1 to 7 September',
     letters: calm('#15803d'),
@@ -558,8 +570,8 @@ const HAPPENINGS: Happening[] = [
     id: 'jacarandas',
     from: '10-15',
     to: '11-15',
-    glyph: 'protea',
-    accent: 'sparkles',
+    glyph: 'jacaranda',
+    accent: 'petals',
     caption: 'Jacarandas are blooming in Pretoria',
     when: 'Mid-October to mid-November',
     letters: calm('#7c3aed'),
@@ -571,8 +583,8 @@ const HAPPENINGS: Happening[] = [
     id: 'matric-exams',
     from: '10-27',
     to: '11-28',
-    glyph: 'compass',
-    accent: 'none',
+    glyph: 'gradcap',
+    accent: 'sparkles',
     caption: 'Good luck, matrics!',
     when: 'Late October to late November',
     letters: calm('#0f766e'),
@@ -584,7 +596,7 @@ const HAPPENINGS: Happening[] = [
     id: 'sixteen-days',
     from: '11-25',
     to: '12-10',
-    glyph: 'heart',
+    glyph: 'ribbon-purple',
     accent: 'none',
     caption: '16 Days of Activism',
     when: '25 November to 10 December',
@@ -597,7 +609,7 @@ const HAPPENINGS: Happening[] = [
     id: 'aids-day',
     from: '12-01',
     to: '12-01',
-    glyph: 'heart',
+    glyph: 'ribbon',
     accent: 'none',
     caption: 'World AIDS Day',
     when: '1 December',

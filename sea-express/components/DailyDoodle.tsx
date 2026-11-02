@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { X } from 'lucide-react';
 import {
   DEFAULT_DOODLE,
@@ -12,7 +12,7 @@ import {
   type DoodleGlyph,
 } from '@/lib/doodles';
 import { AccentArt, renderGlyph } from '@/components/doodle/art';
-import DoodleScene from '@/components/doodle/DoodleScene';
+import DoodleScene, { Linocut } from '@/components/doodle/DoodleScene';
 
 /**
  * The "Town Hub" wordmark with a daily doodle: the "o" becomes a small
@@ -54,7 +54,7 @@ export default function DailyDoodle() {
   const night = Boolean(doodle.night);
   const letters: { key: string; node: React.ReactNode }[] = [
     { key: 'T', node: <Ink color={T}>T</Ink> },
-    { key: 'o', node: <Glyph glyph={doodle.glyph} night={night} /> },
+    { key: 'o', node: <Glyph glyph={doodle.glyph} night={night} tint={doodle.tint} /> },
     { key: 'w', node: <Ink color={w}>w</Ink> },
     { key: 'n', node: <Ink color={n}>n</Ink> },
     { key: ' ', node: <span className="block w-[0.28em]" /> },
@@ -172,16 +172,40 @@ function Ink({ color, children }: { color: string; children: React.ReactNode }) 
 }
 
 /** Stands in for the "o": sized to the x-height and sitting on the baseline. */
-function Glyph({ glyph, night }: { glyph: DoodleGlyph; night: boolean }) {
+/**
+ * Stands in for the "o": a small sun in the day's colour with the emblem
+ * printed into it, matching the poster in the scene card (DoodleScene).
+ */
+function Glyph({ glyph, night, tint }: { glyph: DoodleGlyph; night: boolean; tint: string }) {
+  const ids = useId();
+  const print = `${ids}-print`;
+  const clip = `${ids}-clip`;
   return (
     <svg
       viewBox="0 0 24 24"
       aria-hidden="true"
-      className="mx-[0.03em] mb-[0.06em] block h-[0.74em] w-[0.74em] overflow-visible"
+      className="mx-[0.03em] mb-[0.06em] block h-[0.8em] w-[0.8em] overflow-visible"
     >
-      {renderGlyph(glyph, night)}
+      <defs>
+        <Linocut id={print} ink="#ffffff" mid={mixWithWhite(tint)} paper={tint} />
+        <clipPath id={clip}>
+          <circle cx="12" cy="12" r="11" />
+        </clipPath>
+      </defs>
+      <circle cx="12" cy="12" r="11.5" fill={tint} />
+      <g clipPath={`url(#${clip})`}>
+        <g filter={`url(#${print})`}>
+          <g transform="translate(4.2 4.2) scale(0.65)">{renderGlyph(glyph, night)}</g>
+        </g>
+      </g>
     </svg>
   );
+}
+
+function mixWithWhite(hex: string): string {
+  const n = parseInt(hex.slice(1), 16);
+  const ch = (shift: number) => Math.round(((n >> shift) & 255) * 0.45 + 255 * 0.55).toString(16).padStart(2, '0');
+  return `#${ch(16)}${ch(8)}${ch(0)}`;
 }
 
 function Accent({ accent }: { accent: DoodleAccent }) {
