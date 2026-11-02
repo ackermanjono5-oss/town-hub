@@ -138,7 +138,7 @@ export default function HomePage() {
             Your town, <span className="text-[#ffd27a]">on one screen.</span>
           </h1>
           <p className="mt-2.5 text-[14.5px] leading-relaxed text-white/85 text-pretty">
-            Places to eat and stay, doctors, news, weather, tides, rewards and emergency numbers —
+            Places to eat and stay, doctors, news, weather and the sea, rewards and emergency numbers —
             from Witsand to Storms River.
           </p>
         </div>
