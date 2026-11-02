@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react';
 import { getSupabaseClient, isSupabaseConfigured } from '@/lib/supabase/client';
 import SupabaseSetupNotice from '@/components/SupabaseSetupNotice';
+import HelpEmail from '@/components/HelpEmail';
+import { MEMBER_REGISTRATIONS_EMAIL } from '@/lib/contact';
 
 /**
  * Sign-in has to complete without ever leaving this page.
@@ -104,7 +106,7 @@ export default function LoginPage() {
 
   return (
     <div className="max-w-sm mx-auto px-4 py-10">
-      <div className="overflow-hidden rounded-3xl bg-card shadow-[0_24px_48px_-28px_rgba(10,47,92,0.7)] ring-1 ring-white/70">
+      <div className="overflow-hidden rounded-3xl bg-card shadow-[0_24px_48px_-28px_rgba(10,47,92,0.7)] ring-1 ring-white/70 dark:ring-white/10">
       <div className="relative overflow-hidden bg-gradient-to-br from-[#0a2f5c] via-[#1569a8] to-[#2fb2cf] px-6 pt-8 pb-12 text-center text-white">
         <div className="absolute inset-0 hero-dots opacity-40" aria-hidden="true" />
         <div className="absolute -top-16 -right-12 w-44 h-44 rounded-full bg-white/15 blur-3xl" aria-hidden="true" />
@@ -247,6 +249,7 @@ export default function LoginPage() {
       )}
       </div>
       </div>
+      <HelpEmail prompt="Trouble registering? Email us at" email={MEMBER_REGISTRATIONS_EMAIL} className="mt-5" />
     </div>
   );
 }

@@ -3,6 +3,8 @@
 import { ArrowLeft, ScanLine, Gift, History, BadgeCheck, ArrowRight, type LucideIcon } from 'lucide-react';
 import RequireBusiness from '@/components/business/RequireBusiness';
 import PageHero from '@/components/PageHero';
+import HelpEmail from '@/components/HelpEmail';
+import { BUSINESS_REGISTRATIONS_EMAIL } from '@/lib/contact';
 
 export default function BusinessRewardsPortalPage() {
   return (
@@ -65,6 +67,12 @@ export default function BusinessRewardsPortalPage() {
           </div>
         )}
       </RequireBusiness>
+
+      <HelpEmail
+        prompt="Questions about registering your business? Email us at"
+        email={BUSINESS_REGISTRATIONS_EMAIL}
+        className="mt-6"
+      />
     </div>
   );
 }

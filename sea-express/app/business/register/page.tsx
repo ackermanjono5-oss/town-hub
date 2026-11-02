@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { ArrowLeft, Search, X } from 'lucide-react';
 import { getCurrentUser, isSupabaseConfigured } from '@/lib/supabase/client';
 import SupabaseSetupNotice from '@/components/SupabaseSetupNotice';
+import HelpEmail from '@/components/HelpEmail';
+import { BUSINESS_REGISTRATIONS_EMAIL } from '@/lib/contact';
 import { TOWNS } from '@/lib/garden-route/towns';
 import { getMyBusiness, registerBusiness, updateBusinessDetails } from '@/lib/business/queries';
 import { navigateTo } from '@/lib/app-nav';
@@ -265,6 +267,12 @@ export default function RegisterBusinessPage() {
           </button>
         </form>
       )}
+
+      <HelpEmail
+        prompt="Questions about registering your business? Email us at"
+        email={BUSINESS_REGISTRATIONS_EMAIL}
+        className="mt-6"
+      />
     </div>
   );
 }
