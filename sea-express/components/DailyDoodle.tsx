@@ -195,7 +195,7 @@ function Glyph({ glyph, night, tint }: { glyph: DoodleGlyph; night: boolean; tin
       <circle cx="12" cy="12" r="11.5" fill={tint} />
       <g clipPath={`url(#${clip})`}>
         <g filter={`url(#${print})`}>
-          <g transform="translate(4.2 4.2) scale(0.65)">{renderGlyph(glyph, night)}</g>
+          <g transform="translate(4.2 4.2) scale(0.65)">{renderGlyph(glyph, night, true)}</g>
         </g>
       </g>
     </svg>

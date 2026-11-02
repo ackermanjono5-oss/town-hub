@@ -214,7 +214,7 @@ export default function DoodleScene({ doodle, hour }: { doodle: Doodle; hour: nu
 
       {/* The sun (or moon) with today's emblem printed into it. */}
       <g className="doodle-rise">
-        <circle cx={SUN.x} cy={SUN.y} r={SUN.r + 30} fill={`url(#${glow})`} />
+        <circle className="doodle-part doodle-breathe" cx={SUN.x} cy={SUN.y} r={SUN.r + 30} fill={`url(#${glow})`} />
         {[SUN.r + 8, SUN.r + 15, SUN.r + 23].map((r, i) => (
           <circle
             key={r}
@@ -228,11 +228,22 @@ export default function DoodleScene({ doodle, hour }: { doodle: Doodle; hour: nu
           />
         ))}
         <circle cx={SUN.x} cy={SUN.y} r={SUN.r} fill={`url(#${disc})`} />
-        <circle cx={SUN.x} cy={SUN.y} r={SUN.r - 2.5} fill="none" stroke={p.ink} strokeOpacity="0.25" strokeWidth="0.6" />
+        {[SUN.r - 2.5, SUN.r - 9, SUN.r - 17].map((r, i) => (
+          <circle
+            key={r}
+            cx={SUN.x}
+            cy={SUN.y}
+            r={r}
+            fill="none"
+            stroke={i === 0 ? p.ink : p.paper}
+            strokeOpacity={i === 0 ? 0.25 : 0.14}
+            strokeWidth={i === 0 ? 0.6 : 2.4}
+          />
+        ))}
         <g clipPath={`url(#${discClip})`}>
           <g filter={`url(#${duo})`}>
             <g transform={`translate(${SUN.x - 22} ${SUN.y - 22}) scale(1.8333)`}>
-              {renderGlyph(doodle.glyph, night)}
+              {renderGlyph(doodle.glyph, night, true)}
             </g>
           </g>
         </g>
@@ -355,7 +366,7 @@ export default function DoodleScene({ doodle, hour }: { doodle: Doodle; hour: nu
         ))}
 
       {doodle.accent === 'whale' && (
-        <g transform="translate(206 114)" filter={`url(#${silhouette})`}>
+        <g transform="translate(160 116)" filter={`url(#${silhouette})`}>
           <g className="doodle-part doodle-breach">
             <g transform="scale(2.1)">
               <AccentArt accent="whale" />
@@ -371,6 +382,11 @@ export default function DoodleScene({ doodle, hour }: { doodle: Doodle; hour: nu
           </g>
         </g>
       )}
+
+      {/* Foreground: a headland with a lighthouse (after Cape St Blaize in
+          Mossel Bay), and fynbos at the water's edge. */}
+      <Headland p={p} night={night} />
+      <Fynbos color={p.hills[3]} />
 
       {doodle.accent === 'petals' &&
         PETALS.map((c, i) => (
@@ -403,6 +419,66 @@ export default function DoodleScene({ doodle, hour }: { doodle: Doodle; hour: nu
       {/* Paper grain over the whole print. */}
       <rect width="320" height="170" filter={`url(#${grain})`} />
     </svg>
+  );
+}
+
+/** A cliff rising from the sea on the right, topped by a lighthouse whose beam sweeps the dark. */
+function Headland({ p, night }: { p: Palette; night: boolean }) {
+  const lamp = { x: 284, y: 82 };
+  return (
+    <g>
+      {night && (
+        <g transform={`translate(${lamp.x} ${lamp.y})`}>
+          <g className="doodle-sweep">
+            <path d="M0 0 L-150 -24 L-150 16 Z" fill={p.disc[0]} opacity="0.16" />
+            <path d="M0 0 L-110 -10 L-110 8 Z" fill={p.disc[0]} opacity="0.18" />
+          </g>
+        </g>
+      )}
+      <path
+        d="M246 170 L246 132 C 252 120 258 112 266 108 C 274 103 282 102 292 101 C 304 100 314 103 320 105 V170 Z"
+        fill={p.hills[3]}
+      />
+      <path d="M246 132 C 252 120 258 112 266 108" fill="none" stroke={p.shimmer} strokeOpacity="0.25" strokeWidth="0.8" />
+      {/* Keeper's cottage and tower. */}
+      <path d="M296 101 V95 L301 91 L306 95 V101 Z" fill={p.ink} />
+      <path d="M280.5 101 L282 86 H286 L287.5 101 Z" fill={night ? p.ink : p.paper} />
+      <path d="M281.4 94 H286.6 M281 98 H287" stroke={night ? p.paper : p.ink} strokeOpacity="0.5" strokeWidth="1.1" />
+      <rect x="281.2" y="83" width="5.6" height="3.4" rx="0.6" fill={night ? p.disc[0] : p.ink} />
+      <path d="M280.6 83 L284 79.6 L287.4 83 Z" fill={p.ink} />
+      {night && <circle className="doodle-part doodle-pulse" style={{ animationDuration: '3s' }} cx={lamp.x} cy={lamp.y + 2.6} r="3" fill={p.disc[0]} opacity="0.5" />}
+    </g>
+  );
+}
+
+/** Restios and a protea silhouetted at the water's edge, bottom left. */
+function Fynbos({ color }: { color: string }) {
+  const blades = [
+    [6, 170, -6, 138], [12, 170, 4, 132], [18, 170, 20, 140], [24, 170, 14, 128], [30, 170, 34, 144],
+    [36, 170, 30, 134], [44, 170, 52, 146], [50, 170, 46, 138], [58, 170, 66, 150], [64, 170, 60, 146],
+  ];
+  return (
+    <g>
+      <path d="M0 170 L0 156 C 20 150 46 152 74 162 L80 170 Z" fill={color} />
+      {blades.map(([x1, y1, x2, y2], i) => (
+        <path
+          key={i}
+          d={`M${x1} ${y1} Q${(x1 + x2) / 2 + 3} ${(y1 + y2) / 2} ${x2} ${y2}`}
+          fill="none"
+          stroke={color}
+          strokeWidth={i % 2 ? 1.2 : 1.6}
+          strokeLinecap="round"
+        />
+      ))}
+      {/* A king protea on its stem. */}
+      <path d="M40 170 Q41 156 39 146" fill="none" stroke={color} strokeWidth="1.6" />
+      <g transform="translate(39 141)">
+        {Array.from({ length: 9 }, (_, i) => (
+          <ellipse key={i} cx="0" cy="-4.4" rx="1.6" ry="4.4" fill={color} transform={`rotate(${-80 + i * 20})`} />
+        ))}
+        <circle r="3.2" fill={color} />
+      </g>
+    </g>
   );
 }
 

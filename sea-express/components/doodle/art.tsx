@@ -5,12 +5,17 @@
 import { useId } from 'react';
 import type { DoodleAccent, DoodleGlyph } from '@/lib/doodles';
 
-export function renderGlyph(glyph: DoodleGlyph, night: boolean) {
+/**
+ * `print` is for emblems printed into the poster's sun (DoodleScene and the
+ * header wordmark): the sun is already the round frame, so pictures that
+ * bring their own round background drop it there, leaving only the subject.
+ */
+export function renderGlyph(glyph: DoodleGlyph, night: boolean, print = false) {
   switch (glyph) {
     case 'sun':
       return night ? <Moon /> : <Sun />;
     case 'wave':
-      return <WaveBubble />;
+      return <WaveBubble print={print} />;
     case 'lifebuoy':
       return (
         <g className="doodle-part doodle-spin">
@@ -49,7 +54,11 @@ export function renderGlyph(glyph: DoodleGlyph, night: boolean) {
     case 'compass':
       return (
         <>
-          <circle cx="12" cy="12" r="10.5" fill="#ecfeff" stroke="#0f766e" strokeWidth="2.2" />
+          <circle cx="12" cy="12" r="10.5" fill={print ? 'none' : '#ecfeff'} stroke="#0f766e" strokeWidth="2.2" />
+          {print &&
+            [0, 90, 180, 270].map((r) => (
+              <path key={r} d="M12 2.4 V5" stroke="#0f766e" strokeWidth="1.4" transform={`rotate(${r} 12 12)`} />
+            ))}
           <g className="doodle-part doodle-needle">
             <path d="M12 3.5 L14.2 12 L9.8 12 Z" fill="#dc2626" />
             <path d="M12 20.5 L14.2 12 L9.8 12 Z" fill="#334155" />
@@ -181,7 +190,7 @@ export function renderGlyph(glyph: DoodleGlyph, night: boolean) {
         </>
       );
     case 'sardines':
-      return <Sardines />;
+      return <Sardines print={print} />;
     case 'oyster':
       return (
         <>
@@ -305,11 +314,11 @@ function Wheel({ cx }: { cx: number }) {
 }
 
 /** A porthole with a shoal of sardines darting past. */
-function Sardines() {
+function Sardines({ print = false }: { print?: boolean }) {
   const clip = useId();
   const fish = (x: number, y: number, s: number) => (
     <g transform={`translate(${x} ${y}) scale(${s})`}>
-      <path d="M0 0 Q5 -3.6 10 0 Q5 3.6 0 0 Z" fill="#cbd5e1" />
+      <path d="M0 0 Q5 -3.6 10 0 Q5 3.6 0 0 Z" fill={print ? '#334155' : '#cbd5e1'} />
       <path d="M0 0 Q5 -3.6 10 0" fill="none" stroke="#475569" strokeWidth="0.7" />
       <path d="M10 0 L13.5 -2.6 L13.5 2.6 Z" fill="#94a3b8" />
       <circle cx="2.2" cy="-0.4" r="0.6" fill="#0f172a" />
@@ -322,7 +331,7 @@ function Sardines() {
           <circle cx="12" cy="12" r="10.5" />
         </clipPath>
       </defs>
-      <circle cx="12" cy="12" r="10.5" fill="#0369a1" />
+      {!print && <circle cx="12" cy="12" r="10.5" fill="#0369a1" />}
       <g clipPath={`url(#${clip})`}>
         <g className="doodle-wave" style={{ animationDuration: '1.8s' }}>
           {fish(4, 8, 0.9)}
@@ -334,7 +343,7 @@ function Sardines() {
           {fish(16, 18, 0.9)}
         </g>
       </g>
-      <circle cx="12" cy="12" r="10.5" fill="none" stroke="#0c4a6e" strokeWidth="2" />
+      {!print && <circle cx="12" cy="12" r="10.5" fill="none" stroke="#0c4a6e" strokeWidth="2" />}
     </>
   );
 }
@@ -376,7 +385,7 @@ function Moon() {
 }
 
 /** A round porthole of sea with waves rolling across it. */
-function WaveBubble() {
+function WaveBubble({ print = false }: { print?: boolean }) {
   const clip = useId();
   return (
     <>
@@ -385,7 +394,7 @@ function WaveBubble() {
           <circle cx="12" cy="12" r="10.5" />
         </clipPath>
       </defs>
-      <circle cx="12" cy="12" r="10.5" fill="#e0f2fe" />
+      {!print && <circle cx="12" cy="12" r="10.5" fill="#e0f2fe" />}
       <g clipPath={`url(#${clip})`}>
         <path
           className="doodle-wave"
@@ -399,7 +408,7 @@ function WaveBubble() {
           fill="#0e7490"
         />
       </g>
-      <circle cx="12" cy="12" r="10.5" fill="none" stroke="#0e7490" strokeWidth="2" />
+      {!print && <circle cx="12" cy="12" r="10.5" fill="none" stroke="#0e7490" strokeWidth="2" />}
     </>
   );
 }
