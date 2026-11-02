@@ -61,6 +61,32 @@ export default function App() {
   // Ref, not state: the onMessage handler must read the current value
   // without the WebView re-rendering on every reported message.
   const domReady = useRef(false);
+  const webviewRef = useRef(null);
+  // A sign-in link that arrived before the page finished loading.
+  const pendingAuth = useRef(null);
+
+  // Google sign-in and emailed sign-in links finish in the phone's browser
+  // and come back as townhub://auth/callback#access_token=… (registered in
+  // AndroidManifest.xml). The page's AuthCallbackBridge turns that into a
+  // session; it's also left in a global in case the page hasn't mounted yet.
+  const deliverAuth = (url) => {
+    const js = `window.__townhubPendingAuth = ${JSON.stringify(url)};
+      window.__townhubAuthCallback && window.__townhubAuthCallback(${JSON.stringify(url)});
+      true;`;
+    webviewRef.current?.injectJavaScript(js);
+  };
+
+  useEffect(() => {
+    const receive = (url) => {
+      if (!url || !url.startsWith('townhub://auth')) return;
+      if (domReady.current) deliverAuth(url);
+      else pendingAuth.current = url;
+    };
+    // A link that started the app from closed is delivered on dom-ready.
+    Linking.getInitialURL().then(receive);
+    const sub = Linking.addEventListener('url', ({ url }) => receive(url));
+    return () => sub.remove();
+  }, []);
 
   useEffect(() => {
     if (Platform.OS !== 'android') return;
@@ -89,6 +115,7 @@ export default function App() {
     <View style={styles.container}>
       <StatusBar barStyle="light-content" />
       <WebView
+        ref={webviewRef}
         source={{ uri: SITE_URL }}
         startInLoadingState
         onLoadEnd={() => setLoading(false)}
@@ -111,6 +138,10 @@ export default function App() {
             const payload = JSON.parse(raw);
             if (payload.kind === 'dom-ready') {
               domReady.current = true;
+              if (pendingAuth.current) {
+                deliverAuth(pendingAuth.current);
+                pendingAuth.current = null;
+              }
               return;
             }
             // Once the page is up, a stray script error or rejected promise

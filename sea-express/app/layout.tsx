@@ -4,6 +4,7 @@ import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import SignInPrompt from '@/components/SignInPrompt';
 import AppLinkFix from '@/components/AppLinkFix';
+import AuthCallbackBridge from '@/components/AuthCallbackBridge';
 import './globals.css';
 
 const geistSans = Geist({
@@ -53,6 +54,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${jakarta.variable} min-h-full flex flex-col antialiased`}
       >
         <AppLinkFix />
+        <AuthCallbackBridge />
         <SiteHeader />
         <main className="flex-1">{children}</main>
         <SiteFooter />
