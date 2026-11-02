@@ -3,8 +3,11 @@
        AppCompatActivity, and AppCompatDelegate throws
        "You need to use a Theme.AppCompat theme (or descendant)" from
        setContentView when it isn't. The framework theme
-       android:Theme.Material.Light.NoActionBar crashed the app at launch. -->
-  <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+       android:Theme.Material.Light.NoActionBar crashed the app at launch.
+       DayNight rather than Light: on Android 13+ the WebView reports
+       prefers-color-scheme from the app theme, so a Light theme would keep
+       the web app's dark mode from ever showing. -->
+  <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
     <item name="android:statusBarColor">@color/app_background</item>
     <item name="android:windowBackground">@color/app_background</item>
   </style>
