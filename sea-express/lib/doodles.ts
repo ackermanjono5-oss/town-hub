@@ -572,7 +572,7 @@ const HAPPENINGS: Happening[] = [
     to: '11-15',
     glyph: 'jacaranda',
     accent: 'petals',
-    caption: 'Jacarandas are blooming in Pretoria',
+    caption: 'Jacarandas bloom in Pretoria',
     when: 'Mid-October to mid-November',
     letters: calm('#7c3aed'),
     tint: '#7c3aed',

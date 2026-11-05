@@ -177,12 +177,12 @@ export function renderGlyph(glyph: DoodleGlyph, night: boolean, print = false) {
           <path d="M12 23 V14 M12 16.5 L8.2 12.5 M12 15.5 L15.8 11.8" fill="none" stroke="#78350f" strokeWidth="2" strokeLinecap="round" />
           <g className="doodle-part doodle-pulse" style={{ animationDuration: '3.4s' }}>
             {[
-              [7, 9.5, 4.6, '#a78bfa'],
-              [12, 6, 5.2, '#8b5cf6'],
-              [17, 9.5, 4.6, '#a78bfa'],
-              [9.2, 12.8, 3.8, '#c4b5fd'],
-              [14.8, 12.8, 3.8, '#7c3aed'],
-              [12, 10, 3.6, '#c4b5fd'],
+              [12, 6, 5.4, '#8b5cf6'],
+              [6.8, 9.8, 4.6, '#7c3aed'],
+              [17.2, 9.8, 4.6, '#7c3aed'],
+              [9.4, 13, 3.6, '#4c1d95'],
+              [14.6, 13, 3.6, '#4c1d95'],
+              [12, 9.6, 3.8, '#8b5cf6'],
             ].map(([x, y, r, c], i) => (
               <circle key={i} cx={x} cy={y} r={r} fill={c as string} />
             ))}
