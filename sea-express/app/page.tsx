@@ -20,6 +20,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import AdvertCarousel from '@/components/AdvertCarousel';
+import FeaturedAdverts from '@/components/FeaturedAdverts';
 import Greeting from '@/components/Greeting';
 
 /**
@@ -197,6 +198,12 @@ export default function HomePage() {
         </a>
       </section>
       </div>
+
+      {/* Featured adverts */}
+      <section>
+        <SectionTitle>Featured</SectionTitle>
+        <FeaturedAdverts />
+      </section>
 
       {/* Partners */}
       <section className="rounded-3xl bg-card/80 backdrop-blur shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] overflow-hidden">

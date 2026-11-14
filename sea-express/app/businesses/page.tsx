@@ -21,6 +21,7 @@ import {
 import { TOWNS, getTownLabel } from '@/lib/garden-route/towns';
 import DirectoryPhoto from '@/components/DirectoryPhoto';
 import BrandMark from '@/components/BrandMark';
+import SponsoredPlacements from '@/components/SponsoredPlacements';
 import { getBusinessMapsUrl, type Business } from '@/lib/garden-route/businesses';
 import { countWithLogos } from '@/lib/garden-route/display';
 import {
@@ -209,6 +210,8 @@ export default function BusinessesPage() {
           </button>
         )}
       </div>
+
+      {town !== 'all' && <SponsoredPlacements town={town} />}
 
       {businesses.length === 0 ? (
         <div className="mt-4 rounded-2xl bg-card/80 border border-white/60 dark:border-white/10 p-8 text-center shadow">
