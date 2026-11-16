@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { TOWNS, getTownLabel } from '@/lib/garden-route/towns';
 import BrandMark from '@/components/BrandMark';
+import LiveListings from '@/components/property/LiveListings';
 import { logoFirst } from '@/lib/garden-route/display';
 import {
   ESTATE_OFFICES,
@@ -87,8 +88,8 @@ export default function PropertyPage() {
           </p>
           <h1 className="mt-2 text-4xl sm:text-5xl font-bold tracking-tight">Real Estate</h1>
           <p className="mt-3 max-w-xl text-white/80">
-            Estate agency offices in each Garden Route town, for buying, selling and renting.
-            Call an agent, get directions, or browse the agency&apos;s current listings.
+            Homes for sale and to rent, posted by local agencies, plus every estate agency office
+            in each Garden Route town. Call an agent, get directions, or browse their listings.
           </p>
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <span className="inline-flex items-baseline gap-1.5 px-3 py-2 rounded-full bg-white/15 backdrop-blur text-sm">
@@ -185,6 +186,8 @@ export default function PropertyPage() {
         )}
       </section>
 
+      <LiveListings town={town} />
+
       {inTown.length === 0 ? (
         <div className="mt-6 rounded-2xl bg-card/80 border border-white/60 dark:border-white/10 p-8 text-center shadow">
           <Building2 className="w-8 h-8 mx-auto text-slate-300" aria-hidden="true" />
@@ -245,8 +248,12 @@ export default function PropertyPage() {
         <Home className="w-8 h-8 mx-auto text-primary" aria-hidden="true" />
         <p className="mt-3 font-semibold text-slate-800">Looking for a specific property?</p>
         <p className="mt-1 text-sm text-slate-600 max-w-lg mx-auto">
-          Listings change daily, so Town Hub links you to each agency rather than showing stock
-          that may already be sold.
+          Agencies add their own listings to Town Hub, and each agency&apos;s website has the
+          rest of its stock. Estate agent?{' '}
+          <a href="/business/property" className="underline">
+            Add your listings
+          </a>
+          .
         </p>
         <a
           href={`https://www.google.com/search?q=${encodeURIComponent(

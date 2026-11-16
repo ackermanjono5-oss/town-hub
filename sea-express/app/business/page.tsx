@@ -1,6 +1,6 @@
 'use client';
 
-import { ArrowLeft, ScanLine, Gift, History, BadgeCheck, ArrowRight, type LucideIcon } from 'lucide-react';
+import { ArrowLeft, ScanLine, Gift, History, BadgeCheck, ArrowRight, Home, type LucideIcon } from 'lucide-react';
 import RequireBusiness from '@/components/business/RequireBusiness';
 import PageHero from '@/components/PageHero';
 import HelpEmail from '@/components/HelpEmail';
@@ -55,13 +55,23 @@ export default function BusinessRewardsPortalPage() {
                   index={1}
                 />
               )}
+              {role === 'owner' && (
+                <Tile
+                  href="/business/property"
+                  icon={Home}
+                  title="Property listings"
+                  text="For estate agencies: list homes for sale or to rent on Town Hub's Property page."
+                  gradient="from-[#0f3d5e] to-[#7fc8d8]"
+                  index={2}
+                />
+              )}
               <Tile
                 href="/business/history"
                 icon={History}
                 title="Redemption history"
                 text="Every voucher redeemed at your business, by month."
                 gradient="from-[#1c8ec4] to-[#4cc3dd]"
-                index={2}
+                index={3}
               />
             </div>
           </div>

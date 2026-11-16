@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, Store, Gift, Receipt, Scale, MessagesSquare, ArrowLeft } from 'lucide-react';
+import { LayoutDashboard, Users, Store, Gift, Receipt, Scale, MessagesSquare, Home, ArrowLeft } from 'lucide-react';
 
 const NAV_ITEMS = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -11,6 +11,7 @@ const NAV_ITEMS = [
   { href: '/admin/redemptions', label: 'Redemptions', icon: Receipt },
   { href: '/admin/notices', label: 'Legal Notices', icon: Scale },
   { href: '/admin/wall', label: 'Community Wall', icon: MessagesSquare },
+  { href: '/admin/property', label: 'Property', icon: Home },
 ];
 
 export default function AdminHeader() {

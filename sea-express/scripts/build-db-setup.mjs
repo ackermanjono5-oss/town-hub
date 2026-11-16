@@ -34,7 +34,7 @@ declare
 begin
   foreach t in array array[
     'public.profiles', 'public.businesses', 'public.offers', 'public.redemption_tokens',
-    'public.redemptions', 'public.employees', 'public.legal_notices', 'public.wall_posts',
+    'public.redemptions', 'public.employees', 'public.legal_notices', 'public.wall_posts', 'public.property_listings',
     'auth.users'
   ] loop
     if to_regclass(t) is not null then
@@ -50,6 +50,7 @@ $$;
 drop trigger if exists on_auth_user_created on auth.users;
 
 drop table if exists
+  public.property_listings,
   public.wall_reports,
   public.wall_posts,
   public.redemptions,
