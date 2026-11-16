@@ -47,7 +47,9 @@ export default function FeaturedAdverts() {
   };
 
   return (
-    <div className="rounded-3xl bg-card/85 p-4 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] backdrop-blur sm:p-5">
+    // overflow-hidden: mobile browsers otherwise size the page to the
+    // slides waiting off to the side, letting the whole page pan sideways.
+    <div className="overflow-hidden rounded-3xl bg-card/85 p-4 shadow-[0_10px_30px_-18px_rgba(15,23,42,0.35)] backdrop-blur sm:p-5">
       <div
         ref={rowRef}
         onPointerDown={() => setPaused(true)}

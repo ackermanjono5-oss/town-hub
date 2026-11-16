@@ -27,6 +27,7 @@ import {
 import { TOWNS, getTownLabel } from '@/lib/garden-route/towns';
 import DirectoryPhoto from '@/components/DirectoryPhoto';
 import BrandMark from '@/components/BrandMark';
+import SponsoredPlacements from '@/components/SponsoredPlacements';
 import {
   ACTIVE_CATEGORIES,
   countByCategory,
@@ -285,6 +286,8 @@ export default function MedicalPage() {
           </button>
         )}
       </div>
+
+      <SponsoredPlacements town={town} directory="medical" />
 
       {facilities.length === 0 ? (
         <div className="mt-4 rounded-2xl bg-card/80 border border-white/60 dark:border-white/10 p-8 text-center shadow">

@@ -44,6 +44,30 @@ describe("what the advertisers asked for", () => {
     expect(listing.actions).toContainEqual({ kind: 'facebook', url: 'https://www.facebook.com/share/1CFnZrAaqW/' });
   });
 
+  it('uses the corrected Wittedrift cell number, 082 536 4407', () => {
+    const phones = [...TOWN_BANNERS, ...SPONSORED_LISTINGS]
+      .filter((p) => p.id === 'wittedrift-butchery')
+      .flatMap((p) => p.actions.flatMap((a) => (a.kind === 'call' ? [a.phone] : [])));
+    expect(phones).toContain('082 536 4407');
+    expect(phones.every((n) => n.replace(/\s/g, '').length === 10)).toBe(true);
+  });
+
+  it("shows Dr Coci's banner in Plettenberg Bay in both the Business and Medical directories", () => {
+    expect(bannersForTown('plett', 'businesses').map((b) => b.id)).toContain('dr-coci');
+    expect(bannersForTown('plett', 'medical').map((b) => b.id)).toEqual(['dr-coci']);
+    expect(bannersForTown('knysna', 'medical')).toEqual([]);
+    expect(listingsForTown('plett', 'medical')).toEqual([]);
+  });
+
+  it("gives Dr Coci call, email and his own map link, and no website", () => {
+    const coci = TOWN_BANNERS.find((b) => b.id === 'dr-coci')!;
+    expect(coci.actions.map((a) => actionHref(a))).toEqual([
+      'tel:+27445334471',
+      'mailto:drcociad@gmail.com',
+      'https://share.google/thubrDTS5J2XTfzo7',
+    ]);
+  });
+
   it('lists Sea Express under Plettenberg Bay with its link and emails, and no phone numbers', () => {
     const sea = listingsForTown('plett').find((l) => l.id === 'sea-express')!;
     const kinds = sea.actions.map((a) => a.kind);
@@ -56,8 +80,8 @@ describe("what the advertisers asked for", () => {
     expect(poster.actions.map((a) => a.kind)).not.toContain('call');
   });
 
-  it('puts MossiScreen and Sea Express on the front page', () => {
-    expect(FRONT_PAGE_ADS.map((a) => a.id)).toEqual(['mossiscreen', 'sea-express']);
+  it('puts MossiScreen, Sea Express and Dr Coci on the front page', () => {
+    expect(FRONT_PAGE_ADS.map((a) => a.id)).toEqual(['mossiscreen', 'sea-express', 'dr-coci']);
   });
 });
 

@@ -16,7 +16,8 @@ export type AdAction =
   | { kind: 'call'; phone: string; label?: string }
   | { kind: 'facebook'; url: string; label?: string }
   | { kind: 'email'; address: string; label?: string }
-  | { kind: 'directions'; query: string; label?: string };
+  /** A map search for `query`, or `url` when the advertiser shared their own map link. */
+  | { kind: 'directions'; query: string; url?: string; label?: string };
 
 export interface FrontPageAd {
   id: string;
@@ -29,10 +30,14 @@ export interface FrontPageAd {
   actions: AdAction[];
 }
 
+export type Directory = 'businesses' | 'medical';
+
 export interface TownBanner {
   id: string;
   name: string;
   towns: string[];
+  /** The directories it appears in, for its towns. */
+  directories: Directory[];
   image: string;
   width: number;
   height: number;
@@ -51,6 +56,18 @@ export interface SponsoredListing {
 }
 
 const MOSSI_PHONE = '073 169 0523';
+
+// Dr G Coci has no website; these are the contacts on his poster, and the
+// map link he sent for his rooms.
+const COCI_ACTIONS: AdAction[] = [
+  { kind: 'call', phone: '044 533 4471' },
+  { kind: 'email', address: 'drcociad@gmail.com', label: 'Email' },
+  {
+    kind: 'directions',
+    query: '2a Medway Centre, Muller Street, Plettenberg Bay',
+    url: 'https://share.google/thubrDTS5J2XTfzo7',
+  },
+];
 
 export const FRONT_PAGE_ADS: FrontPageAd[] = [
   {
@@ -77,6 +94,15 @@ export const FRONT_PAGE_ADS: FrontPageAd[] = [
       { kind: 'email', address: 'plettnews@seaexpress.co.za', label: 'Send a story' },
     ],
   },
+  {
+    id: 'dr-coci',
+    name: 'Dr G Coci, Specialist Physician',
+    image: '/ads/coci-poster.webp',
+    width: 810,
+    height: 810,
+    alt: 'Dr G Coci, Specialist Physician: comprehensive care of heart, lungs, liver, gut, kidney, thyroid and blood diseases; annual physicals, preventive care and medical imaging; diabetes, hypertension and lipid disorders. 2a Medway Centre, Muller Street, Plettenberg Bay. +27 44 533 4471. drcociad@gmail.com.',
+    actions: COCI_ACTIONS,
+  },
 ];
 
 export const TOWN_BANNERS: TownBanner[] = [
@@ -84,6 +110,7 @@ export const TOWN_BANNERS: TownBanner[] = [
     id: 'mossinet',
     name: 'MossiNet',
     towns: ['plett', 'knysna'],
+    directories: ['businesses'],
     image: '/ads/mossinet-banner.webp',
     width: 810,
     height: 261,
@@ -95,15 +122,29 @@ export const TOWN_BANNERS: TownBanner[] = [
     id: 'wittedrift-butchery',
     name: 'Wittedrift Organic Butchery',
     towns: ['wittedrift'],
+    directories: ['businesses'],
     image: '/ads/wittedrift-banner.webp',
     width: 810,
-    height: 264,
-    alt: 'Wittedrift Butchery, exceptional meat products. 36 Monument Street, Wittedrift. 044 535 9760.',
+    height: 261,
+    alt: 'Wittedrift Butchery, exceptional meat products. 36 Monument Street, Wittedrift. 044 535 9760 or 082 536 4407.',
     actions: [
       { kind: 'facebook', url: 'https://www.facebook.com/share/1CFnZrAaqW/' },
       { kind: 'call', phone: '044 535 9760' },
+      { kind: 'call', phone: '082 536 4407' },
       { kind: 'directions', query: '36 Monument Street, Wittedrift' },
     ],
+  },
+  {
+    id: 'dr-coci',
+    name: 'Dr G Coci, Specialist Physician',
+    towns: ['plett'],
+    // A doctor belongs in the Medical directory too.
+    directories: ['businesses', 'medical'],
+    image: '/ads/coci-banner.webp',
+    width: 810,
+    height: 270,
+    alt: 'Dr G Coci, Specialist Physician. 2a Medway Centre, Muller Street, Plettenberg Bay. +27 44 533 4471. drcociad@gmail.com.',
+    actions: COCI_ACTIONS,
   },
 ];
 
@@ -134,17 +175,19 @@ export const SPONSORED_LISTINGS: SponsoredListing[] = [
     actions: [
       { kind: 'facebook', url: 'https://www.facebook.com/share/1CFnZrAaqW/' },
       { kind: 'call', phone: '044 535 9760' },
+      { kind: 'call', phone: '082 536 4407' },
       { kind: 'directions', query: '36 Monument Street, Wittedrift' },
     ],
   },
 ];
 
-export function bannersForTown(town: string): TownBanner[] {
-  return TOWN_BANNERS.filter((b) => b.towns.includes(town));
+export function bannersForTown(town: string, directory: Directory = 'businesses'): TownBanner[] {
+  return TOWN_BANNERS.filter((b) => b.towns.includes(town) && b.directories.includes(directory));
 }
 
-export function listingsForTown(town: string): SponsoredListing[] {
-  return SPONSORED_LISTINGS.filter((l) => l.town === town);
+/** Featured listings are for the Business Directory only. */
+export function listingsForTown(town: string, directory: Directory = 'businesses'): SponsoredListing[] {
+  return directory === 'businesses' ? SPONSORED_LISTINGS.filter((l) => l.town === town) : [];
 }
 
 /** A South African number as digits with the country code, e.g. "27731690523". */
@@ -166,7 +209,7 @@ export function actionHref(action: AdAction): string {
     case 'email':
       return `mailto:${action.address}`;
     case 'directions':
-      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(action.query)}`;
+      return action.url ?? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(action.query)}`;
   }
 }
 

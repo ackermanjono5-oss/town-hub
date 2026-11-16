@@ -1,17 +1,18 @@
 import { BadgeCheck } from 'lucide-react';
 import { getTownLabel } from '@/lib/garden-route/towns';
-import { bannersForTown, listingsForTown } from '@/lib/garden-route/sponsored';
+import { bannersForTown, listingsForTown, type Directory } from '@/lib/garden-route/sponsored';
 import { appHref } from '@/lib/app-nav';
 import AdActions from '@/components/AdActions';
 
 /**
- * Paid placements for the selected town in the Business Directory: the
+ * Paid placements for the selected town in a directory (Businesses by
+ * default, or Medical): the
  * town's banners, then its featured listings, above the normal results.
  * Renders nothing for towns without any.
  */
-export default function SponsoredPlacements({ town }: { town: string }) {
-  const banners = bannersForTown(town);
-  const listings = listingsForTown(town);
+export default function SponsoredPlacements({ town, directory = 'businesses' }: { town: string; directory?: Directory }) {
+  const banners = bannersForTown(town, directory);
+  const listings = listingsForTown(town, directory);
   if (banners.length === 0 && listings.length === 0) return null;
 
   return (
